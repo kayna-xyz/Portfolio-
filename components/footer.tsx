@@ -7,14 +7,6 @@ export default function Footer() {
     window.scrollTo({ top: 0, behavior: "smooth" })
   }
 
-  const openChat = () => {
-    // Focus the chatbot input if it exists
-    const chatInput = document.querySelector<HTMLInputElement>('[placeholder="Say Anything..."]')
-    if (chatInput) {
-      chatInput.focus()
-    }
-  }
-
   return (
     <footer
       className="w-full bg-[#FDFBFA] px-5 md:px-[70px]"
