@@ -98,7 +98,7 @@ const allProjects: ProjectCardProps[] = [
     cursorLabel: "Unicorn era",
   },
   {
-    video: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/goglowcover-xBi7iHjGeFHJ6C5ZkK8Lkh1wV7wJH1.mp4",
+    image: "/lluna-cover.png",
     category: "FULL STACK · AI SaaS · 2026",
     title: "Lluna",
     description:
