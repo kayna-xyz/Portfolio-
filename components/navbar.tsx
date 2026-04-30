@@ -4,10 +4,11 @@ import { useState, useEffect } from "react"
 import { usePathname, useRouter } from "next/navigation"
 
 export default function Navbar() {
-  const [activeSection, setActiveSection] = useState("about")
+  const [activeSection, setActiveSection] = useState("")
   const pathname = usePathname()
   const router = useRouter()
   const isHomePage = pathname === "/"
+  const isAboutPage = pathname === "/experience"
 
   useEffect(() => {
     if (!isHomePage) return
@@ -129,7 +130,7 @@ export default function Navbar() {
               key={section.id}
               onClick={() => scrollToSection(section.id)}
               className={`px-2 sm:px-3 py-2 sm:py-3 text-xs sm:text-sm md:text-base font-mono leading-4 transition-all duration-300 whitespace-nowrap ${
-                activeSection === section.id
+                isHomePage && activeSection === section.id
                   ? "text-[#b0aeab]"
                   : "text-[#474747] hover:text-[#b0aeab]"
               }`}
@@ -139,7 +140,9 @@ export default function Navbar() {
           ))}
           <button
             onClick={() => router.push("/experience")}
-            className="px-2 sm:px-3 py-2 sm:py-3 text-xs sm:text-sm md:text-base font-mono leading-4 transition-all duration-300 whitespace-nowrap text-[#474747] hover:text-[#b0aeab]"
+            className={`px-2 sm:px-3 py-2 sm:py-3 text-xs sm:text-sm md:text-base font-mono leading-4 transition-all duration-300 whitespace-nowrap ${
+              isAboutPage ? "text-[#b0aeab]" : "text-[#474747] hover:text-[#b0aeab]"
+            }`}
           >
             About
           </button>
