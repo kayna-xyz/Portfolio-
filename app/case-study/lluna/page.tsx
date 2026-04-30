@@ -21,7 +21,7 @@ const metadata = [
   { label: "STACK", value: "Next.js \u00b7 AI SDK \u00b7 Figma" },
 ]
 
-export default function GoGlowAICaseStudy() {
+export default function LlunaAICaseStudy() {
   const router = useRouter()
   const [activeSection, setActiveSection] = useState("overview")
   const sectionRefs = useRef<Record<string, HTMLElement | null>>({})
@@ -98,7 +98,7 @@ export default function GoGlowAICaseStudy() {
           <div className="overflow-hidden mt-4 mb-12 -mx-5 md:-mx-[200px]">
             <img
               src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Screenshot%202026-02-26%20at%2000.16.41-Af7Iiwyu9RwSqFaB686OVgl5YFfBaF.png"
-              alt="GoGlow"
+              alt="Lluna"
               className="w-full object-cover"
               style={{ aspectRatio: "1500/460" }}
             />
@@ -109,12 +109,12 @@ export default function GoGlowAICaseStudy() {
             style={{ fontFamily: "var(--font-ibm-plex-serif), 'Georgia', serif" }}
           >
             <a
-              href="https://v0-beautyplan.vercel.app/"
+              href="https://lluna.ai"
               target="_blank"
               rel="noopener noreferrer"
               className="text-[#FF8EAE] no-underline hover:opacity-70 transition-opacity"
             >
-              GoGlow
+              Lluna
             </a>
             {" , AI Aesthetic Consultant"}
           </h1>
@@ -151,13 +151,13 @@ export default function GoGlowAICaseStudy() {
               Know before you sit on the chair at treatment room.
             </h2>
             <p className="text-[15px] text-[#9e9b98] leading-relaxed">
-              {"GoGlow is an AI aesthetic consultant built for the treatment room."}
+              {"Lluna is an AI aesthetic consultant built for the treatment room."}
             </p>
             <p className="text-[15px] text-[#9e9b98] leading-relaxed mt-4">
               {"The clinic industry runs on information asymmetry. Consultants know everything. Clients know nothing, until they're already in the chair with someone who has 20 minutes and a sales quota. Even worse, the consultant's job is to make the sale, so they may not be as knowledgeable as AI."}
             </p>
             <p className="text-[15px] text-[#9e9b98] leading-relaxed mt-4">
-              {"This project is personal. I grew up sneaking my mom\u2019s skincare products, got obsessed with the medspa world at 16, and spent years visiting clinics across China, Korea, and the US trying to understand how the industry actually works. My long-term dream is to open my own clinic one day, GoGlow is me building toward that, one product decision at a time."}
+              {"This project is personal. I grew up sneaking my mom\u2019s skincare products, got obsessed with the medspa world at 16, and spent years visiting clinics across China, Korea, and the US trying to understand how the industry actually works. My long-term dream is to open my own clinic one day, Lluna is me building toward that, one product decision at a time."}
             </p>
           </section>
 
@@ -231,7 +231,7 @@ export default function GoGlowAICaseStudy() {
               />
             </div>
             <p className="text-[15px] text-[#9e9b98] leading-relaxed mt-6">
-              {"Two audiences, one product. On the user side, three client archetypes, the anxious first-timer, the informed repeater, and the optimizer, each with distinct anxieties GoGlow resolves through transparency, memory, and evidence-backed advice. On the business side, clinics dealing with high acquisition cost, rampant churn, rushed consultations, and suboptimal selling, GoGlow answers with basket price lift, dynamic pricing inside the AI flow, and structured client briefs sent before every appointment."}
+              {"Two audiences, one product. On the user side, three client archetypes, the anxious first-timer, the informed repeater, and the optimizer, each with distinct anxieties Lluna resolves through transparency, memory, and evidence-backed advice. On the business side, clinics dealing with high acquisition cost, rampant churn, rushed consultations, and suboptimal selling, Lluna answers with basket price lift, dynamic pricing inside the AI flow, and structured client briefs sent before every appointment."}
             </p>
           </section>
 
@@ -290,7 +290,7 @@ export default function GoGlowAICaseStudy() {
               </div>
 
               <p className="text-[15px] text-[#9e9b98] leading-relaxed mb-4">
-                {"Each clinic has a code. Client enters the code, GoGlow connects to their menu."}
+                {"Each clinic has a code. Client enters the code, Lluna connects to their menu."}
               </p>
               <p className="text-[15px] text-[#9e9b98] leading-relaxed mb-4">
                 {"Recommendations pull from what the clinic actually stocks, at real prices. Combo suggestions are built around their inventory. Dynamic pricing and promotions surface naturally inside the recommendation flow, not on a separate deals page."}
@@ -422,7 +422,7 @@ export default function GoGlowAICaseStudy() {
               B2B2C. Consumer trust becomes clinic distribution.
             </h2>
             <p className="text-[15px] text-[#9e9b98] leading-relaxed mb-4">
-              {"Clinics are not the primary user, they're the distribution channel. Consumer acquisition happens through organic content and community. Clinics adopt because clients arrive asking for GoGlow by name."}
+              {"Clinics are not the primary user, they're the distribution channel. Consumer acquisition happens through organic content and community. Clinics adopt because clients arrive asking for Lluna by name."}
             </p>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 my-8">
@@ -452,13 +452,13 @@ export default function GoGlowAICaseStudy() {
             </p>
 
             <p className="text-[15px] text-[#9e9b98] leading-relaxed mb-4">
-              {"The real challenge of GoGlow wasn't designing the AI, it was embedding growth design into a B2B2C product where clinic revenue goals and client trust are in constant tension. Every feature had to serve both sides without either feeling manipulated."}
+              {"The real challenge of Lluna wasn't designing the AI, it was embedding growth design into a B2B2C product where clinic revenue goals and client trust are in constant tension. Every feature had to serve both sides without either feeling manipulated."}
             </p>
             <p className="text-[15px] text-[#9e9b98] leading-relaxed mb-4">
               {"The combo recommendations had to be clinically grounded enough that clients trusted them, and commercially structured enough that clinics actually adopted them. That balance is harder than it sounds."}
             </p>
             <p className="text-[15px] text-[#9e9b98] leading-relaxed">
-              {"The second thing: AI-native products create the most value when they bridge a gap that only exists offline. The medspa consultation is a physical, high-stakes, time-compressed moment. GoGlow's job isn't to replace that, it's to change who walks through the door and how prepared they are."}
+              {"The second thing: AI-native products create the most value when they bridge a gap that only exists offline. The medspa consultation is a physical, high-stakes, time-compressed moment. Lluna's job isn't to replace that, it's to change who walks through the door and how prepared they are."}
             </p>
           </section>
         </main>

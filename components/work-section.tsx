@@ -91,12 +91,12 @@ const allProjects: ProjectCardProps[] = [
   {
     video: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/goglowcover-xBi7iHjGeFHJ6C5ZkK8Lkh1wV7wJH1.mp4",
     category: "Personal Project · 2026",
-    title: "GoGlow",
+    title: "Lluna",
     description:
-      "GoGlow lives in your medspa, an AI consultant that prepares every client before they sit in the chair.",
+      "Lluna lives in your medspa, an AI consultant that prepares every client before they sit in the chair.",
     tags: [],
-    link: "https://v0-beautyplan.vercel.app/",
-    caseStudyLink: "/case-study/goglow-ai",
+    link: "https://lluna.ai",
+    caseStudyLink: "/case-study/lluna",
     cursorLabel: "Glow up!",
   },
   {
@@ -148,7 +148,7 @@ const sections = [
   {
     index: "01",
     title: "Crafting Products Used by Millions",
-    projectTitles: ["HeyGen Enterprise", "GoGlow", "HeyGen Mobile"],
+    projectTitles: ["HeyGen Enterprise", "Lluna", "HeyGen Mobile"],
   },
   {
     index: "02",
