@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useEffect, useRef } from "react"
-import { Instagram, Linkedin, Mail } from "lucide-react"
+import { Instagram, Linkedin, Mail, Github } from "lucide-react"
 
 /* Custom X (formerly Twitter) icon */
 function XIcon({ size = 20 }: { size?: number }) {
@@ -125,6 +125,7 @@ export default function HeroSection() {
           { href: "https://x.com/kayna_xyz", label: "X", icon: <XIcon size={24} /> },
           { href: "https://www.instagram.com/kaynahuang/", label: "Instagram", icon: <Instagram size={24} strokeWidth={1.5} /> },
           { href: "https://www.linkedin.com/in/kayna-h-77ab8a2a1/", label: "LinkedIn", icon: <Linkedin size={24} strokeWidth={1.5} /> },
+          { href: "https://github.com/kayna-xyz", label: "GitHub", icon: <Github size={24} strokeWidth={1.5} /> },
           { href: "mailto:kh3443@barnard.edu", label: "Email", icon: <Mail size={24} strokeWidth={1.5} /> },
         ].map((item) => (
           <a
