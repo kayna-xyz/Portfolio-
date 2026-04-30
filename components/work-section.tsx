@@ -1,8 +1,6 @@
 "use client"
 
 import Image from "next/image"
-import { useRef } from "react"
-import { useScroll, useTransform, motion } from "framer-motion"
 
 interface ProjectCardProps {
   image?: string
@@ -166,7 +164,7 @@ const sections = [
 
 function SectionHeader({ index, title }: { index: string; title: string }) {
   return (
-    <div className="border-t border-[#dedad6] pt-5 mb-10">
+    <div className="mb-10">
       <p
         className="font-mono text-[#b0aeab] uppercase tracking-wider mb-2"
         style={{ fontSize: "11px" }}
@@ -184,23 +182,10 @@ function SectionHeader({ index, title }: { index: string; title: string }) {
 }
 
 export default function WorkSection() {
-  const sectionRef = useRef<HTMLDivElement>(null)
-
-  const { scrollYProgress } = useScroll({
-    target: sectionRef,
-    offset: ["start end", "end start"],
-  })
-
-  const scale = useTransform(scrollYProgress, [0, 0.3], [0.85, 1])
-  const borderRadius = useTransform(scrollYProgress, [0, 0.3], [32, 0])
-  const opacity = useTransform(scrollYProgress, [0, 0.15], [0.6, 1])
-
   return (
-    <motion.section
+    <section
       id="work"
-      ref={sectionRef}
-      style={{ scale, borderRadius, opacity }}
-      className="w-full bg-[#FDFBFA] pb-16 md:pb-32 origin-center px-5 md:px-[70px]"
+      className="w-full bg-[#FDFBFA] pb-16 md:pb-32 px-5 md:px-[70px]"
     >
       <div className="flex flex-col gap-16 md:gap-20">
         {sections.map((section) => {
@@ -219,6 +204,6 @@ export default function WorkSection() {
           )
         })}
       </div>
-    </motion.section>
+    </section>
   )
 }
