@@ -164,7 +164,7 @@ const sections = [
   {
     index: "01",
     title: "Crafting Products Used by Millions",
-    projectTitles: ["HeyGen", "Lluna", "Flowr", "HeyGen Mobile"],
+    projectTitles: ["HeyGen", "Lluna", "Flowr"],
   },
   {
     index: "02",
