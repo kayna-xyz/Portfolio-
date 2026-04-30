@@ -14,31 +14,46 @@ interface ProjectCardProps {
   link?: string
   caseStudyLink?: string
   cursorLabel?: string
+  comingSoon?: boolean
 }
 
-function ProjectCard({ image, video, category, icon, iconImage, title, description, tags, link, caseStudyLink, cursorLabel }: ProjectCardProps) {
-  const content = (
-    <div className="group cursor-pointer" data-cursor-label={cursorLabel || ""}>
-      <div className="w-full overflow-hidden mb-4 bg-[#e7e5e3]" style={{ borderRadius: 0 }}>
-        {video ? (
-          <video
-            autoPlay
-            loop
-            muted
-            playsInline
-            className="w-full h-auto group-hover:scale-105 transition-transform duration-300"
+function ProjectCard({ image, video, category, title, description, link, caseStudyLink, cursorLabel, comingSoon }: ProjectCardProps) {
+  const media = (
+    <div className="relative w-full overflow-hidden mb-4 bg-[#e7e5e3]" style={{ borderRadius: 0 }}>
+      {video ? (
+        <video
+          autoPlay
+          loop
+          muted
+          playsInline
+          className="w-full h-auto group-hover:scale-105 transition-transform duration-300"
+        >
+          <source src={video} type="video/mp4" />
+        </video>
+      ) : (
+        // eslint-disable-next-line @next/next/no-img-element
+        <img
+          src={image || ""}
+          alt={title}
+          className="w-full h-auto group-hover:scale-105 transition-transform duration-300"
+        />
+      )}
+      {comingSoon && (
+        <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-200 bg-black/10">
+          <span
+            className="font-mono text-[#474747] bg-white/90 px-4 py-1.5 tracking-wider uppercase"
+            style={{ fontSize: "12px" }}
           >
-            <source src={video} type="video/mp4" />
-          </video>
-        ) : (
-          // eslint-disable-next-line @next/next/no-img-element
-          <img
-            src={image || ""}
-            alt={title}
-            className="w-full h-auto group-hover:scale-105 transition-transform duration-300"
-          />
-        )}
-      </div>
+            Coming soon
+          </span>
+        </div>
+      )}
+    </div>
+  )
+
+  const content = (
+    <div className={`group ${comingSoon ? "cursor-default" : "cursor-pointer"}`} data-cursor-label={comingSoon ? "" : (cursorLabel || "")}>
+      {media}
       <p
         className="font-mono text-[#7b7a72] uppercase tracking-wider mb-2"
         style={{ fontSize: "14px" }}
@@ -57,8 +72,9 @@ function ProjectCard({ image, video, category, icon, iconImage, title, descripti
     </div>
   )
 
-  const href = caseStudyLink || link
+  if (comingSoon) return <div>{content}</div>
 
+  const href = caseStudyLink || link
   return (
     <div>
       {href ? (
@@ -98,6 +114,14 @@ const allProjects: ProjectCardProps[] = [
     link: "https://lluna.ai",
     caseStudyLink: "/case-study/lluna",
     cursorLabel: "Glow up!",
+  },
+  {
+    image: "/flowr-cover.png",
+    category: "BCI App",
+    title: "Flowr",
+    description: "A BCI game where your mind is the controller, built on Emotiv.",
+    tags: [],
+    comingSoon: true,
   },
   {
     video: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Screen-studio-7A2NmU2Zac-2kRohHsEeLTG1d4A17ZCN3uaLeyUNr.mp4",
@@ -148,7 +172,7 @@ const sections = [
   {
     index: "01",
     title: "Crafting Products Used by Millions",
-    projectTitles: ["HeyGen Enterprise", "Lluna", "HeyGen Mobile"],
+    projectTitles: ["HeyGen Enterprise", "Lluna", "Flowr", "HeyGen Mobile"],
   },
   {
     index: "02",
