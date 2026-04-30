@@ -79,9 +79,9 @@ export default function HeroSection() {
           className="text-[#5F5F5F] leading-[1.3] tracking-[-0.01em] relative text-[28px] md:text-[40px]"
           style={{ fontFamily: "var(--font-ibm-plex-serif), 'Georgia', serif" }}
         >
-          {"Hi! I'm Kayna, a product designer "}
-          <em style={{ fontFamily: "var(--font-ibm-plex-serif), 'Georgia', serif", fontStyle: "italic", fontWeight: "inherit" }}>{"who vibe codes"}</em>
-          {", AI-native, business-driven, and build things from scratch. Based in Manhattan & SF, studying Cog Sci & Poli Sci at Columbia."}
+          {"Design Engineering"}
+          <br />
+          {"Currently Human-Computer Interaction & Political Science at Columbia"}
         </h1>
 
         {/* Trailing glow ghosts */}
