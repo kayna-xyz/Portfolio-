@@ -174,8 +174,8 @@ function SectionHeader({ index, title }: { index: string; title: string }) {
         {index}
       </p>
       <h2
-        className="font-normal italic text-[#474747]"
-        style={{ fontFamily: "var(--font-ibm-plex-serif), 'Georgia', serif", fontSize: "18px" }}
+        className="font-mono text-[#7b7a72] uppercase tracking-wider"
+        style={{ fontSize: "14px" }}
       >
         {title}
       </h2>
