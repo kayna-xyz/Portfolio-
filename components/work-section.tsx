@@ -99,7 +99,7 @@ const allProjects: ProjectCardProps[] = [
   },
   {
     video: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/goglowcover-xBi7iHjGeFHJ6C5ZkK8Lkh1wV7wJH1.mp4",
-    category: "AI SaaS · 2026",
+    category: "DESIGN ENGINEERING · AI SaaS · 2026",
     title: "Lluna",
     description:
       "Lluna lives in your medspa, an AI consultant that prepares every client before they sit in the chair.",
@@ -110,7 +110,7 @@ const allProjects: ProjectCardProps[] = [
   },
   {
     image: "/flowr-cover.png",
-    category: "BCI APP · 2026",
+    category: "DESIGN ENGINEERING · BCI APP · 2026",
     title: "Flowr",
     description: "A BCI game where your mind is the controller, built on Emotiv, Flowr transforms brain signals into real-time gameplay.",
     tags: [],
