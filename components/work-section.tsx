@@ -19,7 +19,7 @@ interface ProjectCardProps {
 
 function ProjectCard({ image, video, category, title, description, link, caseStudyLink, cursorLabel, comingSoon }: ProjectCardProps) {
   const media = (
-    <div className="relative w-full overflow-hidden mb-4 bg-[#e7e5e3]" style={{ borderRadius: 0 }}>
+    <div className="w-full overflow-hidden mb-4 bg-[#e7e5e3]" style={{ borderRadius: 0 }}>
       {video ? (
         <video
           autoPlay
@@ -38,21 +38,14 @@ function ProjectCard({ image, video, category, title, description, link, caseStu
           className="w-full h-auto group-hover:scale-105 transition-transform duration-300"
         />
       )}
-      {comingSoon && (
-        <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-200 bg-black/10">
-          <span
-            className="font-mono text-[#474747] bg-white/90 px-4 py-1.5 tracking-wider uppercase"
-            style={{ fontSize: "12px" }}
-          >
-            Coming soon
-          </span>
-        </div>
-      )}
     </div>
   )
 
   const content = (
-    <div className={`group ${comingSoon ? "cursor-default" : "cursor-pointer"}`} data-cursor-label={comingSoon ? "" : (cursorLabel || "")}>
+    <div
+      className={`group ${comingSoon ? "cursor-none" : "cursor-pointer"}`}
+      data-cursor-label={comingSoon ? "Coming soon!" : (cursorLabel || "")}
+    >
       {media}
       <p
         className="font-mono text-[#7b7a72] uppercase tracking-wider mb-2"
@@ -96,7 +89,7 @@ const allProjects: ProjectCardProps[] = [
   {
     image: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Frame%20143%20%281%29-26hDGXGiA9uYnC7tecymnhnK53Lmw4.png",
     category: "Product Design · Summer 2025",
-    title: "HeyGen Enterprise",
+    title: "HeyGen",
     description:
       "Architecting a seamless AI video translation and digital avatar experience for enterprise-scale communication.",
     tags: ["PC", "UI/UX"],
@@ -106,7 +99,7 @@ const allProjects: ProjectCardProps[] = [
   },
   {
     video: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/goglowcover-xBi7iHjGeFHJ6C5ZkK8Lkh1wV7wJH1.mp4",
-    category: "Personal Project · 2026",
+    category: "AI SaaS · 2026",
     title: "Lluna",
     description:
       "Lluna lives in your medspa, an AI consultant that prepares every client before they sit in the chair.",
@@ -117,9 +110,9 @@ const allProjects: ProjectCardProps[] = [
   },
   {
     image: "/flowr-cover.png",
-    category: "BCI App",
+    category: "BCI APP · 2026",
     title: "Flowr",
-    description: "A BCI game where your mind is the controller, built on Emotiv.",
+    description: "A BCI game where your mind is the controller, built on Emotiv. Flowr transforms brain signals into real-time gameplay, creating a responsive experience at the intersection of neuroscience and design.",
     tags: [],
     comingSoon: true,
   },
@@ -172,7 +165,7 @@ const sections = [
   {
     index: "01",
     title: "Crafting Products Used by Millions",
-    projectTitles: ["HeyGen Enterprise", "Lluna", "Flowr", "HeyGen Mobile"],
+    projectTitles: ["HeyGen", "Lluna", "Flowr", "HeyGen Mobile"],
   },
   {
     index: "02",
