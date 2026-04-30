@@ -123,7 +123,7 @@ const allProjects: ProjectCardProps[] = [
       "Crafting an on-the-go AI video editing experience that empowers mobile users to capture and realize creative inspiration anywhere.",
     tags: ["iOS", "UI/UX"],
     link: "https://apps.apple.com/us/app/heygen-ai-video-generator/id6711356409",
-    caseStudyLink: "/case-study/heygen-mobile",
+    caseStudyLink: "/case-study/heygen-enterprise#mobile-overview",
     cursorLabel: "It was a good summer",
   },
   {
