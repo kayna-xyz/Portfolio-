@@ -64,8 +64,8 @@ function ProjectCard({ image, video, category, icon, iconImage, title, descripti
   return (
     <div>
       {href ? (
-        <a 
-          href={href} 
+        <a
+          href={href}
           {...(href.startsWith("http") ? { target: "_blank", rel: "noopener noreferrer" } : {})}
           className="no-underline"
         >
@@ -78,13 +78,10 @@ function ProjectCard({ image, video, category, icon, iconImage, title, descripti
   )
 }
 
-
-
-const projects: ProjectCardProps[] = [
-  // 1. HeyGen Enterprise
+const allProjects: ProjectCardProps[] = [
   {
     image: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Frame%20143%20%281%29-26hDGXGiA9uYnC7tecymnhnK53Lmw4.png",
-    category: "Product Design \u00b7 Summer 2025",
+    category: "Product Design · Summer 2025",
     title: "HeyGen Enterprise",
     description:
       "Architecting a seamless AI video translation and digital avatar experience for enterprise-scale communication.",
@@ -93,10 +90,9 @@ const projects: ProjectCardProps[] = [
     caseStudyLink: "/case-study/heygen-enterprise",
     cursorLabel: "Unicorn era",
   },
-  // 2. GoGlow
   {
     video: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/goglowcover-xBi7iHjGeFHJ6C5ZkK8Lkh1wV7wJH1.mp4",
-    category: "Personal Project \u00b7 2026",
+    category: "Personal Project · 2026",
     title: "GoGlow",
     description:
       "GoGlow lives in your medspa, an AI consultant that prepares every client before they sit in the chair.",
@@ -105,10 +101,9 @@ const projects: ProjectCardProps[] = [
     caseStudyLink: "/case-study/goglow-ai",
     cursorLabel: "Glow up!",
   },
-  // 3. HeyGen Mobile
   {
     video: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Screen-studio-7A2NmU2Zac-2kRohHsEeLTG1d4A17ZCN3uaLeyUNr.mp4",
-    category: "Product Design \u00b7 Summer 2025",
+    category: "Product Design · Summer 2025",
     title: "HeyGen Mobile",
     description:
       "Crafting an on-the-go AI video editing experience that empowers mobile users to capture and realize creative inspiration anywhere.",
@@ -117,10 +112,9 @@ const projects: ProjectCardProps[] = [
     caseStudyLink: "/case-study/heygen-mobile",
     cursorLabel: "It was a good summer",
   },
-  // 4. Fillr
   {
     video: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/fillercover-zeW22rOZkdtjGHesbavcfiMpuPpPpX.mp4",
-    category: "PERSONAL PROJECT \u00b7 2026",
+    category: "PERSONAL PROJECT · 2026",
     title: "Fillr",
     description:
       "The fastest filler reference tool for consumers: search any area, get ranked recommendations for FDA authorized fillers in seconds.",
@@ -128,22 +122,9 @@ const projects: ProjectCardProps[] = [
     link: "https://v0-filler-search-tool.vercel.app/",
     cursorLabel: "Fill it up",
   },
-  // 5. Columbia HCI Review
-  {
-    image: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Frame%2011%20%281%29-w47aUzGMwXkxfzVBCpJH92TtNnk0La.png",
-    category: "SCHOOL MAGAZINE \u00b7 2026",
-    title: "Columbia HCI Review",
-    description:
-      "Leading the visual identity and social media design strategy for Columbia's first student-led Human-Computer Interaction publication.",
-    tags: ["Brand Design", "UI/UX", "Engineering"],
-    link: "https://ctpreview.com",
-    caseStudyLink: "/case-study/columbia-hci-review",
-    cursorLabel: "First of its kind",
-  },
-  // 6. Signal-32
   {
     video: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Google%20Chrome-PR77RBIdDfEs1zKLgn0EuDKBOrgdgO.mp4",
-    category: "PERSONAL PROJECT \u00b7 2026",
+    category: "PERSONAL PROJECT · 2026",
     title: "Signal-32",
     description:
       "A statistical tool running with LLM API designed to help angel investors rapidly analyze and benchmark early-stage startups.",
@@ -152,7 +133,55 @@ const projects: ProjectCardProps[] = [
     caseStudyLink: "/case-study/signal-32",
     cursorLabel: "Assess your next invest",
   },
+  {
+    image: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Frame%2011%20%281%29-w47aUzGMwXkxfzVBCpJH92TtNnk0La.png",
+    category: "SCHOOL MAGAZINE · 2026",
+    title: "Columbia HCI Review",
+    description:
+      "Leading the visual identity and social media design strategy for Columbia's first student-led Human-Computer Interaction publication.",
+    tags: ["Brand Design", "UI/UX", "Engineering"],
+    link: "https://ctpreview.com",
+    caseStudyLink: "/case-study/columbia-hci-review",
+    cursorLabel: "First of its kind",
+  },
 ]
+
+const sections = [
+  {
+    index: "01",
+    title: "Crafting Products Used by Millions",
+    projectTitles: ["HeyGen Enterprise", "GoGlow", "HeyGen Mobile"],
+  },
+  {
+    index: "02",
+    title: "Building Interesting Tools",
+    projectTitles: ["Fillr", "Signal-32"],
+  },
+  {
+    index: "03",
+    title: "Exploring Zen Aesthetics & Brand Design",
+    projectTitles: ["Columbia HCI Review"],
+  },
+]
+
+function SectionHeader({ index, title }: { index: string; title: string }) {
+  return (
+    <div className="border-t border-[#dedad6] pt-5 mb-10">
+      <p
+        className="font-mono text-[#b0aeab] uppercase tracking-wider mb-2"
+        style={{ fontSize: "11px" }}
+      >
+        {index}
+      </p>
+      <h2
+        className="font-normal italic text-[#474747]"
+        style={{ fontFamily: "var(--font-ibm-plex-serif), 'Georgia', serif", fontSize: "18px" }}
+      >
+        {title}
+      </h2>
+    </div>
+  )
+}
 
 export default function WorkSection() {
   const sectionRef = useRef<HTMLDivElement>(null)
@@ -170,21 +199,26 @@ export default function WorkSection() {
     <motion.section
       id="work"
       ref={sectionRef}
-      style={{
-        scale,
-        borderRadius,
-        opacity,
-      }}
+      style={{ scale, borderRadius, opacity }}
       className="w-full bg-[#FDFBFA] pb-16 md:pb-32 origin-center px-5 md:px-[70px]"
     >
-      {/* Projects grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-16">
-        {projects.map((project) => (
-          <ProjectCard key={project.title} {...project} />
-        ))}
+      <div className="flex flex-col gap-16 md:gap-20">
+        {sections.map((section) => {
+          const projects = section.projectTitles.map(
+            (t) => allProjects.find((p) => p.title === t)!
+          )
+          return (
+            <div key={section.index}>
+              <SectionHeader index={section.index} title={section.title} />
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-16">
+                {projects.map((project) => (
+                  <ProjectCard key={project.title} {...project} />
+                ))}
+              </div>
+            </div>
+          )
+        })}
       </div>
-
-
     </motion.section>
   )
 }
