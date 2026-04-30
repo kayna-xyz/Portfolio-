@@ -1,0 +1,296 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@font-face {
+  font-family: 'IntrudingCat';
+  src: url('/fonts/IntrudingCat.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+}
+
+@layer base {
+  :root {
+    --background: 25 20% 99%;
+    --foreground: 0 0% 7%;
+    --card: 25 20% 99%;
+    --card-foreground: 0 0% 7%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 0 0% 7%;
+    --primary: 0 0% 7%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 30 11% 96%;
+    --secondary-foreground: 0 0% 7%;
+    --muted: 30 11% 96%;
+    --muted-foreground: 0 0% 45%;
+    --accent: 195 86% 49%;
+    --accent-foreground: 0 0% 100%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 30 6% 89%;
+    --input: 30 6% 89%;
+    --ring: 0 0% 7%;
+    --chart-1: 12 76% 61%;
+    --chart-2: 173 58% 39%;
+    --chart-3: 197 37% 24%;
+    --chart-4: 43 74% 66%;
+    --chart-5: 27 87% 67%;
+    --radius: 0.5rem;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+    cursor: none;
+  }
+  body {
+    @apply bg-background text-foreground relative;
+  }
+}
+
+/* Custom cursor - default state: 20x20 frosted glass circle */
+.custom-cursor {
+  position: fixed;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background-color: transparent;
+  border: 0.8px solid #ECECEC;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+  pointer-events: none;
+  z-index: 9999;
+  transform: translate(-50%, -50%);
+  transition: width 0.25s ease, height 0.25s ease, border-radius 0.25s ease, padding 0.25s ease, opacity 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+/* Blur layer behind the fill */
+.custom-cursor::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  backdrop-filter: blur(80px);
+  -webkit-backdrop-filter: blur(80px);
+  z-index: 0;
+}
+
+/* Fill layer on top of the blur */
+.custom-cursor::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background-color: #EAEAEA;
+  z-index: 1;
+}
+
+/* Cursor label text */
+.custom-cursor .cursor-label {
+  font-family: var(--font-jetbrains-mono), monospace;
+  font-size: 16px;
+  color: rgba(0, 0, 0, 0.6);
+  white-space: nowrap;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+  line-height: 1;
+  position: relative;
+  z-index: 2;
+}
+
+/* Cursor with label - pill shape, height stays 20px feeling */
+.custom-cursor.has-label {
+  width: auto;
+  height: 20px;
+  border-radius: 999px;
+  padding: 12px 16px;
+}
+
+.custom-cursor.has-label .cursor-label {
+  opacity: 1;
+}
+
+/* Page flip animation */
+.page-flip-container {
+  perspective: 2000px;
+}
+
+.page-flip {
+  transform-origin: bottom;
+  transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+  transform-style: preserve-3d;
+  backface-visibility: hidden;
+}
+
+.page-flip.flipped {
+  transform: rotateX(-180deg);
+}
+
+/* Eye opening reveal effect - starry background */
+@keyframes eyeOpen {
+  0% {
+    clip-path: circle(0% at 50% 50%);
+  }
+  100% {
+    clip-path: circle(150% at 50% 50%);
+  }
+}
+
+.animate-eye-open {
+  animation: eyeOpen 1.5s cubic-bezier(0.65, 0, 0.35, 1) forwards;
+}
+
+/* Entry animations - stickers and polaroids flying in from different directions */
+@keyframes flyInFromTopLeft {
+  0% {
+    opacity: 0;
+    transform: translate(-150vw, -150vh) rotate(-360deg) scale(0.2);
+  }
+  100% {
+    opacity: 1;
+    transform: translate(0, 0) rotate(0deg) scale(1);
+  }
+}
+
+@keyframes flyInFromTopRight {
+  0% {
+    opacity: 0;
+    transform: translate(150vw, -150vh) rotate(360deg) scale(0.2);
+  }
+  100% {
+    opacity: 1;
+    transform: translate(0, 0) rotate(0deg) scale(1);
+  }
+}
+
+@keyframes flyInFromBottomLeft {
+  0% {
+    opacity: 0;
+    transform: translate(-150vw, 150vh) rotate(-360deg) scale(0.2);
+  }
+  100% {
+    opacity: 1;
+    transform: translate(0, 0) rotate(0deg) scale(1);
+  }
+}
+
+@keyframes flyInFromBottomRight {
+  0% {
+    opacity: 0;
+    transform: translate(150vw, 150vh) rotate(360deg) scale(0.2);
+  }
+  100% {
+    opacity: 1;
+    transform: translate(0, 0) rotate(0deg) scale(1);
+  }
+}
+
+@keyframes fadeInUp {
+  0% {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+/* Bot intro animation - from collapsed to expanded */
+@keyframes botIntro {
+  0% {
+    transform: translateY(calc(100% + 20px));
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+
+.animate-fly-in-1 {
+  animation: flyInFromTopLeft 2s cubic-bezier(0.34, 1.56, 0.64, 1) 1.5s forwards;
+  opacity: 0;
+}
+
+.animate-fly-in-2 {
+  animation: flyInFromTopRight 2s cubic-bezier(0.34, 1.56, 0.64, 1) 1.8s forwards;
+  opacity: 0;
+}
+
+.animate-fly-in-3 {
+  animation: flyInFromBottomLeft 2s cubic-bezier(0.34, 1.56, 0.64, 1) 2.1s forwards;
+  opacity: 0;
+}
+
+.animate-fly-in-4 {
+  animation: flyInFromBottomRight 2s cubic-bezier(0.34, 1.56, 0.64, 1) 2.4s forwards;
+  opacity: 0;
+}
+
+.animate-fade-in-title {
+  animation: fadeInUp 1s ease-out 2.8s forwards;
+  opacity: 0;
+}
+
+.animate-fade-in-icons {
+  animation: fadeIn 0.8s ease-out 3.6s forwards;
+  opacity: 0;
+}
+
+/* Bot intro animation - no opacity change to preserve backdrop-filter */
+.animate-bot-intro {
+  animation: botIntro 1s cubic-bezier(0.34, 1.56, 0.64, 1) 4.2s both;
+  transform: translateY(calc(100% + 20px));
+}
+
+/* Fog clearing / cloud dissipating animation */
+@keyframes fogClear {
+  0% {
+    filter: blur(20px);
+    opacity: 0;
+  }
+  40% {
+    filter: blur(8px);
+    opacity: 0.6;
+  }
+  100% {
+    filter: blur(0px);
+    opacity: 1;
+  }
+}
+
+.animate-fog-clear {
+  animation: fogClear 2s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+  opacity: 0;
+  filter: blur(20px);
+}
+
+.animate-fog-clear-delay {
+  animation: fogClear 2s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.4s forwards;
+  opacity: 0;
+  filter: blur(20px);
+}
+
+/* Hide the custom cursor circle when hovering the intro section (glow replaces it) */
+.hide-custom-cursor .custom-cursor {
+  opacity: 0 !important;
+}
