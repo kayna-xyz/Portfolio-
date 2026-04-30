@@ -79,9 +79,7 @@ export default function HeroSection() {
           className="text-[#5F5F5F] leading-[1.3] tracking-[-0.01em] relative text-[28px] md:text-[40px]"
           style={{ fontFamily: "var(--font-ibm-plex-serif), 'Georgia', serif" }}
         >
-          {"Design Engineering"}
-          <br />
-          {"Currently Human-Computer Interaction & Political Science at Columbia"}
+          {"Crafting AI-powered products, experimental tools, and systems at scale. Currently studying Human-Computer Interaction & Political Science at Columbia."}
         </h1>
 
         {/* Trailing glow ghosts */}
