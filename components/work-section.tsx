@@ -112,7 +112,7 @@ const allProjects: ProjectCardProps[] = [
     image: "/flowr-cover.png",
     category: "BCI APP · 2026",
     title: "Flowr",
-    description: "A BCI game where your mind is the controller, built on Emotiv. Flowr transforms brain signals into real-time gameplay, creating a responsive experience at the intersection of neuroscience and design.",
+    description: "A BCI game where your mind is the controller, built on Emotiv, Flowr transforms brain signals into real-time gameplay.",
     tags: [],
     comingSoon: true,
   },
