@@ -39,6 +39,54 @@ export default function ExperiencePage() {
           transform: isLoaded ? "translateY(0)" : "translateY(30px)",
         }}
       >
+        {/* ===== Intro ===== */}
+        <section className="mb-16">
+          <h1
+            className="font-serif text-[28px] md:text-[36px] text-[#474747] mb-6"
+            style={{ fontStyle: "italic" }}
+          >
+            About me
+          </h1>
+          <p className="text-[15px] text-[#6b6966] leading-relaxed mb-4">
+            {"Hi, I'm Kayna! I'm currently a sophomore studying Cognitive Science & Political Science at Barnard College of Columbia University."}
+          </p>
+          <p className="text-[15px] text-[#6b6966] leading-relaxed mb-4">
+            {"My favorite restaurant in NYC is Samwoojung, and you can check out my 2025–26 reading list "}
+            <a
+              href="https://www.notion.so/Reading-List-308dd3c14a8e808dbff4db060e76c2ea"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-[#21A5D5] hover:text-[#1a8ab0] transition-colors underline"
+            >
+              here
+            </a>
+            .
+          </p>
+          <p className="text-[15px] text-[#6b6966] leading-relaxed mb-2">
+            Outside of design I{"'"}m:
+          </p>
+          <ul className="text-[15px] text-[#6b6966] leading-relaxed space-y-1 ml-5 list-disc mb-4">
+            <li>Starting most weekday mornings with a matcha from Joe{"'"}s Coffee</li>
+            <li>Drawing & Chinese Calligraphy, skiing, poker nights with friends</li>
+          </ul>
+          <p className="text-[15px] text-[#6b6966] leading-relaxed">
+            Feel free to reach out via{" "}
+            <a
+              href="mailto:kh3443@barnard.edu"
+              className="text-[#21A5D5] hover:text-[#1a8ab0] transition-colors underline"
+            >
+              kh3443@barnard.edu
+            </a>
+            {" or "}
+            <a
+              href="mailto:kh3443@columbia.edu"
+              className="text-[#21A5D5] hover:text-[#1a8ab0] transition-colors underline"
+            >
+              kh3443@columbia.edu
+            </a>
+          </p>
+        </section>
+
         {/* ===== Writing ===== */}
         <section className="mb-16">
           <h2
