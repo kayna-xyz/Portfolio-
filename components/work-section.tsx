@@ -99,18 +99,17 @@ const allProjects: ProjectCardProps[] = [
   },
   {
     video: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/goglowcover-xBi7iHjGeFHJ6C5ZkK8Lkh1wV7wJH1.mp4",
-    category: "DESIGN ENGINEERING · AI SaaS · 2026",
+    category: "FULL STACK · AI SaaS · 2026",
     title: "Lluna",
     description:
-      "Lluna lives in your medspa, an AI consultant that prepares every client before they sit in the chair.",
+      "An AI vertical SaaS for medical spas — turning every client touchpoint into higher spend, stronger retention, and measurable revenue growth.",
     tags: [],
     link: "https://lluna.ai",
-    caseStudyLink: "/case-study/lluna",
     cursorLabel: "Glow up!",
   },
   {
     image: "/flowr-cover.png",
-    category: "DESIGN ENGINEERING · BCI APP · 2026",
+    category: "FULL STACK · BCI APP · 2026",
     title: "Flowr",
     description: "A BCI game where your mind is the controller, built on Emotiv, Flowr transforms brain signals into real-time gameplay.",
     tags: [],
