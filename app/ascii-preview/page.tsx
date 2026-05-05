@@ -104,73 +104,94 @@ function renderFrame(
   const sCtx = sample.getContext('2d', { willReadFrequently: true })
   if (!ctx || !sCtx) return
 
-  // Measure char size from live canvas
-  ctx.font = `${p.fontSize}px "${p.fontFamily}", "Courier New", monospace`
-  const charW = ctx.measureText('M').width
-  const charH = p.fontSize * 1.35
-
   const cropTop    = Math.max(0, Math.min(p.cropTop, H - 20))
   const cropBottom = Math.max(0, Math.min(p.cropBottom, H - cropTop - 10))
   const cropH      = H - cropTop - cropBottom
 
-  const charAspect = charH / charW
-  const cols       = p.cols
-  const rows       = Math.max(1, Math.floor(cropH / ((W / cols) * charAspect)))
+  // Logical char dimensions (at the configured font size)
+  ctx.font = `${p.fontSize}px "${p.fontFamily}", "Courier New", monospace`
+  const charW = ctx.measureText('M').width
+  const charH = p.fontSize * 1.35
 
-  const outW = Math.round(cols * charW)
-  const outH = Math.round(rows * charH)
+  const cols = p.cols
+  const rows = Math.max(1, Math.floor(cropH / ((W / cols) * (charH / charW))))
 
-  if (canvas.width !== outW || canvas.height !== outH) {
-    canvas.width  = outW
-    canvas.height = outH
+  // Logical canvas size (the "natural" coordinate space we draw in)
+  const logW = cols * charW
+  const logH = rows * charH
+
+  // Physical pixel size = CSS display width × DPR (1:1 pixel mapping → crisp)
+  const dpr   = window.devicePixelRatio || 1
+  const cssW  = Math.max(1, canvas.offsetWidth || logW)
+  const cssH  = cssW * (logH / logW)
+  const physW = Math.round(cssW * dpr)
+  const physH = Math.round(cssH * dpr)
+
+  // Resize canvas backing store only when dimensions change
+  if (canvas.width !== physW || canvas.height !== physH) {
+    canvas.width  = physW
+    canvas.height = physH
   }
+  // Keep CSS height in sync so aspect ratio is preserved
+  canvas.style.height = `${cssH}px`
+
+  // Scale transform: logical coords → physical pixels (accounts for DPR + display scaling)
+  const scale = physW / logW
+  ctx.setTransform(scale, 0, 0, scale, 0, 0)
+
+  // Sample video at char-grid resolution (tiny canvas, very fast)
   if (sample.width !== cols || sample.height !== rows) {
     sample.width  = cols
     sample.height = rows
   }
-
   sCtx.drawImage(video, 0, cropTop, W, cropH, 0, 0, cols, rows)
   const { data } = sCtx.getImageData(0, 0, cols, rows)
 
+  // Background (logical coords)
   const { fg, bg } = colors(p)
   ctx.fillStyle = bg
-  ctx.fillRect(0, 0, outW, outH)
-  ctx.font          = `${p.fontSize}px "${p.fontFamily}", "Courier New", monospace`
-  ctx.textBaseline  = 'top'
-  ctx.fillStyle     = fg
+  ctx.fillRect(0, 0, logW, logH)
+
+  // Text (logical coords — scale makes each char physically crisp)
+  ctx.font         = `${p.fontSize}px "${p.fontFamily}", "Courier New", monospace`
+  ctx.textBaseline = 'top'
+  ctx.fillStyle    = fg
 
   const chars = charString(p)
   const n     = chars.length
 
-  // Row-by-row fillText (fast: only `rows` draw calls)
   for (let row = 0; row < rows; row++) {
     let line = ''
     for (let col = 0; col < cols; col++) {
       const i    = (row * cols + col) * 4
       const luma = 0.299 * data[i] + 0.587 * data[i + 1] + 0.114 * data[i + 2]
-      const adj  = adjustLuma(luma, p)
-      line      += chars[Math.min(n - 1, Math.floor(adj / 255 * n))]
+      line      += chars[Math.min(n - 1, Math.floor(adjustLuma(luma, p) / 255 * n))]
     }
     ctx.fillText(line, 0, row * charH)
   }
 
-  // Effects
+  // Effects — switch to physical pixel space for pixel-exact overlay
+  ctx.setTransform(1, 0, 0, 1, 0, 0)
+
   if (p.scanlines) {
     ctx.fillStyle = 'rgba(0,0,0,0.4)'
-    for (let y = 0; y < outH; y += 4) ctx.fillRect(0, y, outW, 1)
+    for (let y = 0; y < physH; y += Math.round(4 * dpr)) {
+      ctx.fillRect(0, y, physW, Math.max(1, Math.round(dpr)))
+    }
   }
   if (p.crtEffect) {
-    const g = ctx.createRadialGradient(outW/2, outH/2, 0, outW/2, outH/2, Math.max(outW, outH) * 0.75)
+    const g = ctx.createRadialGradient(physW/2, physH/2, 0, physW/2, physH/2, Math.max(physW, physH) * 0.75)
     g.addColorStop(0,   'rgba(0,0,0,0)')
     g.addColorStop(0.6, 'rgba(0,0,0,0)')
     g.addColorStop(1,   'rgba(0,0,0,0.55)')
     ctx.fillStyle = g
-    ctx.fillRect(0, 0, outW, outH)
+    ctx.fillRect(0, 0, physW, physH)
   }
   if (p.glitchNoise) {
+    const px = Math.max(1, Math.round(dpr))
     for (let i = 0; i < cols * rows * 0.015; i++) {
       ctx.fillStyle = Math.random() > 0.5 ? fg : bg
-      ctx.fillRect(Math.random() * outW, Math.random() * outH, 1, 1)
+      ctx.fillRect(Math.random() * physW, Math.random() * physH, px, px)
     }
   }
 }
@@ -385,7 +406,7 @@ export default function AsciiEditorPage() {
               Live canvas preview · {stats ? `${stats.cols}×${stats.rows} chars → ${stats.outW}×${stats.outH}px` : 'load video to preview'}
             </span>
             <div className="border border-neutral-200 rounded bg-black overflow-hidden">
-              <canvas ref={canvasRef} className="w-full h-auto block" style={{ imageRendering: 'pixelated' }} />
+              <canvas ref={canvasRef} className="w-full block" />
             </div>
             <canvas ref={sampleRef} className="hidden" />
           </div>
