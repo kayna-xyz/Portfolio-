@@ -179,11 +179,11 @@ function renderFrame(
 function Sec({ title, children, defaultOpen = true }: { title: string; children: React.ReactNode; defaultOpen?: boolean }) {
   const [open, setOpen] = useState(defaultOpen)
   return (
-    <div className="border-b border-neutral-800">
+    <div className="border-b border-neutral-200">
       <button onClick={() => setOpen(o => !o)}
-        className="w-full flex justify-between items-center py-2.5 px-1 text-xs uppercase tracking-widest text-neutral-400 hover:text-neutral-200 transition">
+        className="w-full flex justify-between items-center py-2.5 px-1 text-xs uppercase tracking-widest text-neutral-500 hover:text-neutral-800 transition">
         {title}
-        <span className="text-neutral-600">{open ? '▲' : '▼'}</span>
+        <span className="text-neutral-400">{open ? '▲' : '▼'}</span>
       </button>
       {open && <div className="pb-3 px-1 flex flex-col gap-2.5">{children}</div>}
     </div>
@@ -196,12 +196,12 @@ function Slider({ label, value, min, max, step = 1, onChange }: {
   return (
     <div className="flex flex-col gap-1">
       <div className="flex justify-between items-center">
-        <span className="text-neutral-400 text-xs">{label}</span>
-        <span className="text-neutral-200 text-xs font-mono w-12 text-right">{value}</span>
+        <span className="text-neutral-500 text-xs">{label}</span>
+        <span className="text-neutral-800 text-xs font-mono w-12 text-right">{value}</span>
       </div>
       <input type="range" min={min} max={max} step={step} value={value}
         onChange={e => onChange(parseFloat(e.target.value))}
-        className="w-full h-1 rounded appearance-none bg-neutral-700 accent-white cursor-pointer" />
+        className="w-full h-1 rounded appearance-none bg-neutral-300 accent-neutral-800 cursor-pointer" />
     </div>
   )
 }
@@ -210,10 +210,10 @@ function Toggle({ label, checked, onChange }: { label: string; checked: boolean;
   return (
     <label className="flex items-center gap-2.5 cursor-pointer select-none">
       <div onClick={() => onChange(!checked)}
-        className={`w-8 h-4 rounded-full transition-colors ${checked ? 'bg-white' : 'bg-neutral-700'} relative flex-shrink-0 cursor-pointer`}>
-        <div className={`absolute top-0.5 w-3 h-3 rounded-full bg-black transition-transform ${checked ? 'translate-x-4' : 'translate-x-0.5'}`} />
+        className={`w-8 h-4 rounded-full transition-colors ${checked ? 'bg-neutral-800' : 'bg-neutral-300'} relative flex-shrink-0 cursor-pointer`}>
+        <div className={`absolute top-0.5 w-3 h-3 rounded-full bg-white transition-transform ${checked ? 'translate-x-4' : 'translate-x-0.5'}`} />
       </div>
-      <span className="text-neutral-300 text-xs">{label}</span>
+      <span className="text-neutral-700 text-xs">{label}</span>
     </label>
   )
 }
@@ -225,7 +225,7 @@ function ChipGroup<T extends string>({ options, value, onChange }: {
     <div className="flex flex-wrap gap-1">
       {options.map(o => (
         <button key={o} onClick={() => onChange(o)}
-          className={`px-2 py-0.5 text-xs rounded transition ${value === o ? 'bg-white text-black' : 'bg-neutral-800 text-neutral-400 hover:bg-neutral-700'}`}>
+          className={`px-2 py-0.5 text-xs rounded transition ${value === o ? 'bg-neutral-900 text-white' : 'bg-neutral-100 text-neutral-600 hover:bg-neutral-200'}`}>
           {o}
         </button>
       ))}
@@ -332,16 +332,16 @@ export default function AsciiEditorPage() {
   }
 
   return (
-    <main className="min-h-screen bg-[#080808] text-neutral-100 font-mono">
+    <main className="min-h-screen bg-white text-neutral-900 font-mono">
 
       {/* ── Header ── */}
-      <div className="border-b border-neutral-900 px-5 py-3 flex items-center justify-between">
+      <div className="border-b border-neutral-200 px-5 py-3 flex items-center justify-between">
         <div>
-          <h1 className="text-sm font-bold tracking-wider uppercase">ASCII Video Editor</h1>
-          <p className="text-neutral-600 text-xs mt-0.5">real-time preview · parameterised render · export MP4</p>
+          <h1 className="text-sm font-bold tracking-wider uppercase text-neutral-900">ASCII Video Editor</h1>
+          <p className="text-neutral-500 text-xs mt-0.5">real-time preview · parameterised render · export MP4</p>
         </div>
         <button onClick={() => { setP(DEFAULT); setDone(false); setRErr(null) }}
-          className="text-xs text-neutral-500 hover:text-neutral-200 border border-neutral-800 px-3 py-1.5 rounded transition">
+          className="text-xs text-neutral-500 hover:text-neutral-800 border border-neutral-300 px-3 py-1.5 rounded transition">
           Reset defaults
         </button>
       </div>
@@ -355,7 +355,7 @@ export default function AsciiEditorPage() {
           <div className="flex flex-wrap gap-2">
             {(Object.keys(PRESETS) as PresetName[]).map(name => (
               <button key={name} onClick={() => applyPreset(name)}
-                className="text-xs px-3 py-1.5 rounded border border-neutral-700 hover:bg-neutral-800 transition text-neutral-300">
+                className="text-xs px-3 py-1.5 rounded border border-neutral-300 hover:bg-neutral-100 transition text-neutral-700">
                 {name}
               </button>
             ))}
@@ -370,12 +370,12 @@ export default function AsciiEditorPage() {
                   const v = e.currentTarget
                   setVidInfo({ w: v.videoWidth, h: v.videoHeight })
                 }}
-                className="w-full rounded border border-neutral-800 bg-black" />
+                className="w-full rounded border border-neutral-200 bg-black" />
             </div>
             <div className="flex flex-col gap-1.5">
               <span className="text-[10px] tracking-widest text-neutral-500 uppercase">Previous render</span>
               <video ref={asciiRef} src="/output/ascii-video.mp4" controls loop playsInline
-                className="w-full rounded border border-neutral-800 bg-black" />
+                className="w-full rounded border border-neutral-200 bg-black" />
             </div>
           </div>
 
@@ -384,7 +384,7 @@ export default function AsciiEditorPage() {
             <span className="text-[10px] tracking-widest text-neutral-500 uppercase">
               Live canvas preview · {stats ? `${stats.cols}×${stats.rows} chars → ${stats.outW}×${stats.outH}px` : 'load video to preview'}
             </span>
-            <div className="border border-neutral-800 rounded bg-black overflow-hidden">
+            <div className="border border-neutral-200 rounded bg-black overflow-hidden">
               <canvas ref={canvasRef} className="w-full h-auto block" style={{ imageRendering: 'pixelated' }} />
             </div>
             <canvas ref={sampleRef} className="hidden" />
@@ -392,14 +392,14 @@ export default function AsciiEditorPage() {
 
           {/* Playback controls */}
           <div className="flex flex-wrap gap-2 items-center">
-            <button onClick={syncPlay}  className="px-3 py-1.5 text-xs bg-neutral-800 hover:bg-neutral-700 rounded transition">▶ Play both</button>
-            <button onClick={syncPause} className="px-3 py-1.5 text-xs bg-neutral-800 hover:bg-neutral-700 rounded transition">⏸ Pause both</button>
+            <button onClick={syncPlay}  className="px-3 py-1.5 text-xs bg-neutral-900 text-white hover:bg-neutral-700 rounded transition">▶ Play both</button>
+            <button onClick={syncPause} className="px-3 py-1.5 text-xs bg-neutral-100 hover:bg-neutral-200 text-neutral-800 rounded transition border border-neutral-300">⏸ Pause both</button>
             <label className="flex items-center gap-1.5 text-xs text-neutral-500 cursor-pointer select-none">
-              <input type="checkbox" checked={synced} onChange={e => setSynced(e.target.checked)} className="accent-white" />
+              <input type="checkbox" checked={synced} onChange={e => setSynced(e.target.checked)} className="accent-neutral-800" />
               Lock timelines
             </label>
             {vidInfo && (
-              <span className="text-neutral-700 text-xs ml-auto">
+              <span className="text-neutral-400 text-xs ml-auto">
                 src {vidInfo.w}×{vidInfo.h} · crop {p.cropTop}/{p.cropBottom}px · fps {p.targetFps ?? 'auto'}
               </span>
             )}
@@ -407,7 +407,7 @@ export default function AsciiEditorPage() {
         </div>
 
         {/* ── Right: control panel ── */}
-        <aside className="lg:w-72 xl:w-80 border-l border-neutral-900 overflow-y-auto lg:h-screen lg:sticky lg:top-0">
+        <aside className="lg:w-72 xl:w-80 border-l border-neutral-200 overflow-y-auto lg:h-screen lg:sticky lg:top-0 bg-neutral-50">
           <div className="p-4 flex flex-col gap-0">
 
             {/* Character Set */}
@@ -420,21 +420,21 @@ export default function AsciiEditorPage() {
                 <textarea rows={2} value={p.customChars}
                   onChange={e => set('customChars', e.target.value)}
                   placeholder="Enter characters (sparse → dense)"
-                  className="w-full bg-neutral-900 border border-neutral-700 rounded px-2 py-1 text-xs text-neutral-200 resize-none font-mono" />
+                  className="w-full bg-white border border-neutral-300 rounded px-2 py-1 text-xs text-neutral-800 resize-none font-mono" />
               )}
-              <div className="text-neutral-600 text-[10px] break-all leading-relaxed">
+              <div className="text-neutral-500 text-[10px] break-all leading-relaxed">
                 {charString(p).slice(0, 60)}{charString(p).length > 60 ? '…' : ''}
               </div>
             </Sec>
 
             {/* Grid & Font */}
             <Sec title="Grid & Font">
-              <Slider label="Columns" value={p.cols} min={60} max={240} onChange={v => set('cols', v)} />
+              <Slider label="Columns" value={p.cols} min={60} max={400} onChange={v => set('cols', v)} />
               <Slider label="Font size (px)" value={p.fontSize} min={6} max={20} onChange={v => set('fontSize', v)} />
               <div className="flex flex-col gap-1">
-                <span className="text-neutral-400 text-xs">Font family</span>
+                <span className="text-neutral-500 text-xs">Font family</span>
                 <select value={p.fontFamily} onChange={e => set('fontFamily', e.target.value)}
-                  className="bg-neutral-900 border border-neutral-700 rounded px-2 py-1 text-xs text-neutral-200">
+                  className="bg-white border border-neutral-300 rounded px-2 py-1 text-xs text-neutral-800">
                   {['Courier New', 'monospace', 'Menlo', 'Monaco', 'Consolas', 'Lucida Console'].map(f => (
                     <option key={f} value={f}>{f}</option>
                   ))}
@@ -462,21 +462,21 @@ export default function AsciiEditorPage() {
                   <label className="flex flex-col gap-1 flex-1">
                     <span className="text-neutral-500 text-[10px]">Foreground</span>
                     <input type="color" value={p.fgColor} onChange={e => set('fgColor', e.target.value)}
-                      className="w-full h-8 rounded cursor-pointer border border-neutral-700" />
+                      className="w-full h-8 rounded cursor-pointer border border-neutral-300" />
                   </label>
                   <label className="flex flex-col gap-1 flex-1">
                     <span className="text-neutral-500 text-[10px]">Background</span>
                     <input type="color" value={p.bgColor} onChange={e => set('bgColor', e.target.value)}
-                      className="w-full h-8 rounded cursor-pointer border border-neutral-700" />
+                      className="w-full h-8 rounded cursor-pointer border border-neutral-300" />
                   </label>
                 </div>
               )}
               {p.colorMode !== 'custom' && (
                 <div className="flex gap-2 mt-1">
-                  <div className="w-4 h-4 rounded-sm border border-neutral-700" style={{ background: colors(p).fg }} />
-                  <span className="text-neutral-600 text-[10px]">{colors(p).fg}</span>
-                  <div className="w-4 h-4 rounded-sm border border-neutral-700" style={{ background: colors(p).bg }} />
-                  <span className="text-neutral-600 text-[10px]">{colors(p).bg}</span>
+                  <div className="w-4 h-4 rounded-sm border border-neutral-300" style={{ background: colors(p).fg }} />
+                  <span className="text-neutral-500 text-[10px]">{colors(p).fg}</span>
+                  <div className="w-4 h-4 rounded-sm border border-neutral-300" style={{ background: colors(p).bg }} />
+                  <span className="text-neutral-500 text-[10px]">{colors(p).bg}</span>
                 </div>
               )}
             </Sec>
@@ -498,31 +498,31 @@ export default function AsciiEditorPage() {
             <Sec title="Export Settings" defaultOpen={false}>
               <Toggle label="Keep audio" checked={p.keepAudio} onChange={v => set('keepAudio', v)} />
               <div className="flex flex-col gap-1">
-                <span className="text-neutral-400 text-xs">Target FPS (blank = auto)</span>
+                <span className="text-neutral-500 text-xs">Target FPS (blank = auto)</span>
                 <input type="number" min={1} max={60} placeholder="auto"
                   value={p.targetFps ?? ''} onChange={e => set('targetFps', e.target.value ? parseInt(e.target.value) : null)}
-                  className="bg-neutral-900 border border-neutral-700 rounded px-2 py-1 text-xs text-neutral-200 w-full" />
+                  className="bg-white border border-neutral-300 rounded px-2 py-1 text-xs text-neutral-800 w-full" />
               </div>
               <div className="flex flex-col gap-1.5 pt-1">
-                <span className="text-neutral-500 text-[10px] uppercase tracking-wider">Slow-motion segment</span>
+                <span className="text-neutral-400 text-[10px] uppercase tracking-wider">Slow-motion segment</span>
                 <div className="grid grid-cols-3 gap-1.5">
                   <div className="flex flex-col gap-0.5">
-                    <span className="text-neutral-500 text-[10px]">Start (s)</span>
+                    <span className="text-neutral-400 text-[10px]">Start (s)</span>
                     <input type="number" min={0} max={60} step={0.5} value={p.slowmoStart ?? ''}
                       onChange={e => set('slowmoStart', e.target.value ? parseFloat(e.target.value) : null)}
-                      className="bg-neutral-900 border border-neutral-700 rounded px-1.5 py-1 text-xs text-neutral-200 w-full" />
+                      className="bg-white border border-neutral-300 rounded px-1.5 py-1 text-xs text-neutral-800 w-full" />
                   </div>
                   <div className="flex flex-col gap-0.5">
-                    <span className="text-neutral-500 text-[10px]">End (s)</span>
+                    <span className="text-neutral-400 text-[10px]">End (s)</span>
                     <input type="number" min={0} max={60} step={0.5} value={p.slowmoEnd ?? ''}
                       onChange={e => set('slowmoEnd', e.target.value ? parseFloat(e.target.value) : null)}
-                      className="bg-neutral-900 border border-neutral-700 rounded px-1.5 py-1 text-xs text-neutral-200 w-full" />
+                      className="bg-white border border-neutral-300 rounded px-1.5 py-1 text-xs text-neutral-800 w-full" />
                   </div>
                   <div className="flex flex-col gap-0.5">
-                    <span className="text-neutral-500 text-[10px]">Factor</span>
+                    <span className="text-neutral-400 text-[10px]">Factor</span>
                     <input type="number" min={1} max={8} step={1} value={p.slowmoFactor}
                       onChange={e => set('slowmoFactor', parseInt(e.target.value) || 1)}
-                      className="bg-neutral-900 border border-neutral-700 rounded px-1.5 py-1 text-xs text-neutral-200 w-full" />
+                      className="bg-white border border-neutral-300 rounded px-1.5 py-1 text-xs text-neutral-800 w-full" />
                   </div>
                 </div>
               </div>
@@ -532,14 +532,14 @@ export default function AsciiEditorPage() {
             <div className="pt-4 flex flex-col gap-3 px-1 pb-6">
               <button onClick={startRender} disabled={rendering}
                 className={`w-full py-2.5 rounded text-sm font-medium transition ${
-                  rendering ? 'bg-neutral-700 text-neutral-400 cursor-wait'
-                  : 'bg-white text-black hover:bg-neutral-200'}`}>
+                  rendering ? 'bg-neutral-200 text-neutral-400 cursor-wait'
+                  : 'bg-neutral-900 text-white hover:bg-neutral-700'}`}>
                 {rendering ? `Rendering… ${progress.toFixed(0)}%` : 'Render Final Video'}
               </button>
 
               {rendering && (
-                <div className="h-1.5 rounded-full bg-neutral-800 overflow-hidden">
-                  <div className="h-full bg-white transition-all duration-300 rounded-full" style={{ width: `${progress}%` }} />
+                <div className="h-1.5 rounded-full bg-neutral-200 overflow-hidden">
+                  <div className="h-full bg-neutral-900 transition-all duration-300 rounded-full" style={{ width: `${progress}%` }} />
                 </div>
               )}
 
