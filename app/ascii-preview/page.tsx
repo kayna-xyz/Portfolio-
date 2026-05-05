@@ -429,7 +429,7 @@ export default function AsciiEditorPage() {
 
             {/* Grid & Font */}
             <Sec title="Grid & Font">
-              <Slider label="Columns" value={p.cols} min={60} max={400} onChange={v => set('cols', v)} />
+              <Slider label="Columns" value={p.cols} min={60} max={800} onChange={v => set('cols', v)} />
               <Slider label="Font size (px)" value={p.fontSize} min={6} max={20} onChange={v => set('fontSize', v)} />
               <div className="flex flex-col gap-1">
                 <span className="text-neutral-500 text-xs">Font family</span>
