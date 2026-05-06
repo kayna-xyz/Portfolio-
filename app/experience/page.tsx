@@ -3,138 +3,83 @@
 import { useState, useEffect } from "react"
 import Navbar from "@/components/navbar"
 
-const albumItems = [
-  { src: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Books%21-IS1M0BznV7FKhknhzu8cO6D0MKbqE6.jpg", label: "Books!" },
-  { src: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/WechatIMG2522-DXrJGIiISGkYIwkzx3znashXBdeS20.jpg", label: "Me" },
-  { src: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/WechatIMG2533-Ps2kzoy2lKLBrbnryRaRcTaM15r6J4.jpg", label: "Matcha!" },
-  { src: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/My%20artworks-USeJevVCgBi4Dt7gKNCxsqtuGvHFMl.png", label: "My artworks" },
-  { src: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/WechatIMG2531-Xy08U1GbdV5mj7ayyL46EaiVXr1srU.jpg", label: "Central Park in summer" },
-  { src: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/WechatIMG2530-DaBKsE9T5YZL2fWsjwnk3DJiTbJFsA.jpg", label: "Kyoto!" },
-  { src: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/WechatIMG2529-ByLSh3XWts62uVN4QwkYaALB4gFlRy.jpg", label: "Butler Library" },
-  { src: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Screenshot%202026-02-13%20at%2019.08.30-hajJSsJtlma7McNUyPhpwOrVBRwhA7.png", label: "Calligraphy - \u884c\u4e66" },
-  { src: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/WechatIMG2525-uDRAzLQQ2Vx4oDOMdQoJ5kPqAD2R8C.jpg", label: "my cat..." },
-  { src: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Sketching-94ydED0g3uj6w0SrEUrJgswDuunrMD.jpg", label: "Sketching" },
-  { src: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Cairo%21-KzZD4TO4Z7AFSJR4rHf8gidiQ380kl.jpg", label: "Cairo!" },
-  { src: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/My%20artworks%20again.-9BnrOdshy8aoWDnI70S5oTwKRP0QZg.png", label: "My artworks again." },
-]
+const SF = "-apple-system, 'SF Pro Text', 'SF Pro Display', sans-serif"
+const PT = "var(--font-pt-serif), 'Georgia', serif"
 
-export default function ExperiencePage() {
+const title = (text: string) => (
+  <h2 style={{ fontFamily: SF, fontWeight: 500, fontSize: "24px", color: "#000000", marginBottom: "12px" }}>
+    {text}
+  </h2>
+)
+
+const body = (text: string | React.ReactNode, extraStyle?: React.CSSProperties) => (
+  <p style={{ fontFamily: PT, fontWeight: 400, fontSize: "16px", color: "#000000", lineHeight: "1.65", marginBottom: "16px", ...extraStyle }}>
+    {text}
+  </p>
+)
+
+export default function AboutPage() {
   const [isLoaded, setIsLoaded] = useState(false)
-
   useEffect(() => {
-    const timer = setTimeout(() => setIsLoaded(true), 50)
-    return () => clearTimeout(timer)
+    const t = setTimeout(() => setIsLoaded(true), 50)
+    return () => clearTimeout(t)
   }, [])
-
-  const col1 = albumItems.filter((_, i) => i % 2 === 0)
-  const col2 = albumItems.filter((_, i) => i % 2 === 1)
 
   return (
     <main className="relative min-h-screen bg-[#fdfbfa]">
       <Navbar />
+
+      {/* 3-column grid — content lives in the middle column */}
       <div
-        className="max-w-[900px] mx-auto px-6 md:px-12 pt-[140px] pb-[80px] transition-all duration-700 ease-out"
+        className="grid grid-cols-1 md:grid-cols-3 px-[30px] md:px-[80px]"
         style={{
+          paddingTop: "120px",
+          paddingBottom: "120px",
           opacity: isLoaded ? 1 : 0,
-          transform: isLoaded ? "translateY(0)" : "translateY(30px)",
+          transform: isLoaded ? "translateY(0)" : "translateY(20px)",
+          transition: "opacity 0.6s ease-out, transform 0.6s ease-out",
         }}
       >
-        {/* ===== Intro ===== */}
-        <section className="mb-16">
-          <h1
-            className="font-serif text-[28px] md:text-[36px] text-[#474747] mb-6"
-            style={{ fontStyle: "italic" }}
-          >
-            About me
-          </h1>
-          <p className="text-[15px] text-[#6b6966] leading-relaxed mb-4">
-            {"Hi, I'm Kayna! I'm currently a sophomore studying Cognitive Science & Political Science at Barnard College of Columbia University."}
-          </p>
-          <p className="text-[15px] text-[#6b6966] leading-relaxed mb-4">
-            {"My favorite restaurant in NYC is Samwoojung, and you can check out my 2025–26 reading list "}
-            <a
-              href="https://www.notion.so/Reading-List-308dd3c14a8e808dbff4db060e76c2ea"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-[#21A5D5] hover:text-[#1a8ab0] transition-colors underline"
-            >
-              here
-            </a>
-            .
-          </p>
-          <p className="text-[15px] text-[#6b6966] leading-relaxed mb-2">
-            Outside of design I{"'"}m:
-          </p>
-          <ul className="text-[15px] text-[#6b6966] leading-relaxed space-y-1 ml-5 list-disc mb-4">
-            <li>Starting most weekday mornings with a matcha from Joe{"'"}s Coffee</li>
-            <li>Drawing & Chinese Calligraphy, skiing, poker nights with friends</li>
-          </ul>
-          <p className="text-[15px] text-[#6b6966] leading-relaxed">
-            Feel free to reach out via{" "}
-            <a
-              href="mailto:kh3443@barnard.edu"
-              className="text-[#21A5D5] hover:text-[#1a8ab0] transition-colors underline"
-            >
-              kh3443@barnard.edu
-            </a>
-            {" or "}
-            <a
-              href="mailto:kh3443@columbia.edu"
-              className="text-[#21A5D5] hover:text-[#1a8ab0] transition-colors underline"
-            >
-              kh3443@columbia.edu
-            </a>
-          </p>
-        </section>
+        {/* Left column — empty, hidden on mobile */}
+        <div className="hidden md:block" />
 
-        {/* ===== Writing ===== */}
-        <section className="mb-16">
-          <h2
-            className="font-serif text-[22px] text-[#474747] mb-6"
-            style={{ fontStyle: "italic" }}
-          >
-            Writing
-          </h2>
-        </section>
+        {/* Middle column — all content */}
+        <div>
 
-        {/* ===== Album ===== */}
-        <section>
-          <h2
-            className="font-serif text-[22px] text-[#474747] mb-6"
-            style={{ fontStyle: "italic" }}
-          >
-            Album
-          </h2>
+          {/* ── Design ── */}
+          <section style={{ marginBottom: "40px" }}>
+            {title("Design")}
+            {body("I'm a generalist designer with a solid foundation in craft, product thinking, and design engineering. What I pursue in my work is solving ambiguous product problems through a quantitative, human-centered approach, and pushing the frontier of what AI-native products can feel like.")}
+            {body("My intuition comes from somewhere older than school's design class. From the moment I could hold a pen, 8 years old, I started making art, oil painting, sketching, and 6 years of ink wash painting and calligraphy. I think that's where my aesthetic sensibility comes from, and maybe it's also what lets me sit with a design for 10 hours.")}
+            {body("I'm pursuing a dual degree in Cognitive Science (HCI) and Political Science at Columbia University. I worked at an AI unicorn, contributing to the design of their enterprise and consumer AI products. At the same time, I started building my own agentic products.")}
+            {body("Even though Claude can design, it still doesn't change the core work of a designer. Iykyk.")}
+          </section>
 
-          {/* Masonry two-column layout */}
-          <div className="flex gap-3">
-            {[col1, col2].map((col, colIdx) => (
-              <div key={colIdx} className="flex-1 flex flex-col gap-3">
-                {col.map((item, idx) => (
-                  <div
-                    key={idx}
-                    className="group relative overflow-hidden transition-all hover:shadow-xl duration-300"
-                  >
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img
-                      src={item.src}
-                      alt={item.label}
-                      className="w-full h-auto object-cover"
-                    />
-                    {/* Hover overlay with label */}
-                    <div
-                      className="absolute bottom-0 left-0 right-0 p-3 bg-gradient-to-t from-black/70 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-                    >
-                      <span className="text-white text-[13px] font-medium drop-shadow-sm">
-                        {item.label}
-                      </span>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            ))}
+          {/* ── Beyond Design ── */}
+          <section style={{ marginBottom: "40px" }}>
+            {title("Beyond Design")}
+            {body("I was born into a manufacturer family in China and educated in the U.S. I'm a builder and my long-term interests is in sustainable tech business, including agentic applications, infra, and AI/robotics upstream supply chain. Outside of work, I like playing poker, arts, trading, and talking to interesting people.")}
+            {body(
+              <>
+                Thanks to my friends, Bo Le
+                <sup style={{ fontSize: "11px", verticalAlign: "super" }}>1</sup>
+                , and my parents for believing in me.
+              </>
+            )}
+          </section>
+
+          {/* ── Footnote ── */}
+          <div style={{ marginTop: "180px" }}>
+            <p style={{ fontFamily: PT, fontWeight: 400, fontSize: "14px", color: "#000000", lineHeight: "1.6" }}>
+              <sup style={{ fontSize: "11px" }}>1</sup>
+              {" Bo Le: In Chinese, 伯乐 (Bó Lè) refers to someone who recognizes another person's potential and gives them the opportunity to flourish."}
+            </p>
           </div>
-        </section>
+
+        </div>
+
+        {/* Right column — empty, hidden on mobile */}
+        <div className="hidden md:block" />
       </div>
     </main>
   )

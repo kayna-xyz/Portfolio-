@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from 'next'
-import { JetBrains_Mono, IBM_Plex_Serif } from 'next/font/google'
+import { JetBrains_Mono, IBM_Plex_Serif, PT_Serif } from 'next/font/google'
 import localFont from 'next/font/local'
 import ClientProviders from '@/components/client-providers'
 
@@ -18,6 +18,13 @@ const ibmPlexSerif = IBM_Plex_Serif({
   variable: '--font-ibm-plex-serif',
 })
 
+const ptSerif = PT_Serif({
+  subsets: ['latin'],
+  weight: ['400', '700'],
+  style: ['normal', 'italic'],
+  variable: '--font-pt-serif',
+})
+
 const intrudingCat = localFont({
   src: '../public/fonts/IntrudingCat.ttf',
   variable: '--font-intruding-cat',
@@ -25,7 +32,7 @@ const intrudingCat = localFont({
 })
 
 export const metadata: Metadata = {
-  title: 'Kayna',
+  title: 'Kayna Huang',
   description: 'Kayna Huang - Product Designer',
 }
 
@@ -40,7 +47,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning className="relative">
-      <body className={`${jetbrainsMono.variable} ${intrudingCat.variable} ${ibmPlexSerif.variable} font-sans antialiased relative`}>
+      <body className={`${jetbrainsMono.variable} ${intrudingCat.variable} ${ibmPlexSerif.variable} ${ptSerif.variable} font-sans antialiased relative`}>
         <ClientProviders />
         {children}
       </body>

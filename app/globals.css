@@ -49,76 +49,10 @@
 @layer base {
   * {
     @apply border-border;
-    cursor: none;
   }
   body {
     @apply bg-background text-foreground relative;
   }
-}
-
-/* Custom cursor - default state: 20x20 frosted glass circle */
-.custom-cursor {
-  position: fixed;
-  width: 20px;
-  height: 20px;
-  border-radius: 50%;
-  background-color: transparent;
-  border: 0.8px solid #ECECEC;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
-  pointer-events: none;
-  z-index: 9999;
-  transform: translate(-50%, -50%);
-  transition: width 0.25s ease, height 0.25s ease, border-radius 0.25s ease, padding 0.25s ease, opacity 0.2s ease;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  overflow: hidden;
-}
-
-/* Blur layer behind the fill */
-.custom-cursor::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  backdrop-filter: blur(80px);
-  -webkit-backdrop-filter: blur(80px);
-  z-index: 0;
-}
-
-/* Fill layer on top of the blur */
-.custom-cursor::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  background-color: #EAEAEA;
-  z-index: 1;
-}
-
-/* Cursor label text */
-.custom-cursor .cursor-label {
-  font-family: var(--font-jetbrains-mono), monospace;
-  font-size: 16px;
-  color: rgba(0, 0, 0, 0.6);
-  white-space: nowrap;
-  opacity: 0;
-  transition: opacity 0.2s ease;
-  line-height: 1;
-  position: relative;
-  z-index: 2;
-}
-
-/* Cursor with label - pill shape, height stays 20px feeling */
-.custom-cursor.has-label {
-  width: auto;
-  height: 20px;
-  border-radius: 999px;
-  padding: 12px 16px;
-}
-
-.custom-cursor.has-label .cursor-label {
-  opacity: 1;
 }
 
 /* Page flip animation */
@@ -290,7 +224,3 @@
   filter: blur(20px);
 }
 
-/* Hide the custom cursor circle when hovering the intro section (glow replaces it) */
-.hide-custom-cursor .custom-cursor {
-  opacity: 0 !important;
-}
