@@ -1,21 +1,13 @@
 "use client"
 
-import { useState, useEffect, useRef } from "react"
-import { Instagram, Linkedin, Mail, Github } from "lucide-react"
+import { useState, useEffect } from "react"
+import { Instagram, Linkedin, Mail } from "lucide-react"
 
-/* Custom X (formerly Twitter) icon */
+const SF = "-apple-system, 'SF Pro Text', 'SF Pro Display', sans-serif"
+
 function XIcon({ size = 20 }: { size?: number }) {
   return (
-    <svg
-      width={size}
-      height={size}
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="1.5"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
       <path d="M4 4l11.733 16H20L8.267 4H4z" />
       <path d="M4 20l6.768-6.768" />
       <path d="M20 4l-6.768 6.768" />
@@ -23,120 +15,94 @@ function XIcon({ size = 20 }: { size?: number }) {
   )
 }
 
-const TRAIL_LENGTH = 6
+const SOCIAL = [
+  { href: "https://x.com/kayna_xyz",                          label: "X",         icon: <XIcon size={24} /> },
+  { href: "https://www.instagram.com/kaynahuang/",            label: "Instagram",  icon: <Instagram size={24} strokeWidth={1.5} /> },
+  { href: "https://www.linkedin.com/in/kayna-h-77ab8a2a1/",  label: "LinkedIn",   icon: <Linkedin  size={24} strokeWidth={1.5} /> },
+  { href: "mailto:kh3443@barnard.edu",                        label: "Email",      icon: <Mail      size={24} strokeWidth={1.5} /> },
+]
 
 export default function HeroSection() {
-  const introRef = useRef<HTMLDivElement>(null)
-  const [cursorPos, setCursorPos] = useState({ x: 0, y: 0 })
-  const [trail, setTrail] = useState<{ x: number; y: number }[]>([])
-  const [isHovering, setIsHovering] = useState(false)
+  const [nyTime, setNyTime] = useState("")
+  const ROLES = ["Product Designer", "Design Engineer", "Builder"]
+  const [roleIdx, setRoleIdx]       = useState(0)
+  const [roleVisible, setRoleVisible] = useState(true)
 
+  // Role cycling — snap out then snap in every 2s
   useEffect(() => {
-    const el = introRef.current
-    if (!el) return
+    const id = setInterval(() => {
+      setRoleVisible(false)
+      setTimeout(() => {
+        setRoleIdx((i) => (i + 1) % ROLES.length)
+        setRoleVisible(true)
+      }, 150)
+    }, 2000)
+    return () => clearInterval(id)
+  }, [])
 
-    const onMove = (e: MouseEvent) => {
-      const rect = el.getBoundingClientRect()
-      const pos = { x: e.clientX - rect.left, y: e.clientY - rect.top }
-      setCursorPos(pos)
-      setTrail((prev) => [pos, ...prev].slice(0, TRAIL_LENGTH))
+  // Live Manhattan clock — updates every second with H:M:S
+  useEffect(() => {
+    const update = () => {
+      setNyTime(
+        new Date().toLocaleString("en-US", {
+          timeZone: "America/New_York",
+          weekday: "short",
+          month:   "short",
+          day:     "numeric",
+          hour:    "2-digit",
+          minute:  "2-digit",
+          second:  "2-digit",
+          hour12:  false,
+        })
+      )
     }
-    const onEnter = () => {
-      setIsHovering(true)
-      document.body.classList.add("hide-custom-cursor")
-    }
-    const onLeave = () => {
-      setIsHovering(false)
-      setTrail([])
-      document.body.classList.remove("hide-custom-cursor")
-    }
-
-    el.addEventListener("mousemove", onMove)
-    el.addEventListener("mouseenter", onEnter)
-    el.addEventListener("mouseleave", onLeave)
-    return () => {
-      el.removeEventListener("mousemove", onMove)
-      el.removeEventListener("mouseenter", onEnter)
-      el.removeEventListener("mouseleave", onLeave)
-      document.body.classList.remove("hide-custom-cursor")
-    }
+    update()
+    const id = setInterval(update, 1000)
+    return () => clearInterval(id)
   }, [])
 
   return (
     <section
       id="about"
-      className="relative w-full bg-[#FDFBFA] pt-[100px] md:pt-[140px] px-5 md:px-[70px]"
-      style={{ paddingBottom: "48px" }}
+      className="relative w-full bg-[#FDFBFA] px-[30px] md:px-[80px]"
+      style={{ paddingTop: "140px", paddingBottom: "48px" }}
     >
-      {/* Intro text with fog-clearing animation + cursor blur */}
-      <div
-        ref={introRef}
-        className="animate-fog-clear relative"
-        data-cursor-label="Who am I"
-        style={{ cursor: isHovering ? "none" : undefined }}
-      >
-        <h1
-          className="text-[#5F5F5F] leading-[1.3] tracking-[-0.01em] relative text-[28px] md:text-[40px]"
-          style={{ fontFamily: "var(--font-ibm-plex-serif), 'Georgia', serif" }}
-        >
-          {"Crafting "}
-          <span style={{ fontStyle: "italic" }}>{"AI-powered products, experimental tools, and systems at scale"}</span>
-          {". Currently studying Human-Computer Interaction & Political Science at Columbia."}
-        </h1>
-
-        {/* Trailing glow ghosts */}
-        {isHovering && trail.map((pos, i) => (
-          <div
-            key={i}
-            className="pointer-events-none absolute z-10"
-            style={{
-              left: pos.x - 80,
-              top: pos.y - 80,
-              width: 160,
-              height: 160,
-              borderRadius: "50%",
-              background: `rgba(245, 245, 245, ${0.3 - i * 0.04})`,
-              filter: `blur(${50 + i * 10}px)`,
-              transition: "left 0.15s ease-out, top 0.15s ease-out, opacity 0.3s ease-out",
-            }}
-          />
-        ))}
-
-        {/* Main cursor glow blob - in front of text */}
-        {isHovering && (
-          <div
-            className="pointer-events-none absolute z-10"
-            style={{
-              left: cursorPos.x - 100,
-              top: cursorPos.y - 100,
-              width: 200,
-              height: 200,
-              borderRadius: "50%",
-              background: "#F5F5F5",
-              filter: "blur(50px)",
-            }}
-          />
-        )}
+      {/* Description */}
+      <div className="animate-fog-clear relative">
+        <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-start", gap: "12px" }}>
+          <p style={{ fontFamily: SF, fontWeight: 500, fontSize: "24px", lineHeight: "1.3", color: "#000000" }}>
+            Kayna Huang
+          </p>
+          <p style={{ fontFamily: "var(--font-pt-serif), 'Georgia', serif", fontWeight: 400, fontSize: "24px", lineHeight: "1.4", color: "#000000" }}>
+            {"I'm a "}
+            <span
+              style={{
+                fontStyle: "italic",
+                display: "inline-block",
+                opacity: roleVisible ? 1 : 0,
+                transition: "opacity 0.1s",
+              }}
+            >
+              {ROLES[roleIdx]}
+            </span>
+            {" currently studying Human-Computer Interaction & Political Science at Columbia."}
+            <br />
+            {"Craft with and beyond intelligence, to renew what already exists."}
+          </p>
+        </div>
       </div>
 
-      {/* Social media icons - grey, minimal, 24x24, tooltip on hover */}
-      <div className="animate-fog-clear-delay flex items-center gap-4" style={{ marginTop: "30px" }}>
-        {[
-          { href: "https://x.com/kayna_xyz", label: "X", icon: <XIcon size={24} /> },
-          { href: "https://www.instagram.com/kaynahuang/", label: "Instagram", icon: <Instagram size={24} strokeWidth={1.5} /> },
-          { href: "https://www.linkedin.com/in/kayna-h-77ab8a2a1/", label: "LinkedIn", icon: <Linkedin size={24} strokeWidth={1.5} /> },
-          { href: "https://github.com/kayna-xyz", label: "GitHub", icon: <Github size={24} strokeWidth={1.5} /> },
-          { href: "mailto:kh3443@barnard.edu", label: "Email", icon: <Mail size={24} strokeWidth={1.5} /> },
-        ].map((item) => (
+      {/* Social media icon bar */}
+      <div className="animate-fog-clear-delay flex items-center gap-4" style={{ marginTop: "24px" }}>
+        {SOCIAL.map((item) => (
           <a
             key={item.label}
             href={item.href}
-            target={item.label === "Email" ? undefined : "_blank"}
-            rel={item.label === "Email" ? undefined : "noopener noreferrer"}
+            target={item.href.startsWith("mailto") ? undefined : "_blank"}
+            rel={item.href.startsWith("mailto")  ? undefined : "noopener noreferrer"}
             className="relative text-[#b0aeab] hover:text-[#474747] transition-colors group"
             aria-label={item.label}
           >
-            {/* Tooltip */}
             <span
               className="absolute left-1/2 -translate-x-1/2 bottom-full mb-2 px-3 py-1 rounded-full text-xs font-mono text-[#5F5F5F] bg-[#ffffff] opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap"
               style={{ boxShadow: "0 2px 8px rgba(0,0,0,0.08)", border: "1px solid #eae8e6" }}
@@ -147,6 +113,37 @@ export default function HeroSection() {
           </a>
         ))}
       </div>
+
+      {/* Hero video — 40px below description, full width within padding */}
+      <div style={{ marginTop: "40px" }}>
+        <video
+          src="/hero-video.mp4"
+          autoPlay
+          loop
+          muted
+          playsInline
+          style={{ width: "100%", display: "block" }}
+        />
+      </div>
+
+      {/* What is design? — centered */}
+      <p style={{ marginTop: "6px", fontFamily: SF, fontWeight: 400, fontSize: "16px", color: "#000000", textAlign: "center", width: "100%" }}>
+        What is design?
+      </p>
+
+      {/* Info bar — labels Medium, values Regular */}
+      <div style={{ marginTop: "24px" }}>
+        {[
+          { label: "FOCUS",        value: "Design/Build, 0-1 AI-native scalable product" },
+          { label: "IN MANHATTAN", value: nyTime },
+        ].map(({ label, value }) => (
+          <div key={label} style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", gap: "12px", padding: "12px 0", flexWrap: "wrap" }}>
+            <span style={{ fontFamily: SF, fontWeight: 500, fontSize: "16px", color: "#4B4948" }}>{label}</span>
+            <span style={{ fontFamily: SF, fontWeight: 400, fontSize: "16px", color: "#000000" }}>{value}</span>
+          </div>
+        ))}
+      </div>
+
     </section>
   )
 }
