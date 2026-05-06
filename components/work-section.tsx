@@ -110,14 +110,6 @@ const allProjects: ProjectCardProps[] = [
     caseStudyLink: "/case-study/lluna",
   },
   {
-    video: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Screen-studio-7A2NmU2Zac-2kRohHsEeLTG1d4A17ZCN3uaLeyUNr.mp4",
-    category: "Product Design · Summer 2025",
-    title: "HeyGen, Design Engineering",
-    description: "Crafting an on-the-go AI video editing experience that empowers mobile users to capture and realize creative inspiration anywhere.",
-    link: "https://apps.apple.com/us/app/heygen-ai-video-generator/id6711356409",
-    caseStudyLink: "/case-study/heygen-enterprise#mobile-overview",
-  },
-  {
     image: "/perplexity-cover.png",
     category: "Concept Project · 2026",
     title: "Perplexity Travel",
