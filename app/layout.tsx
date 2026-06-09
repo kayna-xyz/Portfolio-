@@ -1,22 +1,9 @@
 import type { Metadata, Viewport } from 'next'
-import { JetBrains_Mono, IBM_Plex_Serif, PT_Serif } from 'next/font/google'
+import { PT_Serif, Reddit_Mono } from 'next/font/google'
 import localFont from 'next/font/local'
 import ClientProviders from '@/components/client-providers'
 
 import './globals.css'
-
-const jetbrainsMono = JetBrains_Mono({
-  subsets: ['latin'],
-  weight: ['400', '500', '600', '700'],
-  variable: '--font-jetbrains-mono',
-})
-
-const ibmPlexSerif = IBM_Plex_Serif({
-  subsets: ['latin'],
-  weight: ['300', '400', '500', '600', '700'],
-  style: ['normal', 'italic'],
-  variable: '--font-ibm-plex-serif',
-})
 
 const ptSerif = PT_Serif({
   subsets: ['latin'],
@@ -25,19 +12,29 @@ const ptSerif = PT_Serif({
   variable: '--font-pt-serif',
 })
 
-const intrudingCat = localFont({
-  src: '../public/fonts/IntrudingCat.ttf',
-  variable: '--font-intruding-cat',
+const redditMono = Reddit_Mono({
+  subsets: ['latin'],
+  weight: ['500'],
+  variable: '--font-reddit-mono',
+})
+
+const twkLausanne = localFont({
+  src: '../public/fonts/TWKLausanne-400.woff2',
+  weight: '400',
+  style: 'normal',
+  variable: '--font-twk',
   display: 'swap',
 })
 
 export const metadata: Metadata = {
   title: 'Kayna Huang',
-  description: 'Kayna Huang - Product Designer',
+  description: 'Kayna Huang — Product Designer who builds.',
 }
 
 export const viewport: Viewport = {
-  themeColor: '#ffffff',
+  width: 'device-width',
+  initialScale: 1,
+  themeColor: '#FDFBFA',
 }
 
 export default function RootLayout({
@@ -46,8 +43,16 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning className="relative">
-      <body className={`${jetbrainsMono.variable} ${intrudingCat.variable} ${ibmPlexSerif.variable} ${ptSerif.variable} font-sans antialiased relative`}>
+    <html lang="en" suppressHydrationWarning>
+      <body
+        className={`${ptSerif.variable} ${redditMono.variable} ${twkLausanne.variable} antialiased`}
+        style={{
+          background: '#FDFBFA',
+          fontFamily: 'var(--font-twk), system-ui, -apple-system, sans-serif',
+          color: 'rgba(0,0,0,0.75)',
+          margin: 0,
+        }}
+      >
         <ClientProviders />
         {children}
       </body>

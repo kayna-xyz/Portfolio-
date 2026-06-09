@@ -1,6 +1,6 @@
 "use client"
 
-import { CaseStudyLayout, CSTitle, CSHeading, CSSubheading, CSBody, CSLabel, CSSection, CSMeta, NavItem } from "@/components/case-study-layout"
+import { CaseStudyLayout, CSTitle, CSSubtitle, CSCover, CSHeading, CSSubheading, CSBody, CSLabel, CSSection, CSMeta, NavItem } from "@/components/case-study-layout"
 
 const navItems: NavItem[] = [
   { id: "overview",  label: "Overview" },
@@ -25,7 +25,8 @@ export default function LlunaAICaseStudy() {
   return (
     <CaseStudyLayout navItems={navItems}>
       <CSTitle>Lluna, AI Aesthetic Consultant</CSTitle>
-      <CSBody>Know before you sit in the chair.</CSBody>
+      <CSSubtitle>Know before you sit in the chair.</CSSubtitle>
+      <CSCover src="/lluna-cover.png" alt="Lluna cover" />
       <CSMeta items={meta} />
 
       <CSSection id="overview">

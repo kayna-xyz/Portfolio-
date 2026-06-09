@@ -1,6 +1,6 @@
 "use client"
 
-import { CaseStudyLayout, CSTitle, CSHeading, CSSubheading, CSBody, CSLabel, CSSection, CSMeta, NavItem } from "@/components/case-study-layout"
+import { CaseStudyLayout, CSTitle, CSSubtitle, CSCover, CSHeading, CSSubheading, CSBody, CSLabel, CSSection, CSMeta, NavItem } from "@/components/case-study-layout"
 
 const navItems: NavItem[] = [
   { id: "overview",    label: "Overview" },
@@ -23,6 +23,8 @@ export default function Signal32CaseStudy() {
   return (
     <CaseStudyLayout navItems={navItems}>
       <CSTitle>Signal-32: Assess Your Next Investment in 32 Questions</CSTitle>
+      <CSSubtitle>An internal tool to quickly evaluate early-stage AI startups in 32 questions.</CSSubtitle>
+      <CSCover src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Google%20Chrome-PR77RBIdDfEs1zKLgn0EuDKBOrgdgO.mp4" alt="Signal-32 cover" isVideo />
       <CSMeta items={meta} />
 
       <CSSection id="overview">

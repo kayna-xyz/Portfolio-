@@ -1,6 +1,6 @@
 "use client"
 
-import { CaseStudyLayout, CSTitle, CSHeading, CSBody, CSLabel, CSSection, CSMeta, NavItem } from "@/components/case-study-layout"
+import { CaseStudyLayout, CSTitle, CSSubtitle, CSHeading, CSBody, CSLabel, CSSection, CSMeta, NavItem } from "@/components/case-study-layout"
 
 const navItems: NavItem[] = [
   { id: "overview", label: "Overview" },
@@ -21,6 +21,7 @@ export default function ColumbiaHCIReviewCaseStudy() {
   return (
     <CaseStudyLayout navItems={navItems}>
       <CSTitle>Building the Visual Identity for Columbia HCI Review</CSTitle>
+      <CSSubtitle>Crafting a cohesive visual voice for Columbia's first student-led HCI publication.</CSSubtitle>
       <CSMeta items={meta} />
 
       <CSSection id="overview">

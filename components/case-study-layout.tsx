@@ -1,10 +1,17 @@
 "use client"
 
 import { useEffect, useRef, useState } from "react"
+import Link from "next/link"
 import { useRouter } from "next/navigation"
 import Navbar from "@/components/navbar"
+import { useIsMobile } from "@/hooks/use-mobile"
 
-const SF = "-apple-system, 'SF Pro Text', 'SF Pro Display', sans-serif"
+const TWK = "var(--font-twk), system-ui, -apple-system, sans-serif"
+const MONO = "var(--font-reddit-mono), ui-monospace, monospace"
+
+const STRONG = "rgba(0,0,0,0.75)"
+const MEDIUM = "rgba(0,0,0,0.5)"
+const MUTED = "rgba(0,0,0,0.35)"
 
 export interface NavItem { id: string; label: string }
 
@@ -13,12 +20,19 @@ interface Props {
   children: React.ReactNode
 }
 
+const SOCIAL = [
+  { label: "X", href: "https://x.com/kayna_xyz" },
+  { label: "Linkedin", href: "https://www.linkedin.com/in/kayna-h-77ab8a2a1/" },
+  { label: "Github", href: "https://github.com/kayna-xyz" },
+  { label: "Email", href: "mailto:kaynahuang325@gmail.com" },
+]
+
 export function CaseStudyLayout({ navItems, children }: Props) {
   const router = useRouter()
+  const isMobile = useIsMobile()
   const [active, setActive] = useState(navItems[0]?.id ?? "")
   const sectionRefs = useRef<Record<string, HTMLElement | null>>({})
 
-  // expose ref setter to children via data attribute scanning
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
@@ -38,77 +52,132 @@ export function CaseStudyLayout({ navItems, children }: Props) {
   }
 
   return (
-    <div className="min-h-screen bg-[#FDFBFA]">
+    <div className="page-fade-in" style={{ minHeight: "100vh", background: "#FDFBFA", display: "flex", flexDirection: "column" }}>
       <Navbar />
 
-      <div
-        className="grid grid-cols-1 md:grid-cols-3 px-[30px] md:px-[80px]"
+      <main
         style={{
-          paddingTop: "120px",
-          paddingBottom: "120px",
-          gap: "0",
+          flex: 1,
+          paddingTop: isMobile ? "40px" : "58px",
+          paddingBottom: isMobile ? "64px" : "80px",
+          paddingLeft: isMobile ? "20px" : "40px",
+          paddingRight: isMobile ? "20px" : "40px",
         }}
       >
-        {/* ── Left nav — hidden on mobile ── */}
-        <nav className="hidden md:block" style={{ paddingRight: "40px" }}>
-          <div style={{ position: "sticky", top: "164px" }}>
-            {/* ← Index */}
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: isMobile ? "1fr" : "repeat(16, 1fr)",
+            columnGap: "0",
+          }}
+        >
+          {/* ── Sidebar: cols 1–2, sticky on desktop. On mobile: back link only, at top ── */}
+          <nav style={{ gridColumn: isMobile ? "auto" : "1 / span 2" }}>
+            <div style={{ position: isMobile ? "static" : "sticky", top: "58px" }}>
             <button
               onClick={() => router.push("/")}
               style={{
-                fontFamily: SF,
-                fontWeight: 500,
-                fontSize: "14px",
-                color: "#9A9A99",
+                fontFamily: TWK,
+                fontWeight: 400,
+                fontSize: "16px",
+                color: MUTED,
                 background: "none",
                 border: "none",
                 cursor: "pointer",
                 padding: 0,
-                marginBottom: "24px",
-                display: "flex",
-                alignItems: "center",
-                gap: "6px",
+                marginBottom: isMobile ? "24px" : "80px",
+                display: "block",
+                textAlign: "left",
               }}
-              className="hover:text-[#4B4948] transition-colors"
+              className="cs-back"
             >
               ← Index
             </button>
 
-            {/* Section links */}
-            <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
-              {navItems.map(({ id, label }) => (
-                <button
-                  key={id}
-                  onClick={() => scrollTo(id)}
-                  style={{
-                    fontFamily: SF,
-                    fontWeight: 500,
-                    fontSize: "14px",
-                    color: active === id ? "#4B4948" : "#9A9A99",
-                    background: "none",
-                    border: "none",
-                    cursor: "pointer",
-                    padding: 0,
-                    textAlign: "left",
-                    transition: "color 0.2s",
-                  }}
-                  className="hover:text-[#4B4948]"
-                >
-                  {label}
-                </button>
-              ))}
+            {!isMobile && (
+              <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
+                {navItems.map(({ id, label }) => (
+                  <button
+                    key={id}
+                    onClick={() => scrollTo(id)}
+                    style={{
+                      fontFamily: TWK,
+                      fontWeight: 400,
+                      fontSize: "16px",
+                      color: active === id ? MEDIUM : MUTED,
+                      background: "none",
+                      border: "none",
+                      cursor: "pointer",
+                      padding: 0,
+                      textAlign: "left",
+                      transition: "color 150ms ease",
+                    }}
+                    className="cs-index-item"
+                  >
+                    {label}
+                  </button>
+                ))}
+              </div>
+            )}
             </div>
+          </nav>
+
+          {/* ── Content: cols 5–12 on desktop (centered), full width on mobile ── */}
+          <div style={{ gridColumn: isMobile ? "auto" : "5 / span 8", minWidth: 0 }}>
+            {children}
           </div>
-        </nav>
-
-        {/* ── Middle content ── */}
-        <div style={{ minWidth: 0 }}>
-          {children}
         </div>
+      </main>
 
-        {/* ── Right column (TBD) ── */}
-        <div className="hidden md:block" />
-      </div>
+      {/* ── Simple footer ── */}
+      <footer
+        style={{
+          padding: isMobile ? "20px 20px" : "20px 40px",
+          background: "#FDFBFA",
+          borderTop: "1px solid rgba(0,0,0,0.15)",
+          display: "flex",
+          flexDirection: isMobile ? "column" : "row",
+          alignItems: isMobile ? "flex-start" : "center",
+          justifyContent: "space-between",
+          gap: isMobile ? "16px" : "0",
+        }}
+      >
+        <span
+          style={{
+            fontFamily: MONO,
+            fontWeight: 500,
+            fontSize: "16px",
+            letterSpacing: "0.02em",
+            color: "rgba(0,0,0,0.75)",
+          }}
+        >
+          DESIGNED AND DEVELOPED BY KAYNA HUANG
+        </span>
+        <div style={{ display: "flex", gap: "24px" }}>
+          {SOCIAL.map((s) => (
+            <a
+              key={s.label}
+              href={s.href}
+              {...(s.href.startsWith("http") ? { target: "_blank", rel: "noopener noreferrer" } : {})}
+              className="cs-social"
+              style={{
+                fontFamily: TWK,
+                fontWeight: 400,
+                fontSize: "16px",
+                color: MUTED,
+                textDecoration: "none",
+                transition: "color 150ms ease",
+              }}
+            >
+              {s.label}
+            </a>
+          ))}
+        </div>
+      </footer>
+
+      <style jsx global>{`
+        .cs-back:hover, .cs-index-item:hover, .cs-social:hover { color: #FF9100 !important; }
+      `}</style>
     </div>
   )
 }
@@ -117,15 +186,111 @@ export function CaseStudyLayout({ navItems, children }: Props) {
 
 export function CSTitle({ children }: { children: React.ReactNode }) {
   return (
-    <h1 style={{ fontFamily: SF, fontWeight: 500, fontSize: "24px", color: "#000000", marginBottom: "12px", lineHeight: "1.3" }}>
+    <h1 style={{
+      fontFamily: TWK,
+      fontWeight: 400,
+      fontSize: "24px",
+      lineHeight: 1.2,
+      color: STRONG,
+      margin: 0,
+    }}>
       {children}
     </h1>
   )
 }
 
+export function CSSubtitle({ children }: { children: React.ReactNode }) {
+  return (
+    <p style={{
+      fontFamily: TWK,
+      fontWeight: 400,
+      fontSize: "16px",
+      lineHeight: 1.5,
+      color: MUTED,
+      margin: "12px 0 0 0",
+    }}>
+      {children}
+    </p>
+  )
+}
+
+export function CSCover({ src, alt, isVideo }: { src: string; alt?: string; isVideo?: boolean }) {
+  const style: React.CSSProperties = {
+    width: "100%",
+    height: "auto",
+    display: "block",
+    borderRadius: "12px",
+    border: "1px solid rgba(0,0,0,0.15)",
+    boxSizing: "border-box",
+    marginTop: "40px",
+  }
+  if (isVideo) return <video src={src} autoPlay loop muted playsInline style={style} />
+  // eslint-disable-next-line @next/next/no-img-element
+  return <img src={src} alt={alt ?? ""} style={style} />
+}
+
+export function CSMeta({ items }: { items: { label: string; value: string }[] }) {
+  return (
+    <div style={{ marginTop: "40px", display: "flex", flexDirection: "column", gap: "12px" }}>
+      {items.map(({ label, value }) => (
+        <div key={label} style={{ display: "flex", justifyContent: "space-between", gap: "16px" }}>
+          <span style={{
+            fontFamily: MONO,
+            fontWeight: 500,
+            fontSize: "16px",
+            letterSpacing: "0.02em",
+            color: STRONG,
+          }}>
+            {label.toUpperCase()}
+          </span>
+          <span style={{
+            fontFamily: TWK,
+            fontWeight: 400,
+            fontSize: "16px",
+            color: STRONG,
+            textAlign: "right",
+          }}>
+            {value}
+          </span>
+        </div>
+      ))}
+    </div>
+  )
+}
+
+export function CSSection({ id, children, style }: { id: string; children: React.ReactNode; style?: React.CSSProperties }) {
+  return (
+    <section id={id} style={{ marginTop: "80px", scrollMarginTop: "80px", ...style }}>
+      {children}
+    </section>
+  )
+}
+
+export function CSLabel({ children }: { children: React.ReactNode }) {
+  return (
+    <p style={{
+      fontFamily: TWK,
+      fontWeight: 400,
+      fontSize: "16px",
+      lineHeight: 1.5,
+      color: MUTED,
+      margin: 0,
+    }}>
+      {children}
+    </p>
+  )
+}
+
 export function CSHeading({ children }: { children: React.ReactNode }) {
   return (
-    <h2 style={{ fontFamily: SF, fontWeight: 500, fontSize: "24px", color: "#000000", marginBottom: "12px", lineHeight: "1.3" }}>
+    <h2 style={{
+      fontFamily: TWK,
+      fontWeight: 400,
+      fontSize: "24px",
+      lineHeight: 1.2,
+      color: STRONG,
+      margin: "12px 0 0 0",
+    }}>
       {children}
     </h2>
   )
@@ -133,7 +298,14 @@ export function CSHeading({ children }: { children: React.ReactNode }) {
 
 export function CSSubheading({ children }: { children: React.ReactNode }) {
   return (
-    <h3 style={{ fontFamily: "var(--font-pt-serif), 'Georgia', serif", fontWeight: 400, fontSize: "16px", color: "#000000", marginBottom: "8px", lineHeight: "1.65" }}>
+    <h3 style={{
+      fontFamily: TWK,
+      fontWeight: 400,
+      fontSize: "16px",
+      lineHeight: 1.5,
+      color: STRONG,
+      margin: "20px 0 0 0",
+    }}>
       {children}
     </h3>
   )
@@ -141,37 +313,16 @@ export function CSSubheading({ children }: { children: React.ReactNode }) {
 
 export function CSBody({ children, style }: { children: React.ReactNode; style?: React.CSSProperties }) {
   return (
-    <p style={{ fontFamily: "var(--font-pt-serif), 'Georgia', serif", fontWeight: 400, fontSize: "16px", color: "#000000", lineHeight: "1.65", marginBottom: "16px", ...style }}>
+    <p style={{
+      fontFamily: TWK,
+      fontWeight: 400,
+      fontSize: "16px",
+      lineHeight: 1.5,
+      color: MUTED,
+      margin: "12px 0 0 0",
+      ...style,
+    }}>
       {children}
     </p>
-  )
-}
-
-export function CSLabel({ children }: { children: React.ReactNode }) {
-  return (
-    <p style={{ fontFamily: "var(--font-pt-serif), 'Georgia', serif", fontWeight: 400, fontSize: "16px", color: "#000000", marginBottom: "16px" }}>
-      {children}
-    </p>
-  )
-}
-
-export function CSSection({ id, children, style }: { id: string; children: React.ReactNode; style?: React.CSSProperties }) {
-  return (
-    <section id={id} style={{ marginBottom: "64px", scrollMarginTop: "164px", ...style }}>
-      {children}
-    </section>
-  )
-}
-
-export function CSMeta({ items }: { items: { label: string; value: string }[] }) {
-  return (
-    <div style={{ marginBottom: "48px" }}>
-      {items.map(({ label, value }) => (
-        <div key={label} style={{ display: "flex", justifyContent: "space-between", padding: "10px 0", borderTop: "1px solid #eae8e6" }}>
-          <span style={{ fontFamily: SF, fontWeight: 500, fontSize: "16px", color: "#000000" }}>{label}</span>
-          <span style={{ fontFamily: SF, fontWeight: 400, fontSize: "16px", color: "#000000", textAlign: "right" }}>{value}</span>
-        </div>
-      ))}
-    </div>
   )
 }

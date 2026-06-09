@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from "react"
-import { CaseStudyLayout, CSTitle, CSHeading, CSSubheading, CSBody, CSLabel, CSSection, CSMeta, NavItem } from "@/components/case-study-layout"
+import { CaseStudyLayout, CSTitle, CSSubtitle, CSCover, CSHeading, CSSubheading, CSBody, CSLabel, CSSection, CSMeta, NavItem } from "@/components/case-study-layout"
 
 const navItems: NavItem[] = [
   { id: "overview",    label: "Overview" },
@@ -25,7 +25,8 @@ export default function HeyGenMobileCaseStudy() {
     <>
       <CaseStudyLayout navItems={navItems}>
         <CSTitle>HeyGen Mobile</CSTitle>
-        <CSBody>Crafting an on-the-go AI video editing experience for mobile users.</CSBody>
+        <CSSubtitle>Crafting an on-the-go AI video editing experience for mobile users.</CSSubtitle>
+        <CSCover src="/heygen-cover.png" alt="HeyGen Mobile cover" />
         <CSMeta items={meta} />
 
         <CSSection id="overview">
