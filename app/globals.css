@@ -34,6 +34,82 @@ html {
   scroll-behavior: smooth;
 }
 
+/* ─────────────────────────────────────────────────────────────────────────
+   Responsive layout — CSS-driven (no JS viewport detection).
+   The server emits the same markup for every device and the browser picks
+   the layout via these media queries before first paint, so there is no
+   hydration flash / reflow. Desktop values are the base rule; the mobile
+   overrides live in the single @media block at the bottom.
+   Breakpoint: 768px. Mobile = max-width 767px.
+   ───────────────────────────────────────────────────────────────────────── */
+
+/* Navbar */
+.site-nav { padding: 20px 40px; }
+.site-nav-links { gap: 24px; }
+
+/* Homepage hero — shown on desktop, omitted on mobile by design */
+.hero-section { display: block; }
+
+/* Homepage work section */
+.work-section { padding: 40px; }
+.work-grid-desktop { display: grid; grid-template-columns: 1fr 1fr; column-gap: 40px; }
+.work-grid-mobile { display: none; }
+
+/* Homepage footer */
+.site-footer { padding: 40px; }
+.footer-grid { grid-template-columns: 1fr 1fr; }
+.footer-lastpush { margin-top: 80px; }
+.footer-builtby { margin-top: auto; text-align: right; }
+
+/* Case study + About shared shell */
+.cs-main { padding: 58px 40px 80px 40px; }
+.cs-grid { grid-template-columns: repeat(16, 1fr); }
+.cs-sidebar { grid-column: 1 / span 2; }
+.cs-sidebar-inner { position: sticky; top: 58px; }
+.cs-back-btn { margin-bottom: 80px; }
+.cs-index { display: flex; }
+.cs-content { grid-column: 5 / span 8; }
+.cs-footer { padding: 20px 40px; flex-direction: row; align-items: center; gap: 0; }
+
+/* About page */
+.about-row { grid-template-columns: 2fr 6fr; row-gap: 0; }
+.about-row--spaced { margin-top: 80px; }
+.about-row-label { transform: translateY(-3px); }
+.about-row-body { gap: 20px; }
+.about-sidebar { margin-bottom: 0; }
+
+@media (max-width: 767px) {
+  .site-nav { padding: 16px 20px; }
+  .site-nav-links { gap: 20px; }
+
+  .hero-section { display: none; }
+
+  .work-section { padding: 24px 20px 40px 20px; }
+  .work-tagline { display: none; }
+  .work-grid-desktop { display: none; }
+  .work-grid-mobile { display: flex; flex-direction: column; gap: 40px; }
+
+  .site-footer { padding: 40px 20px; }
+  .footer-grid { grid-template-columns: 1fr; }
+  .footer-lastpush { margin-top: 40px; }
+  .footer-builtby { margin-top: 12px; text-align: left; }
+
+  .cs-main { padding: 40px 20px 64px 20px; }
+  .cs-grid { grid-template-columns: 1fr; }
+  .cs-sidebar { grid-column: auto; }
+  .cs-sidebar-inner { position: static; }
+  .cs-back-btn { margin-bottom: 24px; }
+  .cs-index { display: none; }
+  .cs-content { grid-column: auto; }
+  .cs-footer { padding: 20px; flex-direction: column; align-items: flex-start; gap: 16px; }
+
+  .about-row { grid-template-columns: 1fr; row-gap: 32px; }
+  .about-row--spaced { margin-top: 64px; }
+  .about-row-label { transform: none; }
+  .about-row-body { gap: 24px; }
+  .about-sidebar { margin-bottom: 64px; }
+}
+
 @layer base {
   :root {
     --background: 25 20% 99%;

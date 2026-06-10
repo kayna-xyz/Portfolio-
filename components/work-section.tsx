@@ -2,7 +2,6 @@
 
 import { useEffect, useRef, useState } from "react"
 import Image from "next/image"
-import { useIsMobile } from "@/hooks/use-mobile"
 
 const MONO = "var(--font-reddit-mono), ui-monospace, monospace"
 const TWK = "var(--font-twk), system-ui, -apple-system, sans-serif"
@@ -297,51 +296,46 @@ function Card({ p, showDescription = true, isMobile = false, priority = false }:
 }
 
 export default function WorkSection() {
-  const isMobile = useIsMobile()
+  // Both layouts are rendered; CSS (`.work-grid-desktop` / `.work-grid-mobile`)
+  // shows the right one per viewport with no JS detection, so there's no flash.
+  // Shared image URLs dedupe to a single network fetch; the hidden variant's
+  // videos never fire their IntersectionObserver, so nothing double-loads.
   return (
-    <section style={{ padding: isMobile ? "24px 20px 40px 20px" : "40px 40px 40px 40px", background: "#FDFBFA" }}>
-      {!isMobile && (
-        <p
-          style={{
-            fontFamily: MONO,
-            fontWeight: 500,
-            fontSize: "16px",
-            letterSpacing: "0.02em",
-            color: "rgba(0,0,0,0.35)",
-            margin: "0 0 24px 0",
-          }}
-        >
-          BUILDING PRODUCTS USED BY MILLIONS
-        </p>
-      )}
+    <section className="work-section" style={{ background: "#FDFBFA" }}>
+      <p
+        className="work-tagline"
+        style={{
+          fontFamily: MONO,
+          fontWeight: 500,
+          fontSize: "16px",
+          letterSpacing: "0.02em",
+          color: "rgba(0,0,0,0.35)",
+          margin: "0 0 24px 0",
+        }}
+      >
+        BUILDING PRODUCTS USED BY MILLIONS
+      </p>
 
-      {isMobile ? (
-        // Mobile: single source-ordered column, no descriptions
+      {/* Desktop: two-column masonry (even indices left, odd right) */}
+      <div className="work-grid-desktop">
         <div style={{ display: "flex", flexDirection: "column", gap: "40px" }}>
-          {PROJECTS.map((p) => (
-            <Card key={p.title} p={p} showDescription={false} isMobile priority={p === PROJECTS[0]} />
+          {PROJECTS.filter((_, i) => i % 2 === 0).map((p) => (
+            <Card key={p.title} p={p} priority={p === PROJECTS[0]} />
           ))}
         </div>
-      ) : (
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "1fr 1fr",
-            columnGap: "40px",
-          }}
-        >
-          <div style={{ display: "flex", flexDirection: "column", gap: "40px" }}>
-            {PROJECTS.filter((_, i) => i % 2 === 0).map((p) => (
-              <Card key={p.title} p={p} priority={p === PROJECTS[0]} />
-            ))}
-          </div>
-          <div style={{ display: "flex", flexDirection: "column", gap: "40px" }}>
-            {PROJECTS.filter((_, i) => i % 2 === 1).map((p) => (
-              <Card key={p.title} p={p} />
-            ))}
-          </div>
+        <div style={{ display: "flex", flexDirection: "column", gap: "40px" }}>
+          {PROJECTS.filter((_, i) => i % 2 === 1).map((p) => (
+            <Card key={p.title} p={p} />
+          ))}
         </div>
-      )}
+      </div>
+
+      {/* Mobile: single source-ordered column, no descriptions */}
+      <div className="work-grid-mobile">
+        {PROJECTS.map((p) => (
+          <Card key={p.title} p={p} showDescription={false} isMobile priority={p === PROJECTS[0]} />
+        ))}
+      </div>
     </section>
   )
 }

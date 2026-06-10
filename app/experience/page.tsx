@@ -2,7 +2,6 @@
 
 import { useRouter } from "next/navigation"
 import Navbar from "@/components/navbar"
-import { useIsMobile } from "@/hooks/use-mobile"
 
 const TWK = "var(--font-twk), system-ui, -apple-system, sans-serif"
 const MONO = "var(--font-reddit-mono), ui-monospace, monospace"
@@ -16,6 +15,8 @@ const SOCIAL = [
   { label: "Email", href: "mailto:kaynahuang325@gmail.com" },
 ]
 
+// transform (translateY(-3px) on desktop, none on mobile) comes from the
+// .about-row-label class so it can vary by viewport without JS.
 const labelStyle: React.CSSProperties = {
   fontFamily: MONO,
   fontWeight: 500,
@@ -24,7 +25,6 @@ const labelStyle: React.CSSProperties = {
   letterSpacing: "0.02em",
   color: "rgba(0,0,0,0.35)",
   margin: 0,
-  transform: "translateY(-3px)",
 }
 
 const bodyStyle: React.CSSProperties = {
@@ -37,20 +37,17 @@ const bodyStyle: React.CSSProperties = {
 }
 
 function Section({ label, children }: { label: string; children: React.ReactNode }) {
-  const isMobile = useIsMobile()
   return (
     <section
+      className="about-row about-row--spaced"
       style={{
         display: "grid",
-        gridTemplateColumns: isMobile ? "1fr" : "2fr 6fr",
         columnGap: "0",
-        rowGap: isMobile ? "32px" : "0",
-        marginTop: isMobile ? "64px" : "80px",
         alignItems: "start",
       }}
     >
-      <p className="cap-trim" style={{ ...labelStyle, transform: isMobile ? "none" : "translateY(-3px)" }}>{label}</p>
-      <div style={{ display: "flex", flexDirection: "column", gap: isMobile ? "24px" : "20px" }}>
+      <p className="cap-trim about-row-label" style={labelStyle}>{label}</p>
+      <div className="about-row-body" style={{ display: "flex", flexDirection: "column" }}>
         {children}
       </div>
     </section>
@@ -59,7 +56,6 @@ function Section({ label, children }: { label: string; children: React.ReactNode
 
 export default function AboutPage() {
   const router = useRouter()
-  const isMobile = useIsMobile()
 
   return (
     <div
@@ -68,25 +64,17 @@ export default function AboutPage() {
     >
       <Navbar />
 
-      <main
-        style={{
-          flex: 1,
-          paddingTop: isMobile ? "40px" : "58px",
-          paddingBottom: isMobile ? "64px" : "80px",
-          paddingLeft: isMobile ? "20px" : "40px",
-          paddingRight: isMobile ? "20px" : "40px",
-        }}
-      >
+      <main className="cs-main" style={{ flex: 1 }}>
         <div
+          className="cs-grid"
           style={{
             display: "grid",
-            gridTemplateColumns: isMobile ? "1fr" : "repeat(16, 1fr)",
             columnGap: "0",
           }}
         >
           {/* ── Sidebar: cols 1–2, sticky on desktop; back link at top on mobile ── */}
-          <nav style={{ gridColumn: isMobile ? "auto" : "1 / span 2", marginBottom: isMobile ? "64px" : "0" }}>
-            <div style={{ position: isMobile ? "static" : "sticky", top: "58px" }}>
+          <nav className="cs-sidebar about-sidebar">
+            <div className="cs-sidebar-inner">
               <button
                 onClick={() => router.push("/")}
                 className="about-back cap-trim"
@@ -112,18 +100,17 @@ export default function AboutPage() {
           </nav>
 
           {/* ── Content: cols 5–12 on desktop (centered), full width on mobile ── */}
-          <div style={{ gridColumn: isMobile ? "auto" : "5 / span 8", minWidth: 0 }}>
-            {/* First section uses marginTop 0 to align with the sticky Back link */}
+          <div className="cs-content" style={{ minWidth: 0 }}>
+            {/* First section uses marginTop 0 (.about-row, not --spaced) to align with the sticky Back link */}
             <section
+              className="about-row"
               style={{
                 display: "grid",
-                gridTemplateColumns: isMobile ? "1fr" : "2fr 6fr",
-                rowGap: isMobile ? "32px" : "0",
                 alignItems: "start",
               }}
             >
-              <p className="cap-trim" style={{ ...labelStyle, transform: isMobile ? "none" : "translateY(-3px)" }}>PRODUCT DESIGN</p>
-              <div style={{ display: "flex", flexDirection: "column", gap: isMobile ? "24px" : "20px" }}>
+              <p className="cap-trim about-row-label" style={labelStyle}>PRODUCT DESIGN</p>
+              <div className="about-row-body" style={{ display: "flex", flexDirection: "column" }}>
                 <p className="cap-trim" style={bodyStyle}>
                   I&apos;m a generalist designer with a solid foundation in product design, product strategy, and frontend engineering.
                 </p>
@@ -137,7 +124,7 @@ export default function AboutPage() {
             </section>
 
             <Section label="WHAT I THINK ABOUT">
-              <ul className="about-list" style={{ ...bodyStyle, paddingLeft: "20px", display: "flex", flexDirection: "column", gap: isMobile ? "24px" : "20px", listStyleType: "disc" }}>
+              <ul className="about-list about-row-body" style={{ ...bodyStyle, paddingLeft: "20px", display: "flex", flexDirection: "column", listStyleType: "disc" }}>
                 <li>What is the mode of thinking shared by the founders of great products (e.g., Notion, Figma)?</li>
                 <li>Is there a binary (0/1) method, like Putnam&apos;s, that can evaluate product design?</li>
                 <li>How will AI reshape institutional jobs and reprice the labor market?</li>
@@ -164,15 +151,12 @@ export default function AboutPage() {
 
       {/* ── Simple footer (same as case study) ── */}
       <footer
+        className="cs-footer"
         style={{
-          padding: isMobile ? "20px 20px" : "20px 40px",
           background: "#FDFBFA",
           borderTop: "1px solid rgba(0,0,0,0.15)",
           display: "flex",
-          flexDirection: isMobile ? "column" : "row",
-          alignItems: isMobile ? "flex-start" : "center",
           justifyContent: "space-between",
-          gap: isMobile ? "16px" : "0",
         }}
       >
         <span

@@ -1,7 +1,6 @@
 "use client"
 
 import Link from "next/link"
-import { useIsMobile } from "@/hooks/use-mobile"
 
 const MONO = "var(--font-reddit-mono), ui-monospace, monospace"
 const TWK = "var(--font-twk), system-ui, -apple-system, sans-serif"
@@ -47,19 +46,18 @@ const monoStyle: React.CSSProperties = {
 }
 
 export default function Footer() {
-  const isMobile = useIsMobile()
   return (
     <footer
+      className="site-footer"
       style={{
-        padding: isMobile ? "40px 20px 40px 20px" : "40px 40px 40px 40px",
         background: "#FDFBFA",
         borderTop: "1px solid rgba(0,0,0,0.15)",
       }}
     >
       <div
+        className="footer-grid"
         style={{
           display: "grid",
-          gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr",
           gap: "40px",
           alignItems: "stretch",
         }}
@@ -117,10 +115,10 @@ export default function Footer() {
           >
             {EMAIL}
           </a>
-          <span style={{ ...monoStyle, marginTop: isMobile ? "40px" : "80px" }}>LAST PUSH — MAY 2026</span>
+          <span className="footer-lastpush" style={monoStyle}>LAST PUSH — MAY 2026</span>
 
           {/* Pushed to bottom of right column, baseline-aligned with Resume on left */}
-          <span style={{ ...monoStyle, marginTop: isMobile ? "12px" : "auto", textAlign: isMobile ? "left" : "right" }}>
+          <span className="footer-builtby" style={monoStyle}>
             BUILT BY KAYNA HUANG
           </span>
         </div>

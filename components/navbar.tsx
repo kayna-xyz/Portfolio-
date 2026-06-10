@@ -1,7 +1,6 @@
 "use client"
 
 import Link from "next/link"
-import { useIsMobile } from "@/hooks/use-mobile"
 
 const TWK = "var(--font-twk), system-ui, -apple-system, sans-serif"
 
@@ -11,14 +10,13 @@ const LINKS = [
 ]
 
 export default function Navbar() {
-  const isMobile = useIsMobile()
   return (
     <nav
+      className="site-nav"
       style={{
         display: "flex",
         alignItems: "center",
         justifyContent: "space-between",
-        padding: isMobile ? "16px 20px" : "20px 40px",
         background: "#FDFBFA",
         borderBottom: "1px solid rgba(0,0,0,0.15)",
       }}
@@ -36,7 +34,7 @@ export default function Navbar() {
         KAYNA HUANG
       </Link>
 
-      <div style={{ display: "flex", gap: isMobile ? "20px" : "24px" }}>
+      <div className="site-nav-links" style={{ display: "flex" }}>
         {LINKS.map((l) => (
           <Link
             key={l.label}

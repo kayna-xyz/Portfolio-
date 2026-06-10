@@ -1,7 +1,5 @@
 "use client"
 
-import { useIsMobile } from "@/hooks/use-mobile"
-
 const PT = "var(--font-pt-serif), 'Georgia', serif"
 const TWK = "var(--font-twk), system-ui, -apple-system, sans-serif"
 
@@ -12,21 +10,21 @@ const SOCIAL = [
 ]
 
 export default function HeroSection() {
-  const isMobile = useIsMobile()
-  // Mobile: hero is omitted entirely — nav flows straight into the project list.
-  if (isMobile) return null
+  // Mobile: hero is omitted entirely (via the `.hero-section` CSS media query)
+  // — nav flows straight into the project list. No JS detection, so no flash.
   return (
     <section
+      className="hero-section"
       style={{
-        padding: isMobile ? "64px 20px 24px 20px" : "160px 40px 0 40px",
+        padding: "160px 40px 0 40px",
         background: "#FDFBFA",
       }}
     >
       <div
         style={{
           display: "grid",
-          gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr",
-          gap: isMobile ? "24px" : "40px",
+          gridTemplateColumns: "1fr 1fr",
+          gap: "40px",
           alignItems: "start",
         }}
       >
@@ -47,8 +45,7 @@ export default function HeroSection() {
           <em style={{ fontStyle: "italic" }}>product designer who builds.</em>
         </h1>
 
-        {/* Right: intro paragraph + social column — desktop only (hidden on mobile) */}
-        {!isMobile && (
+        {/* Right: intro paragraph + social column */}
         <div
           style={{
             display: "flex",
@@ -94,7 +91,6 @@ export default function HeroSection() {
             ))}
           </div>
         </div>
-        )}
       </div>
 
       <style jsx>{`

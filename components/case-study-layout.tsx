@@ -5,7 +5,6 @@ import Image from "next/image"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
 import Navbar from "@/components/navbar"
-import { useIsMobile } from "@/hooks/use-mobile"
 
 const TWK = "var(--font-twk), system-ui, -apple-system, sans-serif"
 const MONO = "var(--font-reddit-mono), ui-monospace, monospace"
@@ -30,7 +29,6 @@ const SOCIAL = [
 
 export function CaseStudyLayout({ navItems, children }: Props) {
   const router = useRouter()
-  const isMobile = useIsMobile()
   const [active, setActive] = useState(navItems[0]?.id ?? "")
   const sectionRefs = useRef<Record<string, HTMLElement | null>>({})
 
@@ -56,25 +54,17 @@ export function CaseStudyLayout({ navItems, children }: Props) {
     <div className="page-fade-in" style={{ minHeight: "100vh", background: "#FDFBFA", display: "flex", flexDirection: "column" }}>
       <Navbar />
 
-      <main
-        style={{
-          flex: 1,
-          paddingTop: isMobile ? "40px" : "58px",
-          paddingBottom: isMobile ? "64px" : "80px",
-          paddingLeft: isMobile ? "20px" : "40px",
-          paddingRight: isMobile ? "20px" : "40px",
-        }}
-      >
+      <main className="cs-main" style={{ flex: 1 }}>
         <div
+          className="cs-grid"
           style={{
             display: "grid",
-            gridTemplateColumns: isMobile ? "1fr" : "repeat(16, 1fr)",
             columnGap: "0",
           }}
         >
           {/* ── Sidebar: cols 1–2, sticky on desktop. On mobile: back link only, at top ── */}
-          <nav style={{ gridColumn: isMobile ? "auto" : "1 / span 2" }}>
-            <div style={{ position: isMobile ? "static" : "sticky", top: "58px" }}>
+          <nav className="cs-sidebar">
+            <div className="cs-sidebar-inner">
             <button
               onClick={() => router.push("/")}
               style={{
@@ -86,45 +76,42 @@ export function CaseStudyLayout({ navItems, children }: Props) {
                 border: "none",
                 cursor: "pointer",
                 padding: 0,
-                marginBottom: isMobile ? "24px" : "80px",
                 display: "block",
                 textAlign: "left",
               }}
-              className="cs-back"
+              className="cs-back cs-back-btn"
             >
               ← Index
             </button>
 
-            {!isMobile && (
-              <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
-                {navItems.map(({ id, label }) => (
-                  <button
-                    key={id}
-                    onClick={() => scrollTo(id)}
-                    style={{
-                      fontFamily: TWK,
-                      fontWeight: 400,
-                      fontSize: "16px",
-                      color: active === id ? MEDIUM : MUTED,
-                      background: "none",
-                      border: "none",
-                      cursor: "pointer",
-                      padding: 0,
-                      textAlign: "left",
-                      transition: "color 150ms ease",
-                    }}
-                    className="cs-index-item"
-                  >
-                    {label}
-                  </button>
-                ))}
-              </div>
-            )}
+            <div className="cs-index" style={{ flexDirection: "column", gap: "12px" }}>
+              {navItems.map(({ id, label }) => (
+                <button
+                  key={id}
+                  onClick={() => scrollTo(id)}
+                  style={{
+                    fontFamily: TWK,
+                    fontWeight: 400,
+                    fontSize: "16px",
+                    color: active === id ? MEDIUM : MUTED,
+                    background: "none",
+                    border: "none",
+                    cursor: "pointer",
+                    padding: 0,
+                    textAlign: "left",
+                    transition: "color 150ms ease",
+                  }}
+                  className="cs-index-item"
+                >
+                  {label}
+                </button>
+              ))}
+            </div>
             </div>
           </nav>
 
           {/* ── Content: cols 5–12 on desktop (centered), full width on mobile ── */}
-          <div style={{ gridColumn: isMobile ? "auto" : "5 / span 8", minWidth: 0 }}>
+          <div className="cs-content" style={{ minWidth: 0 }}>
             {children}
           </div>
         </div>
@@ -132,15 +119,12 @@ export function CaseStudyLayout({ navItems, children }: Props) {
 
       {/* ── Simple footer ── */}
       <footer
+        className="cs-footer"
         style={{
-          padding: isMobile ? "20px 20px" : "20px 40px",
           background: "#FDFBFA",
           borderTop: "1px solid rgba(0,0,0,0.15)",
           display: "flex",
-          flexDirection: isMobile ? "column" : "row",
-          alignItems: isMobile ? "flex-start" : "center",
           justifyContent: "space-between",
-          gap: isMobile ? "16px" : "0",
         }}
       >
         <span
