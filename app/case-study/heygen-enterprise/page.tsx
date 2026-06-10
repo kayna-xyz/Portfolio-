@@ -1,6 +1,6 @@
 "use client"
 
-import { CaseStudyLayout, CSTitle, CSSubtitle, CSCover, CSHeading, CSBody, CSLabel, CSSection, CSMeta, NavItem } from "@/components/case-study-layout"
+import { CaseStudyLayout, CSVideo, CSTitle, CSSubtitle, CSCover, CSHeading, CSBody, CSLabel, CSSection, CSMeta, NavItem } from "@/components/case-study-layout"
 
 const TWK = "var(--font-twk), system-ui, -apple-system, sans-serif"
 const MONO = "var(--font-reddit-mono), ui-monospace, monospace"
@@ -87,7 +87,7 @@ export default function HeyGenCaseStudy() {
 
       <CSTitle>HeyGen, Forbes AI 50, App Design</CSTitle>
       <CSSubtitle>Architecting a seamless AI video experience for enterprise-scale and consumer communication.</CSSubtitle>
-      <CSCover src="/heygen-cover.png" alt="HeyGen cover" />
+      <CSCover src="/heygen-cover.png" alt="HeyGen cover" width={1476} height={880} />
       <CSMeta items={enterpriseMeta} />
 
       <CSSection id="overview">
@@ -125,21 +125,21 @@ export default function HeyGenCaseStudy() {
         <CSLabel>Solution 1</CSLabel>
         <CSHeading>Growth Design: Navigation Bar &amp; Pop-Ups</CSHeading>
         <CSBody>Reorganized the navigation around high-frequency tasks and surfaced AI video progress and promotions directly inside the interaction flow.</CSBody>
-        <video src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/HeyGen_Navi%20Bar-4jZ9ORTWxokc3OM5fKa12BoFVWKDTP.mp4" autoPlay loop muted playsInline style={{ width: "100%", borderRadius: "12px", border: "1px solid rgba(0,0,0,0.15)", boxSizing: "border-box", marginTop: "40px" }} />
+        <CSVideo src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/HeyGen_Navi%20Bar-4jZ9ORTWxokc3OM5fKa12BoFVWKDTP.mp4" style={{ width: "100%", borderRadius: "12px", border: "1px solid rgba(0,0,0,0.15)", boxSizing: "border-box", marginTop: "40px" }} />
       </CSSection>
 
       <CSSection id="solution-2">
         <CSLabel>Solution 2</CSLabel>
         <CSHeading>Growth Design: Enterprise CRM Page</CSHeading>
         <CSBody>Redesigned the Apps page with clearer categories and components to surface key CRM integrations and recommended workflows.</CSBody>
-        <video src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/heygen_crm%20page-ois3xAUTRDaoAy6QOE8tN5Bl2cA0L7.mp4" autoPlay loop muted playsInline style={{ width: "100%", borderRadius: "12px", border: "1px solid rgba(0,0,0,0.15)", boxSizing: "border-box", marginTop: "40px" }} />
+        <CSVideo src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/heygen_crm%20page-ois3xAUTRDaoAy6QOE8tN5Bl2cA0L7.mp4" style={{ width: "100%", borderRadius: "12px", border: "1px solid rgba(0,0,0,0.15)", boxSizing: "border-box", marginTop: "40px" }} />
       </CSSection>
 
       <CSSection id="solution-3">
         <CSLabel>Solution 3</CSLabel>
         <CSHeading>UX Optimization: Real-Time AI Avatar</CSHeading>
         <CSBody>Audited, optimized and redefined LiveAvatar's UX states — Connecting, Listening, Processing, Speaking — and multimodal inputs across text, voice, and future video formats.</CSBody>
-        <video src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/1-zViGi3ImAFYxukQjFloFIargpUWyjy.mp4" autoPlay loop muted playsInline style={{ width: "100%", borderRadius: "12px", border: "1px solid rgba(0,0,0,0.15)", boxSizing: "border-box", marginTop: "40px" }} />
+        <CSVideo src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/1-zViGi3ImAFYxukQjFloFIargpUWyjy.mp4" style={{ width: "100%", borderRadius: "12px", border: "1px solid rgba(0,0,0,0.15)", boxSizing: "border-box", marginTop: "40px" }} />
       </CSSection>
 
       <CSSection id="the-outcome">
@@ -186,7 +186,7 @@ export default function HeyGenCaseStudy() {
         <CSLabel>Solution</CSLabel>
         <CSHeading>Video Studio — Color Editor</CSHeading>
         <CSBody>Redesigned the color picker, balancing full HSB flexibility with preset simplicity for HeyGen&apos;s non-expert mobile users.</CSBody>
-        <video src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/mobilecolor-55icN1MdXqdnZb92HbuZdPrqed80IV.mp4" autoPlay loop muted playsInline style={{ width: "100%", borderRadius: "12px", border: "1px solid rgba(0,0,0,0.15)", boxSizing: "border-box", marginTop: "40px" }} />
+        <CSVideo src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/mobilecolor-55icN1MdXqdnZb92HbuZdPrqed80IV.mp4" style={{ width: "100%", borderRadius: "12px", border: "1px solid rgba(0,0,0,0.15)", boxSizing: "border-box", marginTop: "40px" }} />
       </CSSection>
 
       <CSSection id="mobile-the-outcome">

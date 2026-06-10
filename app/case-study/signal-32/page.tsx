@@ -1,6 +1,6 @@
 "use client"
 
-import { CaseStudyLayout, CSTitle, CSSubtitle, CSCover, CSHeading, CSSubheading, CSBody, CSLabel, CSSection, CSMeta, NavItem } from "@/components/case-study-layout"
+import { CaseStudyLayout, CSVideo, CSTitle, CSSubtitle, CSCover, CSHeading, CSSubheading, CSBody, CSLabel, CSSection, CSMeta, NavItem } from "@/components/case-study-layout"
 
 const navItems: NavItem[] = [
   { id: "overview",    label: "Overview" },
@@ -37,7 +37,7 @@ export default function Signal32CaseStudy() {
         <CSLabel>Context</CSLabel>
         <CSHeading>Do you need an internal tool to quickly validate your intuition?</CSHeading>
         <CSBody>I developed Signal-32, which compiles mainstream VC evaluation criteria for AI startups — team background, research depth, product execution, data and distribution, and AI competitive advantages — enabling anyone to swiftly assess whether the person in front of you is worth investing in.</CSBody>
-        <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Screenshot%202026-02-25%20at%2021.42.15-f97GOJiNgZSjQh8b7REfuEWt22IdRp.png" alt="Investment Decision Mind Map" style={{ width: "100%", borderRadius: "8px", marginBottom: "8px" }} />
+        <img loading="lazy" src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Screenshot%202026-02-25%20at%2021.42.15-f97GOJiNgZSjQh8b7REfuEWt22IdRp.png" alt="Investment Decision Mind Map" style={{ width: "100%", borderRadius: "8px", marginBottom: "8px" }} />
         <p style={{ fontFamily: PT, fontSize: "14px", color: "#9A9A99", textAlign: "center", marginBottom: "0" }}>Mind map: brainstorming the 32 factors that shape an investment decision across four dimensions.</p>
       </CSSection>
 
@@ -62,16 +62,16 @@ export default function Signal32CaseStudy() {
         <CSLabel>Solution</CSLabel>
         <CSHeading>Step 1. A 32-question assessment framework.</CSHeading>
         <CSBody>I extracted investment insights from VC literature and blogs, then condensed them into four major dimensions. Each dimension contains eight questions, totaling 32 quantitative questions scored on a 1–5 point scale — minimizing vague adjectives. Each question maps to a specific piece of publicly available information (founder's thesis, GitHub commits, early customer case studies), reducing purely subjective scoring.</CSBody>
-        <video src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/questionssignal-32-o36zN85INFxhe8l4sQs1dpmyiN8VgM.mp4" autoPlay loop muted playsInline style={{ width: "100%", borderRadius: "8px", marginBottom: "8px" }} />
+        <CSVideo src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/questionssignal-32-o36zN85INFxhe8l4sQs1dpmyiN8VgM.mp4" style={{ width: "100%", borderRadius: "8px", marginBottom: "8px" }} />
         <p style={{ fontFamily: PT, fontSize: "14px", color: "#9A9A99", textAlign: "center", marginBottom: "32px" }}>Sample questions from the Team Background section of the assessment framework.</p>
 
         <CSHeading>Step 2. Excellence comes from comparison.</CSHeading>
         <CSBody>I selected 24 AI-native companies that demonstrated outstanding early performance — spanning model layers, application layers, and infrastructure. Using only publicly available information from their early stages, I applied the same 32-question assessment to each founding team and product. This yielded a distribution of "success samples": identifying which dimensions consistently scored high, where significant variations occurred, and which combinations showed strong correlations.</CSBody>
         <CSBody style={{ fontStyle: "italic" }}>A raw score in isolation is meaningless. A team scoring 4.2 tells you nothing — but a team scoring 4.2 when the benchmark median is 4.6 tells you everything. The value of the benchmark table lies not in the numbers themselves, but in the context they create for comparison.</CSBody>
-        <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Screenshot%202026-02-25%20at%2021.44.28-lWe8IzsNmXkGrfw1bQZ4gQQd1u4wnh.png" alt="24 Sample Company Scores" style={{ width: "100%", borderRadius: "8px", marginBottom: "8px" }} />
+        <img loading="lazy" src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Screenshot%202026-02-25%20at%2021.44.28-lWe8IzsNmXkGrfw1bQZ4gQQd1u4wnh.png" alt="24 Sample Company Scores" style={{ width: "100%", borderRadius: "8px", marginBottom: "8px" }} />
         <p style={{ fontFamily: PT, fontSize: "14px", color: "#9A9A99", textAlign: "center", marginBottom: "32px" }}>Scores derived from publicly available early-stage data, analyzed through deep search by trusted AI agents.</p>
 
-        <video src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Google%20Chrome-PR77RBIdDfEs1zKLgn0EuDKBOrgdgO.mp4" autoPlay loop muted playsInline style={{ width: "100%", borderRadius: "8px", marginBottom: "8px" }} />
+        <CSVideo src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Google%20Chrome-PR77RBIdDfEs1zKLgn0EuDKBOrgdgO.mp4" style={{ width: "100%", borderRadius: "8px", marginBottom: "8px" }} />
         <p style={{ fontFamily: PT, fontSize: "14px", color: "#9A9A99", textAlign: "center" }}>Signal-32 live demo: entering a startup and receiving a scored breakdown with benchmark comparison.</p>
       </CSSection>
 

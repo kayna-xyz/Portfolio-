@@ -1,6 +1,7 @@
 "use client"
 
 import { useEffect, useRef, useState } from "react"
+import Image from "next/image"
 import { useIsMobile } from "@/hooks/use-mobile"
 
 const MONO = "var(--font-reddit-mono), ui-monospace, monospace"
@@ -15,6 +16,8 @@ function getHoverLabel(href?: string): string {
 interface Project {
   cover: string
   isVideo?: boolean
+  coverW?: number
+  coverH?: number
   category: string
   title: string
   tag?: string
@@ -25,6 +28,8 @@ interface Project {
 const PROJECTS: Project[] = [
   {
     cover: "/heygen-cover.png",
+    coverW: 1476,
+    coverH: 880,
     category: "PRODUCT DESIGNER · INTERNSHIP · SUMMER 2025",
     title: "HeyGen, AI Avatar SaaS",
     tag: "Forbes AI 50",
@@ -33,6 +38,8 @@ const PROJECTS: Project[] = [
   },
   {
     cover: "/lluna-cover.png",
+    coverW: 1750,
+    coverH: 1312,
     category: "FULL STACK ENG · MAR 2026 – MAY 2026",
     title: "Lluna, Skincare Consultant’s Capilot",
     tag: "AI SaaS",
@@ -41,12 +48,16 @@ const PROJECTS: Project[] = [
   },
   {
     cover: "/perplexity-cover.png",
+    coverW: 914,
+    coverH: 632,
     category: "PRODUCT DESIGNER · PERSONAL PROJECT",
     title: "Perplexity Travel Redesign",
     description: "Redesigning Perplexity Travel experience.",
   },
   {
     cover: "/opusclip-cover.png",
+    coverW: 1642,
+    coverH: 1138,
     category: "PRODUCT DESIGNER · CONTRACT · JUNE 2026 – PRESENT",
     title: "OpusClip, Agent Opus",
     tag: "SeriesB",
@@ -71,11 +82,26 @@ const PROJECTS: Project[] = [
   },
 ]
 
-function Cover({ src, isVideo, alt, label }: { src: string; isVideo?: boolean; alt: string; label: string }) {
+function Cover({ src, isVideo, alt, label, width, height, priority }: { src: string; isVideo?: boolean; alt: string; label: string; width?: number; height?: number; priority?: boolean }) {
   const [hovered, setHovered] = useState(false)
+  const [videoReady, setVideoReady] = useState(false)
   const wrapperRef = useRef<HTMLDivElement>(null)
   const labelRef = useRef<HTMLSpanElement>(null)
   const lastClient = useRef({ x: 0, y: 0 })
+
+  // Defer loading the video until it's near the viewport (rootMargin loads it
+  // ~400px early so it's ready before it scrolls into view — no eager download).
+  useEffect(() => {
+    if (!isVideo || videoReady) return
+    const el = wrapperRef.current
+    if (!el) return
+    const io = new IntersectionObserver(
+      (entries) => { if (entries.some((e) => e.isIntersecting)) { setVideoReady(true); io.disconnect() } },
+      { rootMargin: "400px" }
+    )
+    io.observe(el)
+    return () => io.disconnect()
+  }, [isVideo, videoReady])
 
   const updateLabelPosition = () => {
     if (!wrapperRef.current || !labelRef.current) return
@@ -123,10 +149,22 @@ function Cover({ src, isVideo, alt, label }: { src: string; isVideo?: boolean; a
       }}
     >
       {isVideo ? (
-        <video src={src} autoPlay loop muted playsInline style={mediaStyle} />
+        videoReady ? (
+          <video src={src} autoPlay loop muted playsInline preload="auto" style={mediaStyle} />
+        ) : (
+          // Reserve approximate space so loading the video doesn't shift the layout
+          <div style={{ width: "100%", aspectRatio: "16 / 10" }} />
+        )
       ) : (
-        // eslint-disable-next-line @next/next/no-img-element
-        <img src={src} alt={alt} style={mediaStyle} />
+        <Image
+          src={src}
+          alt={alt}
+          width={width ?? 1200}
+          height={height ?? 800}
+          sizes="(max-width: 768px) 100vw, 50vw"
+          priority={priority}
+          style={mediaStyle}
+        />
       )}
       <div
         style={{
@@ -161,10 +199,10 @@ function Cover({ src, isVideo, alt, label }: { src: string; isVideo?: boolean; a
   )
 }
 
-function Card({ p, showDescription = true, isMobile = false }: { p: Project; showDescription?: boolean; isMobile?: boolean }) {
+function Card({ p, showDescription = true, isMobile = false, priority = false }: { p: Project; showDescription?: boolean; isMobile?: boolean; priority?: boolean }) {
   const inner = (
     <>
-      <Cover src={p.cover} isVideo={p.isVideo} alt={p.title} label={getHoverLabel(p.href)} />
+      <Cover src={p.cover} isVideo={p.isVideo} alt={p.title} label={getHoverLabel(p.href)} width={p.coverW} height={p.coverH} priority={priority} />
 
       <p
         className="cap-trim"
@@ -281,7 +319,7 @@ export default function WorkSection() {
         // Mobile: single source-ordered column, no descriptions
         <div style={{ display: "flex", flexDirection: "column", gap: "40px" }}>
           {PROJECTS.map((p) => (
-            <Card key={p.title} p={p} showDescription={false} isMobile />
+            <Card key={p.title} p={p} showDescription={false} isMobile priority={p === PROJECTS[0]} />
           ))}
         </div>
       ) : (
@@ -294,7 +332,7 @@ export default function WorkSection() {
         >
           <div style={{ display: "flex", flexDirection: "column", gap: "40px" }}>
             {PROJECTS.filter((_, i) => i % 2 === 0).map((p) => (
-              <Card key={p.title} p={p} />
+              <Card key={p.title} p={p} priority={p === PROJECTS[0]} />
             ))}
           </div>
           <div style={{ display: "flex", flexDirection: "column", gap: "40px" }}>

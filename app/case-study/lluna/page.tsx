@@ -1,6 +1,6 @@
 "use client"
 
-import { CaseStudyLayout, CSTitle, CSSubtitle, CSCover, CSHeading, CSSubheading, CSBody, CSLabel, CSSection, CSMeta, NavItem } from "@/components/case-study-layout"
+import { CaseStudyLayout, CSVideo, CSTitle, CSSubtitle, CSCover, CSHeading, CSSubheading, CSBody, CSLabel, CSSection, CSMeta, NavItem } from "@/components/case-study-layout"
 
 const navItems: NavItem[] = [
   { id: "overview",  label: "Overview" },
@@ -26,7 +26,7 @@ export default function LlunaAICaseStudy() {
     <CaseStudyLayout navItems={navItems}>
       <CSTitle>Lluna, AI Aesthetic Consultant</CSTitle>
       <CSSubtitle>Know before you sit in the chair.</CSSubtitle>
-      <CSCover src="/lluna-cover.png" alt="Lluna cover" />
+      <CSCover src="/lluna-cover.png" alt="Lluna cover" width={1750} height={1312} />
       <CSMeta items={meta} />
 
       <CSSection id="overview">
@@ -63,7 +63,7 @@ export default function LlunaAICaseStudy() {
       <CSSection id="audience">
         <CSLabel>Audience</CSLabel>
         <CSHeading>Who I designed for.</CSHeading>
-        <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Screenshot%202026-02-27%20at%2000.16.02-Bt9rvDLMU2VoQeAy3UtBTWrjb0RmE4.png" alt="Audience mapping" style={{ width: "100%", borderRadius: "8px", marginBottom: "16px" }} />
+        <img loading="lazy" src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Screenshot%202026-02-27%20at%2000.16.02-Bt9rvDLMU2VoQeAy3UtBTWrjb0RmE4.png" alt="Audience mapping" style={{ width: "100%", borderRadius: "8px", marginBottom: "16px" }} />
         <CSBody>Two audiences, one product. On the user side: three client archetypes — the anxious first-timer, the informed repeater, and the optimizer — each with distinct anxieties Lluna resolves through transparency, memory, and evidence-backed advice. On the business side: clinics dealing with high acquisition cost, rampant churn, rushed consultations, and suboptimal selling — Lluna answers with basket price lift, dynamic pricing inside the AI flow, and structured client briefs sent before every appointment.</CSBody>
       </CSSection>
 
@@ -71,19 +71,19 @@ export default function LlunaAICaseStudy() {
         <CSLabel>Solutions</CSLabel>
 
         <CSHeading>Solution 01 — AI Consultant</CSHeading>
-        <video src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/process-demand-Vf7Fh3dqH88YVvIGIcP3GewwyP74L7.mp4" autoPlay loop muted playsInline style={{ width: "100%", borderRadius: "8px", marginBottom: "8px" }} />
+        <CSVideo src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/process-demand-Vf7Fh3dqH88YVvIGIcP3GewwyP74L7.mp4" style={{ width: "100%", borderRadius: "8px", marginBottom: "8px" }} />
         <p style={{ fontFamily: PT, fontSize: "14px", color: "#9A9A99", textAlign: "center", marginBottom: "16px" }}>Users first describe their needs to the AI, then select individual or clinic path.</p>
         <CSBody>Not a chatbot. A multi-turn advisor with memory and clinical reasoning. Before recommending anything, it confirms: past treatments, allergies, budget, pain tolerance. Every response follows: acknowledge, context, recommendation, next step.</CSBody>
 
         <CSHeading>Solution 02 — Clinic Code</CSHeading>
-        <video src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/codestate-DfpjXNFa4IzzwcSnzyJ31GU3m2wR0u.mp4" autoPlay loop muted playsInline style={{ width: "100%", maxWidth: "450px", borderRadius: "8px", marginBottom: "8px" }} />
+        <CSVideo src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/codestate-DfpjXNFa4IzzwcSnzyJ31GU3m2wR0u.mp4" style={{ width: "100%", maxWidth: "450px", borderRadius: "8px", marginBottom: "8px" }} />
         <p style={{ fontFamily: PT, fontSize: "14px", color: "#9A9A99", marginBottom: "16px" }}>Error state handling: wrong clinic code entry and re-entry flow.</p>
         <CSBody>Each clinic has a code. Client enters the code, Lluna connects to their menu. Recommendations pull from what the clinic actually stocks, at real prices. Combo suggestions are built around their inventory. Dynamic pricing and promotions surface naturally inside the recommendation flow — not on a separate deals page.</CSBody>
 
         <CSHeading>Solution 03 — The Report</CSHeading>
-        <video src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/onboarding-QnmYhMJkGEL6XVPUad0rmGNsxJuGGJ.mp4" autoPlay loop muted playsInline style={{ width: "100%", borderRadius: "8px", marginBottom: "8px" }} />
+        <CSVideo src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/onboarding-QnmYhMJkGEL6XVPUad0rmGNsxJuGGJ.mp4" style={{ width: "100%", borderRadius: "8px", marginBottom: "8px" }} />
         <p style={{ fontFamily: PT, fontSize: "14px", color: "#9A9A99", textAlign: "center", marginBottom: "16px" }}>AI onboarding guidance: walking users through the report for the first time.</p>
-        <video src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/ask%20ai%20in%20report-ZPjpbHZbT9PP8nMuLTK6PvmdZnY8TD.mp4" autoPlay loop muted playsInline style={{ width: "100%", borderRadius: "8px", marginBottom: "8px" }} />
+        <CSVideo src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/ask%20ai%20in%20report-ZPjpbHZbT9PP8nMuLTK6PvmdZnY8TD.mp4" style={{ width: "100%", borderRadius: "8px", marginBottom: "8px" }} />
         <p style={{ fontFamily: PT, fontSize: "14px", color: "#9A9A99", textAlign: "center", marginBottom: "16px" }}>Underline any keyword in the report to ask AI, e.g. "When was Kybella published?"</p>
         <CSBody>The report is a conversion surface, not just a deliverable. Full face assessment. Basic plan vs. AI-optimized plan. Synergy callouts throughout, each one grounded in clinical rationale, not bundling logic.</CSBody>
         <blockquote style={{ borderLeft: "2px solid #000000", paddingLeft: "20px", marginBottom: "12px" }}>

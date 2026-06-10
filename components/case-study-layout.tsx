@@ -1,6 +1,7 @@
 "use client"
 
 import { useEffect, useRef, useState } from "react"
+import Image from "next/image"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
 import Navbar from "@/components/navbar"
@@ -214,19 +215,57 @@ export function CSSubtitle({ children }: { children: React.ReactNode }) {
   )
 }
 
-export function CSCover({ src, alt, isVideo }: { src: string; alt?: string; isVideo?: boolean }) {
-  const style: React.CSSProperties = {
-    width: "100%",
-    height: "auto",
-    display: "block",
+// Lazy-loaded autoplay video: defers the download until ~600px before the
+// element scrolls into view, so a page with many videos doesn't fetch them all
+// at once on load. Renders a zero-height placeholder until then.
+export function CSVideo({ src, style }: { src: string; style?: React.CSSProperties }) {
+  const [ready, setReady] = useState(false)
+  const ref = useRef<HTMLDivElement | HTMLVideoElement | null>(null)
+  useEffect(() => {
+    if (ready) return
+    const el = ref.current
+    if (!el) return
+    const io = new IntersectionObserver(
+      (entries) => { if (entries.some((e) => e.isIntersecting)) { setReady(true); io.disconnect() } },
+      { rootMargin: "600px" }
+    )
+    io.observe(el)
+    return () => io.disconnect()
+  }, [ready])
+  if (!ready) return <div ref={ref as React.Ref<HTMLDivElement>} aria-hidden style={{ width: "100%", height: 0 }} />
+  return (
+    <video
+      ref={ref as React.Ref<HTMLVideoElement>}
+      src={src}
+      autoPlay
+      loop
+      muted
+      playsInline
+      preload="auto"
+      style={{ width: "100%", display: "block", ...style }}
+    />
+  )
+}
+
+export function CSCover({ src, alt, isVideo, width, height }: { src: string; alt?: string; isVideo?: boolean; width?: number; height?: number }) {
+  const frame: React.CSSProperties = {
     borderRadius: "12px",
     border: "1px solid rgba(0,0,0,0.15)",
     boxSizing: "border-box",
     marginTop: "40px",
   }
-  if (isVideo) return <video src={src} autoPlay loop muted playsInline style={style} />
-  // eslint-disable-next-line @next/next/no-img-element
-  return <img src={src} alt={alt ?? ""} style={style} />
+  if (isVideo) return <CSVideo src={src} style={frame} />
+  return (
+    <Image
+      src={src}
+      alt={alt ?? ""}
+      width={width ?? 1600}
+      height={height ?? 1000}
+      sizes="(max-width: 768px) 100vw, 50vw"
+      priority
+      style={{ width: "100%", height: "auto", display: "block", ...frame }}
+    />
+  )
 }
 
 export function CSMeta({ items }: { items: { label: string; value: string }[] }) {
