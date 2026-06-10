@@ -15,6 +15,7 @@ function getHoverLabel(href?: string): string {
 interface Project {
   cover: string
   isVideo?: boolean
+  poster?: string
   coverW?: number
   coverH?: number
   category: string
@@ -63,8 +64,11 @@ const PROJECTS: Project[] = [
     description: "Designing an agent powered editor inside of OpusClip, a video clipping SaaS",
   },
   {
-    cover: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Google%20Chrome-PR77RBIdDfEs1zKLgn0EuDKBOrgdgO.mp4",
+    cover: "/claude-cover.mp4",
+    poster: "/claude-cover-poster.webp",
     isVideo: true,
+    coverW: 1280,
+    coverH: 870,
     category: "PRODUCT DESIGNER / ENGINEERING · PERSONAL PROJECT",
     title: "Claude Mini App, VC Internal Tool",
     tag: "Top 25 AI Unicorns Benchmarked",
@@ -72,8 +76,11 @@ const PROJECTS: Project[] = [
     href: "/case-study/signal-32",
   },
   {
-    cover: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/fillercover-zeW22rOZkdtjGHesbavcfiMpuPpPpX.mp4",
+    cover: "/filler-cover.mp4",
+    poster: "/filler-cover-poster.webp",
     isVideo: true,
+    coverW: 1280,
+    coverH: 870,
     category: "PRODUCT DESIGNER / ENGINEERING · PERSONAL PROJECTS",
     title: "FDA Filler Selector",
     tag: "Included 63+ Types of Fillers",
@@ -81,7 +88,7 @@ const PROJECTS: Project[] = [
   },
 ]
 
-function Cover({ src, isVideo, alt, label, width, height, priority }: { src: string; isVideo?: boolean; alt: string; label: string; width?: number; height?: number; priority?: boolean }) {
+function Cover({ src, isVideo, poster, alt, label, width, height, priority }: { src: string; isVideo?: boolean; poster?: string; alt: string; label: string; width?: number; height?: number; priority?: boolean }) {
   const [hovered, setHovered] = useState(false)
   const [videoReady, setVideoReady] = useState(false)
   const wrapperRef = useRef<HTMLDivElement>(null)
@@ -149,7 +156,12 @@ function Cover({ src, isVideo, alt, label, width, height, priority }: { src: str
     >
       {isVideo ? (
         videoReady ? (
-          <video src={src} autoPlay loop muted playsInline preload="auto" style={mediaStyle} />
+          // poster paints the first frame instantly; faststart-encoded src streams in
+          <video src={src} poster={poster} autoPlay loop muted playsInline preload="auto" style={mediaStyle} />
+        ) : poster ? (
+          // Show the lightweight poster until the video is near the viewport — the
+          // card never appears blank, and it reserves the exact layout space.
+          <Image src={poster} alt={alt} width={width ?? 1280} height={height ?? 870} sizes="(max-width: 768px) 100vw, 50vw" priority={priority} style={mediaStyle} />
         ) : (
           // Reserve approximate space so loading the video doesn't shift the layout
           <div style={{ width: "100%", aspectRatio: "16 / 10" }} />
@@ -201,7 +213,7 @@ function Cover({ src, isVideo, alt, label, width, height, priority }: { src: str
 function Card({ p, showDescription = true, isMobile = false, priority = false }: { p: Project; showDescription?: boolean; isMobile?: boolean; priority?: boolean }) {
   const inner = (
     <>
-      <Cover src={p.cover} isVideo={p.isVideo} alt={p.title} label={getHoverLabel(p.href)} width={p.coverW} height={p.coverH} priority={priority} />
+      <Cover src={p.cover} isVideo={p.isVideo} poster={p.poster} alt={p.title} label={getHoverLabel(p.href)} width={p.coverW} height={p.coverH} priority={priority} />
 
       <p
         className="cap-trim"
