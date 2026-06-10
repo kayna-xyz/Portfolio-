@@ -199,12 +199,17 @@ export function CSSubtitle({ children }: { children: React.ReactNode }) {
   )
 }
 
-// Lazy-loaded autoplay video: defers the download until ~600px before the
-// element scrolls into view, so a page with many videos doesn't fetch them all
-// at once on load. Renders a zero-height placeholder until then.
-export function CSVideo({ src, style }: { src: string; style?: React.CSSProperties }) {
+// Lazy-loaded autoplay video with an instant poster.
+//
+// - The `poster` (a tiny webp first-frame) paints immediately, so the slot is
+//   never blank and never shifts layout (the wrapper reserves the exact aspect
+//   ratio from width/height).
+// - The video itself is faststart-encoded and only fetched ~600px before it
+//   scrolls into view; once decoded it fades in over the poster — no jank.
+export function CSVideo({ src, poster, width, height, style }: { src: string; poster?: string; width?: number; height?: number; style?: React.CSSProperties }) {
   const [ready, setReady] = useState(false)
-  const ref = useRef<HTMLDivElement | HTMLVideoElement | null>(null)
+  const [playing, setPlaying] = useState(false)
+  const ref = useRef<HTMLDivElement | null>(null)
   useEffect(() => {
     if (ready) return
     const el = ref.current
@@ -216,29 +221,41 @@ export function CSVideo({ src, style }: { src: string; style?: React.CSSProperti
     io.observe(el)
     return () => io.disconnect()
   }, [ready])
-  if (!ready) return <div ref={ref as React.Ref<HTMLDivElement>} aria-hidden style={{ width: "100%", height: 0 }} />
+
+  const aspectRatio = width && height ? `${width} / ${height}` : undefined
+  const fill: React.CSSProperties = { position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", display: "block" }
+
   return (
-    <video
-      ref={ref as React.Ref<HTMLVideoElement>}
-      src={src}
-      autoPlay
-      loop
-      muted
-      playsInline
-      preload="auto"
-      style={{ width: "100%", display: "block", ...style }}
-    />
+    <div ref={ref} style={{ position: "relative", width: "100%", aspectRatio, overflow: "hidden", ...style }}>
+      {poster && (
+        // eslint-disable-next-line @next/next/no-img-element
+        <img src={poster} alt="" aria-hidden style={{ ...fill, opacity: playing ? 0 : 1, transition: "opacity 250ms ease" }} />
+      )}
+      {ready && (
+        <video
+          src={src}
+          poster={poster}
+          autoPlay
+          loop
+          muted
+          playsInline
+          preload="auto"
+          onPlaying={() => setPlaying(true)}
+          style={fill}
+        />
+      )}
+    </div>
   )
 }
 
-export function CSCover({ src, alt, isVideo, width, height }: { src: string; alt?: string; isVideo?: boolean; width?: number; height?: number }) {
+export function CSCover({ src, alt, isVideo, poster, width, height }: { src: string; alt?: string; isVideo?: boolean; poster?: string; width?: number; height?: number }) {
   const frame: React.CSSProperties = {
     borderRadius: "12px",
     border: "1px solid rgba(0,0,0,0.15)",
     boxSizing: "border-box",
     marginTop: "40px",
   }
-  if (isVideo) return <CSVideo src={src} style={frame} />
+  if (isVideo) return <CSVideo src={src} poster={poster} width={width} height={height} style={frame} />
   return (
     <Image
       src={src}

@@ -47,9 +47,9 @@ export default function HeyGenMobileCaseStudy() {
           </ul>
           <div
             style={{ position: "relative", cursor: "pointer", marginTop: "16px" }}
-            onClick={() => setLightboxSrc("https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Frame%20145-LuONtjwHeLBDCKlU2QS5VFKflTMbAq.png")}
+            onClick={() => setLightboxSrc("/cs/heygen-mobile-frame.webp")}
           >
-            <img loading="lazy" src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Frame%20145-LuONtjwHeLBDCKlU2QS5VFKflTMbAq.png" alt="Competitive audit" style={{ width: "100%", borderRadius: "8px" }} />
+            <img loading="lazy" src="/cs/heygen-mobile-frame.webp" width={1600} height={2492} alt="Competitive audit" style={{ width: "100%", borderRadius: "8px" }} />
           </div>
           <p style={{ fontFamily: "var(--font-pt-serif), 'Georgia', serif", fontSize: "14px", color: "#9A9A99", marginTop: "8px", textAlign: "center", marginBottom: "0" }}>Competitive audit: HeyGen benchmarked against CapCut, Captions, and Hypic.</p>
         </CSSection>
@@ -73,10 +73,10 @@ export default function HeyGenMobileCaseStudy() {
           <CSLabel>Solution</CSLabel>
           <CSHeading>1. Navigation: from feature list to task-first hub.</CSHeading>
           <CSBody>I collaborated with senior designers to develop multiple navigation proposals, organize reviews, and drive the selection of the final direction. We reorganized the homepage hierarchy based on HEX data — creation and editing modules elevated to top priority, account and settings downgraded to secondary entry points.</CSBody>
-          <CSVideo src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/mobilenavi-flNVPbRymN8ldyYs0abpOO33xH7TkJ.mp4" style={{ width: "100%", borderRadius: "8px", marginBottom: "32px" }} />
+          <CSVideo src="/cs/mobilenavi.mp4" poster="/cs/mobilenavi-poster.webp" width={1280} height={960} style={{ width: "100%", borderRadius: "8px", marginBottom: "32px" }} />
           <CSHeading>2. Video Studio — Color Editor</CSHeading>
           <CSBody>I redesigned the color picker referencing widely acclaimed mobile editors like Hypic, exploring multiple options from simple preset palettes to full HSB sliders, and tailored the final design to balance flexibility with HeyGen's non-expert user base.</CSBody>
-          <CSVideo src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/mobilecolor-55icN1MdXqdnZb92HbuZdPrqed80IV.mp4" style={{ width: "100%", borderRadius: "8px" }} />
+          <CSVideo src="/cs/mobilecolor.mp4" poster="/cs/mobilecolor-poster.webp" width={1280} height={960} style={{ width: "100%", borderRadius: "8px" }} />
         </CSSection>
 
         <CSSection id="the-outcome">
