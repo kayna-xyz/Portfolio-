@@ -13,5 +13,8 @@ node_modules/
 # Build artifacts
 tsconfig.tsbuildinfo
 
-# Claude Code local files
-.claude/
+# Claude Code local files — ignore everything except the versioned skills
+.claude/*
+!.claude/skills/
+# but keep machine-specific local settings out
+.claude/settings.local.json
