@@ -40,7 +40,7 @@ const PROJECTS: Project[] = [
     cover: "/lluna-cover.png",
     coverW: 1750,
     coverH: 1312,
-    category: "FULL STACK ENG · MAR 2026 – MAY 2026",
+    category: "ENGINEERING · MAR 2026 – MAY 2026",
     title: "Lluna, Skincare Consultant’s Capilot",
     tag: "AI SaaS",
     description: "Building an AI Capilot for uplifting skincare consultant’s revenue",
@@ -60,7 +60,7 @@ const PROJECTS: Project[] = [
     coverH: 1138,
     category: "PRODUCT DESIGNER · CONTRACT · JUNE 2026 – PRESENT",
     title: "OpusClip, Agent Opus",
-    tag: "SeriesB",
+    tag: "Series B",
     description: "Designing an agent powered editor inside of OpusClip, a video clipping SaaS",
   },
   {

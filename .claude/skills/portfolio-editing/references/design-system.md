@@ -16,7 +16,7 @@ All text on the site is `#000000` with one of these alpha values. **Never use pu
 |---|---|---|
 |`text-strong`|`#000000` at 75%|Titles. Highlights inside body text (bolded words like **friends** in the about page). Active/current item in the case study side index. Case-study meta-table labels (TIMELINE / ROLE / TEAM / TOOLS) and their values. The **"DESIGNED AND DEVELOPED BY KAYNA HUANG"** footer credit (about + case-study footers).|
 |`text-medium`|`#000000` at 50%|The currently-active section indicator in the case study side index.|
-|`text-muted`|`#000000` at 35%|Top navigation bar items (KAYNA HUANG wordmark, Blog / About). Body copy (all paragraph text in about and case studies). Mono labels (DESIGN, BEYOND DESIGN, TIMELINE, ROLE, TEAM, TOOLS, BUILDING PRODUCTS USED BY MILLIONS, the about-page section labels PRODUCT DESIGN / WHAT I THINK ABOUT / INTERESTS, project category lines like "PRODUCT DESIGNER · INTERNSHIP · SUMMER 2025"). Index items in the case study sidebar (non-active). Homepage footer system lines ("LAST PUSH — MAY 2026", "BUILT BY KAYNA HUANG"). The ↶ Back link. (Exception: the "DESIGNED AND DEVELOPED BY KAYNA HUANG" credit is 75% `text-strong`, not muted.)|
+|`text-muted`|`#000000` at 35%|Top navigation bar items (KAYNA HUANG wordmark, Blog / About). Body copy (all paragraph text in about and case studies). Mono labels (DESIGN, BEYOND DESIGN, TIMELINE, ROLE, TEAM, TOOLS, BUILDING PRODUCTS USED BY MILLIONS, the about-page section labels PRODUCT DESIGN / WHAT I THINK ABOUT / INTERESTS, project category lines like "PRODUCT DESIGNER · INTERNSHIP · SUMMER 2025"). Index items in the case study sidebar (non-active). Homepage footer system lines ("LAST PUSH, MAY 2026", "BUILT BY KAYNA HUANG"). The ↶ Back link. (Exception: the "DESIGNED AND DEVELOPED BY KAYNA HUANG" credit is 75% `text-strong`, not muted.)|
 
 ### Accent
 
@@ -40,7 +40,7 @@ Exactly three. Never add a fourth.
 |---|---|---|
 |**PT Serif**|Regular (400)|Homepage hero only — 48px size, with italic emphasis (e.g. "a _product designer who builds._").|
 |**TWK Lausanne**|400|All body copy. All running prose. All 24px titles (project names on the homepage, case-study titles and section headings). The KAYNA HUANG wordmark in the top-left nav (uppercase exception — sole wordmark use).|
-|**Reddit Mono**|Medium (500)|All other UPPERCASE labels, metadata, mono tags. Sidebar labels (DESIGN, BEYOND DESIGN, TIMELINE, etc.). Project category strings. Footer credit lines (LAST PUSH — MAY 2026, BUILT BY KAYNA HUANG). The ↶ Back glyph context.|
+|**Reddit Mono**|Medium (500)|All other UPPERCASE labels, metadata, mono tags. Sidebar labels (DESIGN, BEYOND DESIGN, TIMELINE, etc.). Project category strings. Footer credit lines (LAST PUSH, MAY 2026, BUILT BY KAYNA HUANG). The ↶ Back glyph context.|
 
 ### Size scale
 
@@ -61,6 +61,20 @@ Exactly three sizes. Never add a fourth. (**One documented exception:** mobile p
 
 PT Serif italic is used for emphasis inside the 48px hero only ("a _product designer who builds._"). Do not use italic on body copy.
 
+## Punctuation & copy
+
+- **Never use an em-dash (`—`) in rendered copy.** Use a comma instead (or a period / a
+  reworded sentence where a comma reads awkward). This applies everywhere the visitor sees
+  text: case-study headings and body, the homepage, the SEO `description` in
+  `app/layout.tsx`, footer system lines, tag labels. `" — "` becomes `", "` (drop the
+  surrounding spaces). Example: `LAST PUSH — MAY 2026` → `LAST PUSH, MAY 2026`;
+  `Menu — the whole price list` → `Menu, the whole price list`.
+- **Keep en-dashes (`–`) and arrows (`→`).** They carry meaning that a comma would break:
+  numeric ranges (`15–25%`, `8–10 steps`) and before/after pairs (`$80M → $100M+ ARR`).
+  Do not convert these.
+- **Code comments are exempt** — they aren't part of the rendered site, so an em-dash in a
+  `//` or `{/* */}` comment is fine and should be left as-is.
+
 ## Spacing scale
 
 Use **only** these values for padding, margin, and gap. Do not introduce new spacing values.
@@ -80,7 +94,7 @@ Use **only** these values for padding, margin, and gap. Do not introduce new spa
 Two values, used in specific places only:
 
 - **`12px`** — image covers (homepage project covers, case study cover image)
-- **`999px`** (full pill) — project tag pills only (e.g. "Forbes AI 50", "SeriesB", "AI SaaS")
+- **`999px`** (full pill) — project tag pills only (e.g. "Forbes AI 50", "Series B", "AI SaaS")
 
 Nothing else on the site has rounded corners — no buttons, no other containers, no cards, no input fields.
 

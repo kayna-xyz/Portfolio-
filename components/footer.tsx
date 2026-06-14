@@ -115,7 +115,7 @@ export default function Footer() {
           >
             {EMAIL}
           </a>
-          <span className="footer-lastpush" style={monoStyle}>LAST PUSH — MAY 2026</span>
+          <span className="footer-lastpush" style={monoStyle}>LAST PUSH, MAY 2026</span>
 
           {/* Pushed to bottom of right column, baseline-aligned with Resume on left */}
           <span className="footer-builtby" style={monoStyle}>

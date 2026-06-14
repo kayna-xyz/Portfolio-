@@ -5,7 +5,6 @@ import { CaseStudyLayout, CSVideo, CSTitle, CSSubtitle, CSCover, CSHeading, CSBo
 const TWK = "var(--font-twk), system-ui, -apple-system, sans-serif"
 const MONO = "var(--font-reddit-mono), ui-monospace, monospace"
 
-const STRONG = "rgba(0,0,0,0.75)"
 const MUTED = "rgba(0,0,0,0.35)"
 
 const navItems: NavItem[] = [
@@ -67,7 +66,7 @@ export default function HeyGenCaseStudy() {
         >
           <li>The sign-up-to-video path averages 8–10 steps for new users.</li>
           <li>LiveAvatar&apos;s fragmented entry points and weak status feedback hold down daily active users.</li>
-          <li>Enterprise governance — SSO, approval workflows, CRM/LMS integrations — is unclear to frontline users.</li>
+          <li>Enterprise governance, SSO, approval workflows, CRM/LMS integrations, is unclear to frontline users.</li>
         </ul>
       </CSSection>
 
@@ -88,17 +87,17 @@ export default function HeyGenCaseStudy() {
       <CSSection id="solution-3">
         <CSLabel>Solution 3</CSLabel>
         <CSHeading>UX Optimization: Real-Time AI Avatar</CSHeading>
-        <CSBody>Audited, optimized and redefined LiveAvatar's UX states — Connecting, Listening, Processing, Speaking — and multimodal inputs across text, voice, and future video formats.</CSBody>
+        <CSBody>Audited, optimized and redefined LiveAvatar's UX states, Connecting, Listening, Processing, Speaking, and multimodal inputs across text, voice, and future video formats.</CSBody>
         <CSVideo src="/cs/heygen-enterprise-iter.mp4" poster="/cs/heygen-enterprise-iter-poster.webp" width={1056} height={720} style={{ width: "100%", borderRadius: "12px", border: "1px solid rgba(0,0,0,0.15)", boxSizing: "border-box", marginTop: "40px" }} />
       </CSSection>
 
       <CSSection id="the-outcome">
         <CSLabel>The outcome</CSLabel>
-        <CSHeading>Measurable impact across the enterprise platform.</CSHeading>
         <CSOutcome
+          variant="cards"
           stats={[
-            { label: "Annual revenue", stat: "$80M → $100M+ ARR", description: "Significant ARR growth with reduced churn rates." },
-            { label: "LiveAvatar engagement", stat: "15–25% session duration ↑", description: "Higher LiveAvatar usage frequency and session length among pilot clients." },
+            { label: "Annual revenue", stat: "$80M → $100M+ ARR", description: "Significant ARR growth with reduced churn rates.", viz: "coins" },
+            { label: "LiveAvatar engagement", stat: "15–25% session duration ↑", description: "Higher LiveAvatar usage frequency and session length among pilot clients.", viz: "curve-up" },
           ]}
         />
       </CSSection>
@@ -134,18 +133,17 @@ export default function HeyGenCaseStudy() {
 
       <CSSection id="mobile-solution">
         <CSLabel>Solution</CSLabel>
-        <CSHeading>Video Studio — Color Editor</CSHeading>
+        <CSHeading>Video Studio, Color Editor</CSHeading>
         <CSBody>Redesigned the color picker, balancing full HSB flexibility with preset simplicity for HeyGen&apos;s non-expert mobile users.</CSBody>
         <CSVideo src="/cs/mobilecolor.mp4" poster="/cs/mobilecolor-poster.webp" width={1280} height={960} style={{ width: "100%", borderRadius: "12px", border: "1px solid rgba(0,0,0,0.15)", boxSizing: "border-box", marginTop: "40px" }} />
       </CSSection>
 
       <CSSection id="mobile-the-outcome">
         <CSLabel>The outcome</CSLabel>
-        <CSHeading>Measurable impact on the mobile product.</CSHeading>
         <CSOutcome
+          variant="cards"
           stats={[
-            { label: "Color editor", stat: "30%+ faster color decisions", description: "Time to make editing decisions on video backgrounds dropped by at least 30%." },
-            { label: "Shipped", stat: "Live on iOS", description: <>HeyGen Mobile is now <a href="https://apps.apple.com/us/app/heygen-ai-video-generator/id6711356409" target="_blank" rel="noopener noreferrer" style={{ color: STRONG, textDecoration: "underline" }}>live on iOS</a>, bringing AI video creation to mobile users worldwide.</> },
+            { label: "Color editor", stat: "30%+ faster color decisions", description: "Time to make editing decisions on video backgrounds dropped by at least 30%.", viz: "curve-up" },
           ]}
         />
       </CSSection>

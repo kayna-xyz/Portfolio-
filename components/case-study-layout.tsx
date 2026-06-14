@@ -12,6 +12,7 @@ const MONO = "var(--font-reddit-mono), ui-monospace, monospace"
 const STRONG = "rgba(0,0,0,0.75)"
 const MEDIUM = "rgba(0,0,0,0.5)"
 const MUTED = "rgba(0,0,0,0.35)"
+const ACCENT = "#FF9100"
 
 export interface NavItem { id: string; label: string }
 
@@ -359,9 +360,225 @@ export interface CSOutcomeStat {
   label: React.ReactNode
   stat: React.ReactNode
   description: React.ReactNode
+  /** Data-driven visual shown in the card variant. Defaults to an upward curve. */
+  viz?: "people" | "coins" | "curve-up" | "curve-down"
 }
 
-export function CSOutcome({ stats, style }: { stats: CSOutcomeStat[]; style?: React.CSSProperties }) {
+// Trend curve in the brand accent that draws itself in on scroll. Full grid-width
+// (94px) so it lines up with the people/coin grids. `up` = a metric grew
+// (revenue, engagement); down = a metric shrank, which is the win (steps, time).
+function Curve({ direction = "up" }: { direction?: "up" | "down" }) {
+  const ref = useRef<SVGSVGElement>(null)
+  const [shown, setShown] = useState(false)
+  useEffect(() => {
+    const el = ref.current
+    if (!el) return
+    const io = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setShown(true)
+          io.disconnect()
+        }
+      },
+      { threshold: 0.5 }
+    )
+    io.observe(el)
+    return () => io.disconnect()
+  }, [])
+
+  const up = "M0 30 L19 25 L38 27 L57 16 L76 13 L94 3"
+  const down = "M0 4 L19 9 L38 7 L57 18 L76 21 L94 31"
+  const isDown = direction === "down"
+  return (
+    <svg
+      ref={ref}
+      width="94"
+      height="34"
+      viewBox="0 0 94 34"
+      fill="none"
+      aria-hidden
+      style={{ overflow: "visible" }}
+    >
+      <path
+        d={isDown ? down : up}
+        stroke={ACCENT}
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        className={`cs-spark-path${shown ? " cs-spark-path--in" : ""}`}
+      />
+      <circle
+        cx="94"
+        cy={isDown ? 31 : 3}
+        r="2.5"
+        fill={ACCENT}
+        className={`cs-spark-dot${shown ? " cs-spark-dot--in" : ""}`}
+      />
+    </svg>
+  )
+}
+
+// Fires once when the element scrolls into view — used to trigger entrance animations.
+function useInView(threshold = 0.5) {
+  const ref = useRef<HTMLDivElement>(null)
+  const [inView, setInView] = useState(false)
+  useEffect(() => {
+    const el = ref.current
+    if (!el) return
+    const io = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setInView(true)
+          io.disconnect()
+        }
+      },
+      { threshold }
+    )
+    io.observe(el)
+    return () => io.disconnect()
+  }, [threshold])
+  return { ref, inView }
+}
+
+const GRID = { display: "grid", gridTemplateColumns: "repeat(5, 14px)", gap: "6px" } as const
+
+// 01 — acceptance rate: 15 people, one accented. "One in fifteen" made literal.
+function PersonGrid({ highlight = 7 }: { highlight?: number }) {
+  const { ref, inView } = useInView()
+  return (
+    <div ref={ref} style={GRID} aria-hidden>
+      {Array.from({ length: 15 }).map((_, i) => {
+        const isHl = i === highlight
+        return (
+          <span
+            key={i}
+            className={isHl ? "cs-oviz-person-hl" : undefined}
+            style={{
+              lineHeight: 0,
+              opacity: isHl ? 1 : inView ? 1 : 0,
+              transition: isHl ? undefined : `opacity 260ms ease ${i * 28}ms`,
+            }}
+          >
+            <svg width="14" height="14" viewBox="0 0 16 16" fill={isHl ? ACCENT : "rgba(0,0,0,0.2)"}>
+              <circle cx="8" cy="5" r="3" />
+              <path d="M2 15 C2 11 4.7 9 8 9 C11.3 9 14 11 14 15 Z" />
+            </svg>
+          </span>
+        )
+      })}
+    </div>
+  )
+}
+
+// 02 — money signed: 15 coins with a continuous left-to-right shimmer sweep.
+function CoinGrid() {
+  const { ref } = useInView()
+  return (
+    <div ref={ref} style={GRID} aria-hidden>
+      {Array.from({ length: 15 }).map((_, i) => (
+        <span key={i} className="cs-oviz-coin" style={{ lineHeight: 0, animationDelay: `${(i % 5) * 170}ms` }}>
+          <svg width="14" height="14" viewBox="0 0 16 16">
+            <circle cx="8" cy="8" r="7" fill={ACCENT} />
+            <circle cx="8" cy="8" r="4.2" fill="none" stroke="rgba(255,255,255,0.55)" strokeWidth="1" />
+          </svg>
+        </span>
+      ))}
+    </div>
+  )
+}
+
+function renderOutcomeViz(viz: CSOutcomeStat["viz"]) {
+  switch (viz) {
+    case "people":
+      return <PersonGrid />
+    case "coins":
+      return <CoinGrid />
+    case "curve-down":
+      return <Curve direction="down" />
+    default:
+      return <Curve direction="up" />
+  }
+}
+
+export function CSOutcome({
+  stats,
+  variant = "plain",
+  style,
+}: {
+  stats: CSOutcomeStat[]
+  variant?: "plain" | "cards"
+  style?: React.CSSProperties
+}) {
+  if (variant === "cards") {
+    return (
+      <div className="cs-outcome-grid cs-outcome-grid--cards" style={{ marginTop: "20px", ...style }}>
+        {stats.map(({ label, stat, description, viz }, i) => (
+          <div
+            key={i}
+            className="cs-outcome-card"
+            style={{
+              border: "1px solid rgba(0,0,0,0.35)",
+              borderRadius: "20px",
+              padding: "24px",
+            }}
+          >
+            <div style={{ flex: 1, minWidth: 0 }}>
+              <span
+                style={{
+                  display: "block",
+                  fontFamily: MONO,
+                  fontWeight: 500,
+                  fontSize: "13px",
+                  letterSpacing: "0.04em",
+                  textTransform: "uppercase",
+                  color: MEDIUM,
+                }}
+              >
+                {String(i + 1).padStart(2, "0")} · {label}
+              </span>
+              <p
+                style={{
+                  fontFamily: TWK,
+                  fontWeight: 400,
+                  fontSize: "18px",
+                  lineHeight: 1.3,
+                  color: STRONG,
+                  margin: "12px 0 0 0",
+                }}
+              >
+                {stat}
+              </p>
+              <p
+                style={{
+                  fontFamily: TWK,
+                  fontWeight: 400,
+                  fontSize: "15px",
+                  lineHeight: 1.5,
+                  color: MUTED,
+                  margin: "6px 0 0 0",
+                }}
+              >
+                {description}
+              </p>
+            </div>
+            <div
+              style={{
+                flexShrink: 0,
+                width: "96px",
+                height: "54px",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "flex-end",
+              }}
+            >
+              {renderOutcomeViz(viz)}
+            </div>
+          </div>
+        ))}
+      </div>
+    )
+  }
+
   return (
     <div className="cs-outcome-grid" style={{ marginTop: "40px", ...style }}>
       {stats.map(({ label, stat, description }, i) => (
@@ -383,7 +600,7 @@ export function CSOutcome({ stats, style }: { stats: CSOutcomeStat[]; style?: Re
             style={{
               fontFamily: TWK,
               fontWeight: 400,
-              fontSize: "32px",
+              fontSize: "24px",
               lineHeight: 1.2,
               color: STRONG,
               margin: "4px 0 0 0",

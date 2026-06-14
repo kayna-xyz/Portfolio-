@@ -16,6 +16,7 @@ Read the reference file(s) relevant to the change:
 |Colors, fonts, font sizes, opacities, radius, spacing values|`references/design-system.md`|
 |Page structure, the 16-column grid, where things sit on the page|`references/layout.md`|
 |The top nav or the footer (links, ordering, hover states)|`references/navigation-and-footer.md`|
+|A case-study "outcome" section (the stat cards + data visuals)|`references/case-study-outcome.md`|
 |Adding/replacing any image or video (covers, clips, screenshots)|`references/media.md`|
 |Any visual decision at all (you should always read this)|`references/design-principles.md`|
 
@@ -27,6 +28,7 @@ Read the reference file(s) relevant to the change:
 - **Never use pure black `#000000` as a fill.** All text is `#000000` at a defined opacity (75% / 50% / 35%). See `design-system.md` for which opacity goes where.
 - **Never add shadows, borders on containers, background cards, or gradient backgrounds.** Hierarchy comes from typography and spacing only. The only rounded corners on the site are on image covers (`border-radius: 12px`).
 - **Never add icon libraries** (lucide, heroicons, etc.). The site uses unicode glyphs only (e.g. `↶` for back).
+- **Never use an em-dash (`—`) in rendered copy — use a comma.** Applies to all visitor-facing text (headings, body, SEO description, footer lines, tags). Keep en-dashes (`–`) for ranges and arrows (`→`) for before/after; code comments are exempt. See `design-system.md` § "Punctuation & copy".
 - **Never use the orange `#FF9100` as a default state.** It only appears on hover for interactive elements (nav links, footer social links, back button, homepage X/LN/GIT links).
 - **Padding is always 40px on all four sides of the page**, including the nav bar and the footer. Note: the current deployed footer still has the old horizontal padding — when editing footer code, update it to 40px left/right to match the rest of the site.
 - **Spacing values come from a fixed scale only**: 12, 16, 20, 24, 40, 64, 80. Do not use values outside this scale.

@@ -81,13 +81,13 @@ html {
     display: block;
     position: absolute;
     left: calc(100% + 40px);
-    top: 0;
+    top: 50%;
     width: 160px;
     font-family: 'IntrudingCat', cursive;
     font-size: 16px;
     line-height: 1.4;
     color: rgba(0, 0, 0, 0.35);
-    transform: rotate(-2deg);
+    transform: translateY(-50%) rotate(-2deg);
     pointer-events: none;
   }
 }
@@ -95,6 +95,69 @@ html {
 /* Case study outcome grid (CSOutcome) — typographic stat grid.
    2-up on desktop, stacked on mobile. */
 .cs-outcome-grid { display: grid; grid-template-columns: 1fr 1fr; column-gap: 40px; row-gap: 48px; }
+/* Card variant: bordered, numbered outcome cards — one card per row, stacked. */
+.cs-outcome-grid--cards { grid-template-columns: 1fr; row-gap: 20px; }
+
+/* Outcome card: text on the left, a data-driven visual on the right. Stacks on mobile. */
+.cs-outcome-card { display: flex; align-items: center; gap: 24px; }
+
+/* Lluna storyboard: a shrunk, left-aligned phone clip beside a hand-drawn comic
+   that reads as a closed loop — step 1 at the top, then curved arrows run
+   clockwise: top (1) → bottom-right (2) → bottom-left (3) → back to the top.
+   The cycle box is square so the 0–100 arrow coordinates map 1:1 with the panel
+   percentages (no distortion). On mobile it collapses to a numbered vertical
+   stack (1 at top) and the arrows hide. */
+.lluna-figure-row { display: flex; gap: 40px; align-items: center; margin-top: 24px; }
+.lluna-figure-video { flex: 0 0 260px; }
+.lluna-cycle { flex: 1; position: relative; aspect-ratio: 1 / 1; max-width: 440px; }
+.lluna-cyc-panel { position: absolute; width: 40%; }
+.lluna-cyc-b { top: 0; left: 50%; transform: translateX(-50%); }
+.lluna-cyc-a { bottom: 0; left: 0; }
+.lluna-cyc-c { bottom: 0; right: 0; }
+.lluna-cyc-arrows { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
+.lluna-sketch { display: flex; flex-direction: column; align-items: center; gap: 6px; width: 100%; }
+@media (max-width: 768px) {
+  .lluna-figure-row { flex-direction: column; align-items: center; gap: 28px; }
+  .lluna-figure-video { flex: none; width: 72%; max-width: 280px; }
+  .lluna-cycle { position: static; aspect-ratio: auto; max-width: 280px; width: 100%; display: flex; flex-direction: column; align-items: center; gap: 24px; }
+  .lluna-cyc-panel { position: static; transform: none; width: 64%; }
+  .lluna-cyc-arrows { display: none; }
+}
+
+/* Lluna console group (Solution 03): a curly brace in the right margin grouping
+   the two console clips, tipped by a sketch of the consultation they power.
+   Desktop-only, like the handwriting margin notes. */
+.lluna-console-aside { display: none; }
+@media (min-width: 1024px) {
+  .lluna-console-aside { display: flex; align-items: center; gap: 8px; position: absolute; left: calc(100% + 14px); top: 0; height: 100%; width: 210px; pointer-events: none; }
+  .lluna-brace { width: 40px; height: 100%; flex: none; }
+  .lluna-brace-note { width: 162px; }
+}
+
+/* Outcome curve: brand-accent trend line that draws in when scrolled into view. */
+.cs-spark-path { stroke-dasharray: 160; stroke-dashoffset: 160; }
+.cs-spark-path--in { stroke-dashoffset: 0; transition: stroke-dashoffset 1000ms cubic-bezier(0.4, 0, 0.2, 1); }
+.cs-spark-dot { opacity: 0; }
+.cs-spark-dot--in { opacity: 1; transition: opacity 320ms ease 760ms; }
+
+/* Outcome coins: each coin's own shade shifts (brightness, staggered by column in JS) so
+   the per-coin color change reads as a sweep. Floor is brightness(1) — never darker than
+   the primary orange; it only brightens toward a gold glint. */
+.cs-oviz-coin { animation: cs-oviz-shimmer 2.2s ease-in-out infinite; }
+@keyframes cs-oviz-shimmer { 0%, 100% { filter: brightness(1); } 45% { filter: brightness(1.4); } }
+
+/* Outcome people: the single accented person gently pulses to draw the eye. */
+.cs-oviz-person-hl { animation: cs-oviz-pulse 2.6s ease-in-out infinite; }
+@keyframes cs-oviz-pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.45; } }
+
+@media (prefers-reduced-motion: reduce) {
+  .cs-spark-path { stroke-dashoffset: 0; }
+  .cs-spark-path--in { transition: none; }
+  .cs-spark-dot { opacity: 1; }
+  .cs-spark-dot--in { transition: none; }
+  .cs-oviz-coin { animation: none; filter: brightness(1); }
+  .cs-oviz-person-hl { animation: none; }
+}
 
 /* About page */
 .about-row { grid-template-columns: 2fr 6fr; row-gap: 0; }
@@ -129,6 +192,7 @@ html {
   .cs-footer { padding: 20px; flex-direction: column; align-items: flex-start; gap: 16px; }
 
   .cs-outcome-grid { grid-template-columns: 1fr; row-gap: 40px; }
+  .cs-outcome-card { flex-direction: column; align-items: flex-start; gap: 20px; }
 
   .about-row { grid-template-columns: 1fr; row-gap: 32px; }
   .about-row--spaced { margin-top: 64px; }

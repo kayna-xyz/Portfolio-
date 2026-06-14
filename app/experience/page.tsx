@@ -129,7 +129,7 @@ export default function AboutPage() {
                 <li>Is there a binary (0/1) method, like Putnam&apos;s, that can evaluate product design?</li>
                 <li>How will AI reshape institutional jobs and reprice the labor market?</li>
                 <li>How can I make an impact on the world through my experience in product and design, and by building a sustainable, product-first startup?</li>
-                <li>How do I show people the nuance behind product design — the drawing, the diagramming, the thinking — and that designers do far more than what most people see?</li>
+                <li>How do I show people the nuance behind product design, the drawing, the diagramming, the thinking, and that designers do far more than what most people see?</li>
                 <li>etc</li>
               </ul>
             </Section>

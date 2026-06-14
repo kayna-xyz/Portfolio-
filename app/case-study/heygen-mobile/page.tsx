@@ -41,7 +41,7 @@ export default function HeyGenMobileCaseStudy() {
           <CSBody>I worked with Tiffany Huang (also PM) to review past user interviews from creators at companies of various sizes, freelancers, and everyday consumers. Simultaneously, we benchmarked navigation structures, color grading workflows, and captioning tool models of leading mobile media editors like CapCut, Captions, and Hypic.</CSBody>
           <CSSubheading>Key findings</CSSubheading>
           <ul style={{ fontFamily: "var(--font-pt-serif), 'Georgia', serif", fontSize: "16px", color: "#000000", lineHeight: "1.65", paddingLeft: "20px", marginBottom: "16px" }}>
-            <li style={{ marginBottom: "8px" }}>HeyGen's strengths — lip-sync video translation, streaming-grade avatars, 40+ language subtitle export — are unmatched, but desktop-first.</li>
+            <li style={{ marginBottom: "8px" }}>HeyGen's strengths, lip-sync video translation, streaming-grade avatars, 40+ language subtitle export, are unmatched, but desktop-first.</li>
             <li style={{ marginBottom: "8px" }}>Competitors are rapidly extending advanced features to mobile, making "creating finished videos solely on mobile" the norm.</li>
             <li>The goal: enable PC users to complete the workflow from draft to finished video on mobile, anytime.</li>
           </ul>
@@ -72,24 +72,22 @@ export default function HeyGenMobileCaseStudy() {
         <CSSection id="solution">
           <CSLabel>Solution</CSLabel>
           <CSHeading>1. Navigation: from feature list to task-first hub.</CSHeading>
-          <CSBody>I collaborated with senior designers to develop multiple navigation proposals, organize reviews, and drive the selection of the final direction. We reorganized the homepage hierarchy based on HEX data — creation and editing modules elevated to top priority, account and settings downgraded to secondary entry points.</CSBody>
+          <CSBody>I collaborated with senior designers to develop multiple navigation proposals, organize reviews, and drive the selection of the final direction. We reorganized the homepage hierarchy based on HEX data, creation and editing modules elevated to top priority, account and settings downgraded to secondary entry points.</CSBody>
           <CSVideo src="/cs/mobilenavi.mp4" poster="/cs/mobilenavi-poster.webp" width={1280} height={960} style={{ width: "100%", borderRadius: "8px", marginBottom: "32px" }} />
-          <CSHeading>2. Video Studio — Color Editor</CSHeading>
+          <CSHeading>2. Video Studio, Color Editor</CSHeading>
           <CSBody>I redesigned the color picker referencing widely acclaimed mobile editors like Hypic, exploring multiple options from simple preset palettes to full HSB sliders, and tailored the final design to balance flexibility with HeyGen's non-expert user base.</CSBody>
           <CSVideo src="/cs/mobilecolor.mp4" poster="/cs/mobilecolor-poster.webp" width={1280} height={960} style={{ width: "100%", borderRadius: "8px" }} />
         </CSSection>
 
         <CSSection id="the-outcome">
           <CSLabel>The outcome</CSLabel>
-          <CSHeading>Measurable impact on the mobile product.</CSHeading>
           <CSOutcome
+            variant="cards"
             stats={[
-              { label: "Navigation", stat: "Fewer steps to core features", description: "Core features are now clearly visible, driving conversions for ARR." },
-              { label: "Color editor", stat: "30%+ faster color decisions", description: "At least a 30% reduction in time to make editing decisions on video backgrounds." },
-              { label: "Shipped", stat: "Live on iOS", description: <>Launched on the <a href="https://apps.apple.com/us/app/heygen-ai-video-generator/id6711356409" target="_blank" rel="noopener noreferrer" style={{ color: "rgba(0,0,0,0.75)", textDecoration: "underline" }}>iOS App Store</a>, bringing AI video creation to mobile users worldwide.</> },
+              { label: "Navigation", stat: "Fewer steps to core features", description: "Core features are now clearly visible, driving conversions for ARR.", viz: "curve-up" },
+              { label: "Color editor", stat: "30%+ faster color decisions", description: "At least a 30% reduction in time to make editing decisions on video backgrounds.", viz: "curve-up" },
             ]}
           />
-          <CSBody style={{ color: "#9A9A99", marginTop: "40px" }}>Special thanks to Tiffany Huang — PD & PM — for driving this project forward.</CSBody>
         </CSSection>
       </CaseStudyLayout>
 

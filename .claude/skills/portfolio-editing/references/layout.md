@@ -38,6 +38,17 @@ Cover image: full width of the content area, `border-radius: 12px`, 1px hairline
 
 Meta table: 4 rows (TIMELINE, ROLE, TEAM, TOOLS). Label on the left in Reddit Mono Medium 16px `text-strong`; value on the right in TWK Lausanne 16px `text-strong`. Rows are separated by spacing only — **no horizontal rules**.
 
+**Code blocks (and any in-section block element) span the full content-column width.** A `CodeBlock` / terminal card embedded in a section must be `width: 100%` so its left **and** right edges line up exactly with the surrounding body text — do **not** cap it with a fixed `maxWidth` (e.g. `640px`), which leaves it visibly narrower than the text and breaks the column alignment. The card keeps `border-radius: 12px` and clips its contents with `overflow: hidden`; horizontal overflow of long code lines is handled by `overflow-x: auto` on the inner `<pre>`, never by shrinking the card. The only block elements that are intentionally narrower than the content column are centered portrait videos/images (e.g. mobile phone mockups via `maxWidth` + `margin: auto`); those are deliberately centered, not left-aligned, so the asymmetry reads as intentional.
+
+### Margin notes (handwriting annotations)
+
+The empty right columns (13–16) can hold handwriting-style annotations via the `.cs-margin-note` class (IntrudingCat cursive font, already shipped in `/public/fonts`). Use them sparingly for asides — a sharp observation, a caveat, a piece of texture that doesn't belong in the body.
+
+- **Markup:** wrap the body block you want to annotate in a `position: relative` div, then drop a `<span className="cs-margin-note" aria-hidden>…</span>` inside it as the last child. The note floats into the right margin (`left: calc(100% + 40px)`, `width: 160px`) and never affects layout (`pointer-events: none`, absolutely positioned).
+- **Vertical alignment:** the note is **vertically centered** against its relative container, not top-aligned (`top: 50%; transform: translateY(-50%) rotate(-2deg)`). This keeps short notes visually balanced beside a tall paragraph or figure. Apply this to every case — it is the shared default in `globals.css`.
+- **Desktop-only (≥1024px):** below that width the right margin is too narrow and the note would overflow, so `.cs-margin-note` is `display: none`. Treat margin notes as enhancement, never load-bearing content — the page must read fully without them.
+- **Styling:** 16px, `text-muted` (35%), `line-height: 1.4`, tilted `-2deg` for a hand-pinned feel.
+
 ## About page layout
 
 The about page uses the same outer shell as case study pages (16-col grid, sticky sidebar, content cols 5–12, simple footer). Differences:

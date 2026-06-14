@@ -28,7 +28,7 @@ const twkLausanne = localFont({
 
 export const metadata: Metadata = {
   title: 'Kayna Huang',
-  description: 'Kayna Huang — Product Designer who builds.',
+  description: 'Kayna Huang, Product Designer who builds.',
 }
 
 export const viewport: Viewport = {

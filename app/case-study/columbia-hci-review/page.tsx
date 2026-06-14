@@ -40,7 +40,7 @@ export default function ColumbiaHCIReviewCaseStudy() {
       <CSSection id="more">
         <CSLabel>More</CSLabel>
         <CSHeading>The website.</CSHeading>
-        <CSBody>I vibe-coded the CHR website using Claude Code and V0 — iterating on layout and typography entirely through prompts. The site includes a working submission form so contributors can pitch article ideas directly, plus issue archives, contributor guidelines, and an about page.</CSBody>
+        <CSBody>I vibe-coded the CHR website using Claude Code and V0, iterating on layout and typography entirely through prompts. The site includes a working submission form so contributors can pitch article ideas directly, plus issue archives, contributor guidelines, and an about page.</CSBody>
         <a href="https://ctpreview.com" target="_blank" rel="noopener noreferrer" style={{ fontFamily: PT, fontSize: "16px", color: "#000000", display: "block", marginBottom: "16px" }}>ctpreview.com</a>
         <CSVideo src="/cs/cti-website.mp4" poster="/cs/cti-website-poster.webp" width={1280} height={870} style={{ width: "100%", borderRadius: "8px", marginBottom: "40px" }} />
 
