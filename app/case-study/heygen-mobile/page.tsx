@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from "react"
-import { CaseStudyLayout, CSVideo, CSTitle, CSSubtitle, CSCover, CSHeading, CSSubheading, CSBody, CSLabel, CSSection, CSMeta, NavItem } from "@/components/case-study-layout"
+import { CaseStudyLayout, CSVideo, CSTitle, CSSubtitle, CSCover, CSHeading, CSSubheading, CSBody, CSLabel, CSSection, CSMeta, CSOutcome, NavItem } from "@/components/case-study-layout"
 
 const navItems: NavItem[] = [
   { id: "overview",    label: "Overview" },
@@ -82,18 +82,14 @@ export default function HeyGenMobileCaseStudy() {
         <CSSection id="the-outcome">
           <CSLabel>The outcome</CSLabel>
           <CSHeading>Measurable impact on the mobile product.</CSHeading>
-          <div style={{ display: "flex", flexDirection: "column", gap: "24px", marginBottom: "32px" }}>
-            <div>
-              <CSSubheading>Fewer steps, clearer feature visibility</CSSubheading>
-              <CSBody>Core features are now clearly visible, driving conversions for ARR. Decision-making steps significantly reduced.</CSBody>
-            </div>
-            <div>
-              <CSSubheading>30%+ reduction in color editing decisions time</CSSubheading>
-              <CSBody>Users experience at least a 30% reduction in the time required to make editing decisions when working with video backgrounds.</CSBody>
-            </div>
-          </div>
-          <CSBody>The HeyGen Mobile app launched on the <a href="https://apps.apple.com/us/app/heygen-ai-video-generator/id6711356409" target="_blank" rel="noopener noreferrer" style={{ color: "#000000" }}>iOS App Store</a>, bringing AI video creation to mobile users worldwide.</CSBody>
-          <CSBody style={{ color: "#9A9A99" }}>Special thanks to Tiffany Huang — PD & PM — for driving this project forward.</CSBody>
+          <CSOutcome
+            stats={[
+              { label: "Navigation", stat: "Fewer steps to core features", description: "Core features are now clearly visible, driving conversions for ARR." },
+              { label: "Color editor", stat: "30%+ faster color decisions", description: "At least a 30% reduction in time to make editing decisions on video backgrounds." },
+              { label: "Shipped", stat: "Live on iOS", description: <>Launched on the <a href="https://apps.apple.com/us/app/heygen-ai-video-generator/id6711356409" target="_blank" rel="noopener noreferrer" style={{ color: "rgba(0,0,0,0.75)", textDecoration: "underline" }}>iOS App Store</a>, bringing AI video creation to mobile users worldwide.</> },
+            ]}
+          />
+          <CSBody style={{ color: "#9A9A99", marginTop: "40px" }}>Special thanks to Tiffany Huang — PD & PM — for driving this project forward.</CSBody>
         </CSSection>
       </CaseStudyLayout>
 

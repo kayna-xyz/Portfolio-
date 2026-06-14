@@ -1,6 +1,6 @@
 "use client"
 
-import { CaseStudyLayout, CSVideo, CSTitle, CSSubtitle, CSCover, CSHeading, CSBody, CSLabel, CSSection, CSMeta, NavItem } from "@/components/case-study-layout"
+import { CaseStudyLayout, CSVideo, CSTitle, CSSubtitle, CSCover, CSHeading, CSBody, CSLabel, CSSection, CSMeta, CSOutcome, NavItem } from "@/components/case-study-layout"
 
 const TWK = "var(--font-twk), system-ui, -apple-system, sans-serif"
 const MONO = "var(--font-reddit-mono), ui-monospace, monospace"
@@ -28,56 +28,6 @@ const enterpriseMeta = [
   { label: "Team",     value: "Nick Allen, Manuela Odell, Tiffany Huang, Wayne L." },
   { label: "Tools",    value: "Figma" },
 ]
-
-interface Stat {
-  metric: string
-  description: React.ReactNode
-}
-
-function OutcomeGrid({ stats }: { stats: Stat[] }) {
-  return (
-    <div
-      style={{
-        marginTop: "40px",
-        display: "grid",
-        gridTemplateColumns: "1fr 1fr",
-        columnGap: "40px",
-        rowGap: "40px",
-      }}
-    >
-      {stats.map(({ metric, description }, i) => (
-        <div key={i} style={{ display: "flex", flexDirection: "column" }}>
-          <p
-            className="cap-trim"
-            style={{
-              fontFamily: TWK,
-              fontWeight: 400,
-              fontSize: "24px",
-              lineHeight: 1.2,
-              color: STRONG,
-              margin: 0,
-            }}
-          >
-            {metric}
-          </p>
-          <p
-            className="cap-trim"
-            style={{
-              fontFamily: TWK,
-              fontWeight: 400,
-              fontSize: "16px",
-              lineHeight: 1.5,
-              color: MUTED,
-              margin: "20px 0 0 0",
-            }}
-          >
-            {description}
-          </p>
-        </div>
-      ))}
-    </div>
-  )
-}
 
 export default function HeyGenCaseStudy() {
   return (
@@ -145,10 +95,10 @@ export default function HeyGenCaseStudy() {
       <CSSection id="the-outcome">
         <CSLabel>The outcome</CSLabel>
         <CSHeading>Measurable impact across the enterprise platform.</CSHeading>
-        <OutcomeGrid
+        <CSOutcome
           stats={[
-            { metric: "$80M → $100M+ ARR", description: "Significant ARR growth with reduced churn rates." },
-            { metric: "15–25% session duration ↑", description: "Higher LiveAvatar usage frequency and session length among pilot clients." },
+            { label: "Annual revenue", stat: "$80M → $100M+ ARR", description: "Significant ARR growth with reduced churn rates." },
+            { label: "LiveAvatar engagement", stat: "15–25% session duration ↑", description: "Higher LiveAvatar usage frequency and session length among pilot clients." },
           ]}
         />
       </CSSection>
@@ -192,10 +142,10 @@ export default function HeyGenCaseStudy() {
       <CSSection id="mobile-the-outcome">
         <CSLabel>The outcome</CSLabel>
         <CSHeading>Measurable impact on the mobile product.</CSHeading>
-        <OutcomeGrid
+        <CSOutcome
           stats={[
-            { metric: "30%+ faster color decisions", description: "Time to make editing decisions on video backgrounds dropped by at least 30%." },
-            { metric: "Launched on iOS App Store", description: <>HeyGen Mobile is now <a href="https://apps.apple.com/us/app/heygen-ai-video-generator/id6711356409" target="_blank" rel="noopener noreferrer" style={{ color: STRONG, textDecoration: "underline" }}>live on iOS</a>, bringing AI video creation to mobile users worldwide.</> },
+            { label: "Color editor", stat: "30%+ faster color decisions", description: "Time to make editing decisions on video backgrounds dropped by at least 30%." },
+            { label: "Shipped", stat: "Live on iOS", description: <>HeyGen Mobile is now <a href="https://apps.apple.com/us/app/heygen-ai-video-generator/id6711356409" target="_blank" rel="noopener noreferrer" style={{ color: STRONG, textDecoration: "underline" }}>live on iOS</a>, bringing AI video creation to mobile users worldwide.</> },
           ]}
         />
       </CSSection>

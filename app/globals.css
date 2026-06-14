@@ -71,6 +71,31 @@ html {
 .cs-content { grid-column: 5 / span 8; }
 .cs-footer { padding: 20px 40px; flex-direction: row; align-items: center; gap: 0; }
 
+/* Case study margin notes — handwriting annotations in the right empty columns.
+   Desktop-only (≥1024px): below that, the right margin is too narrow and the
+   note would overflow the page. Uses the existing IntrudingCat handwriting
+   font already shipped in /public/fonts. */
+.cs-margin-note { display: none; }
+@media (min-width: 1024px) {
+  .cs-margin-note {
+    display: block;
+    position: absolute;
+    left: calc(100% + 40px);
+    top: 0;
+    width: 160px;
+    font-family: 'IntrudingCat', cursive;
+    font-size: 16px;
+    line-height: 1.4;
+    color: rgba(0, 0, 0, 0.35);
+    transform: rotate(-2deg);
+    pointer-events: none;
+  }
+}
+
+/* Case study outcome grid (CSOutcome) — typographic stat grid.
+   2-up on desktop, stacked on mobile. */
+.cs-outcome-grid { display: grid; grid-template-columns: 1fr 1fr; column-gap: 40px; row-gap: 48px; }
+
 /* About page */
 .about-row { grid-template-columns: 2fr 6fr; row-gap: 0; }
 .about-row--spaced { margin-top: 80px; }
@@ -102,6 +127,8 @@ html {
   .cs-index { display: none; }
   .cs-content { grid-column: auto; }
   .cs-footer { padding: 20px; flex-direction: column; align-items: flex-start; gap: 16px; }
+
+  .cs-outcome-grid { grid-template-columns: 1fr; row-gap: 40px; }
 
   .about-row { grid-template-columns: 1fr; row-gap: 32px; }
   .about-row--spaced { margin-top: 64px; }

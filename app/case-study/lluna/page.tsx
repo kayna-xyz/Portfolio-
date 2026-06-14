@@ -1,14 +1,14 @@
 "use client"
 
-import { CaseStudyLayout, CSVideo, CSTitle, CSSubtitle, CSCover, CSHeading, CSSubheading, CSBody, CSLabel, CSSection, CSMeta, NavItem } from "@/components/case-study-layout"
+import { CaseStudyLayout, CSVideo, CSTitle, CSSubtitle, CSCover, CSHeading, CSSubheading, CSBody, CSLabel, CSSection, CSMeta, CSOutcome, NavItem } from "@/components/case-study-layout"
 
 const navItems: NavItem[] = [
-  { id: "overview",  label: "Overview" },
-  { id: "problem",   label: "The problem" },
-  { id: "audience",  label: "Audience" },
-  { id: "features",  label: "Solutions" },
-  { id: "business",  label: "Business model" },
-  { id: "learnings", label: "Takeaway" },
+  { id: "overview",   label: "Overview" },
+  { id: "problem",    label: "The problem" },
+  { id: "solution-1", label: "01 Menu" },
+  { id: "solution-2", label: "02 The report" },
+  { id: "solution-3", label: "03 Clinic console" },
+  { id: "outcome",    label: "The outcome" },
 ]
 
 const meta = [
@@ -19,7 +19,117 @@ const meta = [
 ]
 
 const PT = "var(--font-pt-serif), 'Georgia', serif"
-const SF = "-apple-system, 'SF Pro Text', 'SF Pro Display', sans-serif"
+const TWK = "var(--font-twk), system-ui, -apple-system, sans-serif"
+const MONO = "var(--font-reddit-mono), ui-monospace, monospace"
+const MUTED = "rgba(0,0,0,0.35)"
+
+function Caption({ children, style }: { children: React.ReactNode; style?: React.CSSProperties }) {
+  return (
+    <p style={{ fontFamily: PT, fontSize: "14px", color: "#9A9A99", textAlign: "center", marginBottom: "16px", ...style }}>
+      {children}
+    </p>
+  )
+}
+
+function ProblemList({ items }: { items: string[] }) {
+  return (
+    <ul style={{ margin: "12px 0 0 0", paddingLeft: "20px", display: "flex", flexDirection: "column", gap: "12px" }}>
+      {items.map((item, i) => (
+        <li key={i} style={{ fontFamily: TWK, fontWeight: 400, fontSize: "16px", lineHeight: 1.5, color: MUTED }}>
+          {item}
+        </li>
+      ))}
+    </ul>
+  )
+}
+
+// Code presented as a designed object: a dark editor card (warm near-black to
+// sit on #FDFBFA) with chrome — three dots + filename — and one syntax accent:
+// property keys pick up the outcome-card burnt orange. 14px mono is within
+// the sanctioned tag/caption range. Max-width 640px so it reads as an object,
+// not a band.
+const CODE_INK = "rgba(253,251,250,0.72)"
+const CODE_COMMENT = "rgba(253,251,250,0.35)"
+const CODE_KEY = "#E07A4F"
+
+function CodeLine({ line }: { line: string }) {
+  const commentIdx = line.indexOf("//")
+  const code = commentIdx === -1 ? line : line.slice(0, commentIdx)
+  const comment = commentIdx === -1 ? "" : line.slice(commentIdx)
+  const keyMatch = code.match(/^(\s*)([a-z_0-9]+)(:)(.*)$/)
+  return (
+    <span>
+      {keyMatch ? (
+        <>
+          <span style={{ color: CODE_INK }}>{keyMatch[1]}</span>
+          <span style={{ color: CODE_KEY }}>{keyMatch[2]}</span>
+          <span style={{ color: CODE_INK }}>{keyMatch[3] + keyMatch[4]}</span>
+        </>
+      ) : (
+        <span style={{ color: CODE_INK }}>{code}</span>
+      )}
+      {comment && <span style={{ color: CODE_COMMENT }}>{comment}</span>}
+      {"\n"}
+    </span>
+  )
+}
+
+function CodeBlock({ filename, code }: { filename: string; code: string }) {
+  return (
+    <div
+      style={{
+        maxWidth: "640px",
+        margin: "24px 0 0 0",
+        borderRadius: "12px",
+        overflow: "hidden",
+        background: "#211E1B",
+      }}
+    >
+      <div style={{ display: "flex", alignItems: "center", gap: "12px", padding: "12px 20px", background: "rgba(253,251,250,0.07)" }}>
+        <span aria-hidden style={{ display: "flex", gap: "6px" }}>
+          {[0, 1, 2].map((d) => (
+            <span key={d} style={{ width: "9px", height: "9px", borderRadius: "999px", background: "rgba(253,251,250,0.22)" }} />
+          ))}
+        </span>
+        <span style={{ fontFamily: MONO, fontWeight: 500, fontSize: "12px", letterSpacing: "0.02em", color: "rgba(253,251,250,0.45)" }}>
+          {filename}
+        </span>
+      </div>
+      <pre
+        style={{
+          fontFamily: MONO,
+          fontWeight: 500,
+          fontSize: "14px",
+          lineHeight: 1.6,
+          margin: 0,
+          padding: "20px",
+          overflowX: "auto",
+          whiteSpace: "pre",
+        }}
+      >
+        {code.split("\n").map((line, i) => <CodeLine key={i} line={line} />)}
+      </pre>
+    </div>
+  )
+}
+
+const RECOMMENDATION_POLICY = `const recommendation_policy = {
+  input: ["survey", "clinic_menu", "user_budget"],
+
+  // Essential · Optimal · Premium
+  tiers: 3,
+  budget_ceiling: 2 * user_budget,
+
+  // every plan is a 3-therapy combo
+  combo: {
+    therapy_1: most_effective(primary_concern),
+    therapy_2: add_on(["botox", "filler", "facial_cleaning"]),
+    // makes 1 + 2 last longer
+    therapy_3: synergy_pick(therapy_1, therapy_2),
+  },
+
+  always_show: ["synergy_benefit", "price_breakdown"],
+}`
 
 export default function LlunaAICaseStudy() {
   return (
@@ -31,108 +141,87 @@ export default function LlunaAICaseStudy() {
 
       <CSSection id="overview">
         <CSLabel>Overview</CSLabel>
-        <CSHeading>Know before you sit in the chair at the treatment room.</CSHeading>
-        <CSBody>Lluna is an AI aesthetic consultant built for the treatment room.</CSBody>
-        <CSBody>The clinic industry runs on information asymmetry. Consultants know everything. Clients know nothing — until they're already in the chair with someone who has 20 minutes and a sales quota. Even worse, the consultant's job is to make the sale, so they may not be as knowledgeable as AI.</CSBody>
-        <CSBody>This project is personal. I grew up sneaking my mom's skincare products, got obsessed with the medspa world at 16, and spent years visiting clinics across China, Korea, and the US trying to understand how the industry actually works. My long-term dream is to open my own clinic one day. Lluna is me building toward that, one product decision at a time.</CSBody>
+        <CSHeading>The consultation, before the consultation.</CSHeading>
+        <CSBody>Lluna is an AI aesthetic consultant that prepares clients before they ever sit in the chair — and gives clinics clients who walk in ready to say yes.</CSBody>
+        <div style={{ position: "relative" }}>
+          <CSBody>It started long before the product. I&apos;ve been obsessed with the medspa world since I was 16 — sneaking my mom&apos;s skincare, then years of visiting clinics across China, Korea, and the US; my long-term dream is to open one of my own. And in every clinic I watched the same scene: a client who knows almost nothing, across from a consultant who knows everything and is paid to close.</CSBody>
+          <span className="cs-margin-note" aria-hidden>field research since I was 16</span>
+        </div>
+        <CSBody>The advice you get in that chair isn&apos;t always the advice you need. I decided the fix wasn&apos;t a better pitch — it was a prepared client. So I spent a month building one product for both sides of the chair.</CSBody>
       </CSSection>
 
       <CSSection id="problem">
         <CSLabel>The problem</CSLabel>
-        <CSHeading>Clinics make money on confusion.</CSHeading>
-        <div style={{ display: "flex", flexDirection: "column", gap: "20px", marginBottom: "24px" }}>
-          {[
-            { who: "Client", text: "Clients arrive unprepared, face a 20-minute consultation with a quota-driven consultant, and either overbuy out of pressure or leave without booking. Both outcomes accelerate churn." },
-            { who: "Clinic", text: "Clinics spend heavily to acquire each client but rushed consultations sell single treatments, not plans. Basket price stays low. If CAC can't come down, revenue per visit must go up." },
-            { who: "Both",   text: "Neither side thinks beyond the current visit. Every consultation starts from scratch. LTV stays permanently flat." },
-          ].map(({ who, text }, i) => (
-            <div key={i} style={{ display: "flex", gap: "16px" }}>
-              <span style={{ fontFamily: PT, fontSize: "16px", color: "#9A9A99", flexShrink: 0 }}>0{i + 1}</span>
-              <div>
-                <CSSubheading>{who}</CSSubheading>
-                <CSBody style={{ marginBottom: 0 }}>{text}</CSBody>
-              </div>
-            </div>
-          ))}
-        </div>
-        <blockquote style={{ borderLeft: "2px solid #000000", paddingLeft: "20px" }}>
-          <CSBody style={{ fontStyle: "italic", marginBottom: 0 }}>The insight: clients who arrived educated had higher satisfaction, higher spend, and lower churn. The consultation wasn't the problem. The lack of preparation was.</CSBody>
-        </blockquote>
-      </CSSection>
+        <CSHeading>Both sides of the chair are guessing.</CSHeading>
 
-      <CSSection id="audience">
-        <CSLabel>Audience</CSLabel>
-        <CSHeading>Who I designed for.</CSHeading>
-        <img loading="lazy" src="/cs/lluna-shot-4.webp" width={1600} height={900} alt="Audience mapping" style={{ width: "100%", borderRadius: "8px", marginBottom: "16px" }} />
-        <CSBody>Two audiences, one product. On the user side: three client archetypes — the anxious first-timer, the informed repeater, and the optimizer — each with distinct anxieties Lluna resolves through transparency, memory, and evidence-backed advice. On the business side: clinics dealing with high acquisition cost, rampant churn, rushed consultations, and suboptimal selling — Lluna answers with basket price lift, dynamic pricing inside the AI flow, and structured client briefs sent before every appointment.</CSBody>
-      </CSSection>
+        <CSSubheading>Consumers</CSSubheading>
+        <ProblemList items={[
+          "Clients rarely know what a therapy actually does — its effects, downtime, or how it compares to the alternatives on the menu.",
+          "The biggest fear walking in is being over-sold; the trust between client and consultant is ambiguous at best.",
+          "Everyone wants the cost-effective plan: real results, no money wasted on treatments that won't work for them.",
+        ]} />
 
-      <CSSection id="features">
-        <CSLabel>Solutions</CSLabel>
+        <CSSubheading>Medical-spa consultants</CSSubheading>
+        <ProblemList items={[
+          "Educating a first-time client from zero eats most of a twenty-minute consultation.",
+          "Every recommendation can read as a pitch — the harder you sell, the less credible you sound.",
+          "Consultants are measured on revenue, but an unprepared, skeptical client buys a single treatment at best.",
+        ]} />
 
-        <CSHeading>Solution 01 — AI Consultant</CSHeading>
-        <CSVideo src="/cs/process-demand.mp4" poster="/cs/process-demand-poster.webp" width={1280} height={870} style={{ width: "100%", borderRadius: "8px", marginBottom: "8px" }} />
-        <p style={{ fontFamily: PT, fontSize: "14px", color: "#9A9A99", textAlign: "center", marginBottom: "16px" }}>Users first describe their needs to the AI, then select individual or clinic path.</p>
-        <CSBody>Not a chatbot. A multi-turn advisor with memory and clinical reasoning. Before recommending anything, it confirms: past treatments, allergies, budget, pain tolerance. Every response follows: acknowledge, context, recommendation, next step.</CSBody>
-
-        <CSHeading>Solution 02 — Clinic Code</CSHeading>
-        <CSVideo src="/cs/codestate.mp4" poster="/cs/codestate-poster.webp" width={1280} height={552} style={{ width: "100%", maxWidth: "450px", borderRadius: "8px", marginBottom: "8px" }} />
-        <p style={{ fontFamily: PT, fontSize: "14px", color: "#9A9A99", marginBottom: "16px" }}>Error state handling: wrong clinic code entry and re-entry flow.</p>
-        <CSBody>Each clinic has a code. Client enters the code, Lluna connects to their menu. Recommendations pull from what the clinic actually stocks, at real prices. Combo suggestions are built around their inventory. Dynamic pricing and promotions surface naturally inside the recommendation flow — not on a separate deals page.</CSBody>
-
-        <CSHeading>Solution 03 — The Report</CSHeading>
-        <CSVideo src="/cs/onboarding.mp4" poster="/cs/onboarding-poster.webp" width={1280} height={870} style={{ width: "100%", borderRadius: "8px", marginBottom: "8px" }} />
-        <p style={{ fontFamily: PT, fontSize: "14px", color: "#9A9A99", textAlign: "center", marginBottom: "16px" }}>AI onboarding guidance: walking users through the report for the first time.</p>
-        <CSVideo src="/cs/ask-ai-in-report.mp4" poster="/cs/ask-ai-in-report-poster.webp" width={1280} height={870} style={{ width: "100%", borderRadius: "8px", marginBottom: "8px" }} />
-        <p style={{ fontFamily: PT, fontSize: "14px", color: "#9A9A99", textAlign: "center", marginBottom: "16px" }}>Underline any keyword in the report to ask AI, e.g. "When was Kybella published?"</p>
-        <CSBody>The report is a conversion surface, not just a deliverable. Full face assessment. Basic plan vs. AI-optimized plan. Synergy callouts throughout, each one grounded in clinical rationale, not bundling logic.</CSBody>
-        <blockquote style={{ borderLeft: "2px solid #000000", paddingLeft: "20px", marginBottom: "12px" }}>
-          <CSBody style={{ fontStyle: "italic", marginBottom: 0 }}>"Thermage + Juvederm Volite: collagen remodeling from Thermage creates an optimal HA retention window. Results last 30–40% longer than either treatment alone."</CSBody>
-        </blockquote>
-        <blockquote style={{ borderLeft: "2px solid #000000", paddingLeft: "20px", marginBottom: "16px" }}>
-          <CSBody style={{ fontStyle: "italic", marginBottom: 0 }}>"Profhilo first. Every subsequent treatment performs better with a hydration base."</CSBody>
-        </blockquote>
-
-        <div style={{ display: "flex", flexDirection: "column", gap: "40px", marginTop: "32px" }}>
-          {[
-            { img: "/cs/lluna-shot-3.webp", alt: "Customer reviews", label: "Customer Reviews", desc: "Reviews are tagged by treatment, not just rated by experience. When users evaluate a specific procedure, they see feedback from people who had exactly that treatment, reducing anxiety at the highest drop-off moment in the funnel." },
-            { img: "/cs/lluna-shot-2.webp", alt: "Clinic campaigns", label: "Clinic Campaigns & Offers", desc: "Promotions surface inside the AI recommendation flow, not on a separate deals page. Users encounter savings at the moment of clinical decision, lifting basket price and conversion simultaneously." },
-            { img: "/cs/lluna-shot-1.webp", alt: "Combo recommendation", label: "Combo Recommendation + Long-term Plan", desc: "Combo recommendations are backed by synergy science, not bundling logic. The long-term maintenance plan shifts the user's decision frame from 'should I do this?' to 'when should I schedule this?' — time-anchoring is one of the most effective LTV mechanisms in service products." },
-          ].map(({ img, alt, label, desc }) => (
-            <div key={label} style={{ display: "flex", gap: "24px", alignItems: "flex-start" }}>
-              <img src={img} alt={alt} style={{ width: "50%", flexShrink: 0, borderRadius: "8px" }} />
-              <div>
-                <CSSubheading>{label}</CSSubheading>
-                <CSBody style={{ marginBottom: 0 }}>{desc}</CSBody>
-              </div>
-            </div>
-          ))}
+        <div style={{ position: "relative", marginTop: "24px" }}>
+          <blockquote style={{ borderLeft: "2px solid #000000", paddingLeft: "20px", margin: 0 }}>
+            <CSBody style={{ fontStyle: "italic", margin: 0 }}>Clients who arrived educated had higher satisfaction, higher spend, and lower churn. The consultation was never the problem — the lack of preparation was.</CSBody>
+          </blockquote>
+          <span className="cs-margin-note" aria-hidden>preparation, not persuasion</span>
         </div>
       </CSSection>
 
-      <CSSection id="business">
-        <CSLabel>Business model</CSLabel>
-        <CSHeading>B2B2C. Consumer trust becomes clinic distribution.</CSHeading>
-        <CSBody>Clinics are not the primary user — they're the distribution channel. Consumer acquisition happens through organic content and community. Clinics adopt because clients arrive asking for Lluna by name.</CSBody>
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: "16px", margin: "24px 0" }}>
-          {[
-            { label: "Revenue",       text: "Clinic SaaS subscription, booking transaction fee, premium consumer tier." },
-            { label: "Unit Economics", text: "One combo conversion = $200–$800 incremental clinic revenue. SaaS pays for itself at 5–10% conversion lift." },
-            { label: "Key Metrics",   text: "Pre-consultation completion rate, plan acceptance rate, avg treatments/plan, 3/6-month return rate, clinic NPS." },
-          ].map(({ label, text }) => (
-            <div key={label} style={{ border: "1px solid #eae8e6", padding: "20px" }}>
-              <p style={{ fontFamily: SF, fontWeight: 500, fontSize: "14px", color: "#000000", marginBottom: "8px", textTransform: "uppercase", letterSpacing: "0.05em" }}>{label}</p>
-              <CSBody style={{ marginBottom: 0, fontSize: "15px" }}>{text}</CSBody>
-            </div>
-          ))}
-        </div>
+      <CSSection id="solution-1">
+        <CSLabel>Solution 01</CSLabel>
+        <CSHeading>Menu — the whole price list, before anyone has to ask.</CSHeading>
+        <CSVideo src="/cs/lluna-mobile-2.mp4" poster="/cs/lluna-mobile-2-poster.webp" width={886} height={1920} style={{ maxWidth: "560px", margin: "24px auto 8px", borderRadius: "8px" }} />
+        <Caption>The Menu tab on lluna.ai: the clinic&apos;s live treatment menu, sorted by most popular.</Caption>
+        <CSBody>A client&apos;s first real question is rarely &quot;what should I do?&quot; — it&apos;s &quot;what does this cost?&quot; The Menu tab answers it upfront: every treatment the clinic actually stocks, at the clinic&apos;s real prices — Botox at $13 a unit, Coolsculpting by session — sortable by most popular, filterable by concern, searchable by name.</CSBody>
+        <CSBody>It&apos;s deliberately the clinic&apos;s own menu, not a generic catalog. Browsing it is already the beginning of the consultation.</CSBody>
       </CSSection>
 
-      <CSSection id="learnings">
-        <CSLabel>Takeaway</CSLabel>
-        <CSBody>The real challenge of Lluna wasn't designing the AI — it was embedding growth design into a B2B2C product where clinic revenue goals and client trust are in constant tension. Every feature had to serve both sides without either feeling manipulated.</CSBody>
-        <CSBody>The combo recommendations had to be clinically grounded enough that clients trusted them, and commercially structured enough that clinics actually adopted them. That balance is harder than it sounds.</CSBody>
-        <CSBody>The second thing: AI-native products create the most value when they bridge a gap that only exists offline. The medspa consultation is a physical, high-stakes, time-compressed moment. Lluna's job isn't to replace that — it's to change who walks through the door and how prepared they are.</CSBody>
+      <CSSection id="solution-2">
+        <CSLabel>Solution 02</CSLabel>
+        <CSHeading>The report — a personalized plan in about a minute.</CSHeading>
+        <div style={{ position: "relative" }}>
+          <CSVideo src="/cs/lluna-mobile-1.mp4" poster="/cs/lluna-mobile-1-poster.webp" width={886} height={1920} style={{ maxWidth: "560px", margin: "24px auto 8px", borderRadius: "8px" }} />
+          <span className="cs-margin-note" aria-hidden style={{ top: "40px" }}>after a 1-minute survey, users get this</span>
+        </div>
+        <Caption>The Best for You tab: tiered plans, each with a synergy callout and a line-by-line price breakdown.</Caption>
+        <CSBody>Answer a one-minute survey — concerns, budget, treatment history — and Lluna writes the plan. Three tiers, each a three-treatment combo: the Premium plan at $1,099 pairs Vi Peel, Hydrafacial, and Restylane Fillers, with a synergy callout explaining why the combination outperforms its parts, and an included-treatments breakdown priced line by line.</CSBody>
+        <CSBody style={{ marginTop: "40px" }}>The recommendation logic behind it is deliberately opinionated:</CSBody>
+        <CodeBlock filename="recommendation_policy.ts" code={RECOMMENDATION_POLICY} />
+      </CSSection>
+
+      <CSSection id="solution-3">
+        <CSLabel>Solution 03</CSLabel>
+        <CSHeading>Clinic console — the consultant&apos;s side of the loop.</CSHeading>
+        <CSVideo src="/cs/lluna-navi-bar.mp4" poster="/cs/lluna-navi-bar-poster.webp" width={1700} height={1080} style={{ width: "100%", borderRadius: "8px", marginTop: "24px", marginBottom: "8px" }} />
+        <Caption>One console for the clinic: notifications, client plans, and revenue data behind a single navigation bar.</Caption>
+        <CSVideo src="/cs/lluna-ai-sales.mp4" poster="/cs/lluna-ai-sales-poster.webp" width={1700} height={1080} style={{ width: "100%", borderRadius: "8px", marginBottom: "8px" }} />
+        <Caption>AI sales in the plan view: a drafted client brief and tiered treatment plans, ready for the consultant to edit before the visit.</Caption>
+        <CSBody>Consultants get their own surface. For each incoming client, Lluna drafts a brief — goals, budget, preferences — plus tiered treatment plans the consultant can review, adjust, and price before the visit. The data view tracks what the product is actually moving: average basket price, revenue against budget, and referral performance.</CSBody>
+      </CSSection>
+
+      <CSSection id="outcome">
+        <CSLabel>The outcome</CSLabel>
+        <CSHeading>Accepted, signed, and lifting revenue.</CSHeading>
+        <CSBody>Lluna runs B2B2C: consumers adopt the advisor, and clinics adopt because clients walk in asking for it. The pilot put that loop in front of real clinics.</CSBody>
+        <div style={{ position: "relative" }}>
+          <CSOutcome
+            stats={[
+              { label: "Y Combinator", stat: "<5% acceptance", description: "Selected for Y Combinator's AI Startup School 2026 — 2,000+ accepted from 30,000+ applicants." },
+              { label: "First contracts", stat: "$1.6K ACV signed", description: "3 clinics signed onto the pilot program out of 40+ pitched, including partner clinic Viqi Medical Spa in Los Angeles." },
+              { label: "Revenue lift", stat: "8%+ per clinic", description: "Per-clinic revenue increased for pilot clinics on the B2B2C model." },
+            ]}
+          />
+          <span className="cs-margin-note" aria-hidden>40+ pitches, 3 signatures</span>
+        </div>
       </CSSection>
     </CaseStudyLayout>
   )

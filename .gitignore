@@ -18,3 +18,6 @@ tsconfig.tsbuildinfo
 !.claude/skills/
 # but keep machine-specific local settings out
 .claude/settings.local.json
+
+# Stray agent-memory that must never ship as public static files
+public/**/.claude/

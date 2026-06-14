@@ -351,6 +351,64 @@ export function CSSubheading({ children }: { children: React.ReactNode }) {
   )
 }
 
+// ── Outcome stats ───────────────────────────────────────────────────────────
+//
+// Typographic stat grid: mono kicker + stat headline + muted description.
+// 2-up on desktop (`.cs-outcome-grid` in globals.css), stacked on mobile.
+export interface CSOutcomeStat {
+  label: React.ReactNode
+  stat: React.ReactNode
+  description: React.ReactNode
+}
+
+export function CSOutcome({ stats, style }: { stats: CSOutcomeStat[]; style?: React.CSSProperties }) {
+  return (
+    <div className="cs-outcome-grid" style={{ marginTop: "40px", ...style }}>
+      {stats.map(({ label, stat, description }, i) => (
+        <div key={i}>
+          <p
+            style={{
+              fontFamily: MONO,
+              fontWeight: 500,
+              fontSize: "14px",
+              letterSpacing: "0.02em",
+              textTransform: "uppercase",
+              color: MEDIUM,
+              margin: 0,
+            }}
+          >
+            {label}
+          </p>
+          <p
+            style={{
+              fontFamily: TWK,
+              fontWeight: 400,
+              fontSize: "32px",
+              lineHeight: 1.2,
+              color: STRONG,
+              margin: "4px 0 0 0",
+            }}
+          >
+            {stat}
+          </p>
+          <p
+            style={{
+              fontFamily: TWK,
+              fontWeight: 400,
+              fontSize: "16px",
+              lineHeight: 1.5,
+              color: MUTED,
+              margin: "8px 0 0 0",
+            }}
+          >
+            {description}
+          </p>
+        </div>
+      ))}
+    </div>
+  )
+}
+
 export function CSBody({ children, style }: { children: React.ReactNode; style?: React.CSSProperties }) {
   return (
     <p style={{
