@@ -23,6 +23,7 @@ interface Project {
   tag?: string
   description?: string
   href?: string
+  hoverLabel?: string
 }
 
 const PROJECTS: Project[] = [
@@ -83,6 +84,7 @@ const PROJECTS: Project[] = [
     title: "FigBuild, Flowr App",
     description: "Designing a meditation app on an unexisted wearable",
     href: "https://cynthiajin.com/projects/flowr",
+    hoverLabel: "Meditation time",
   },
 ]
 
@@ -211,7 +213,7 @@ function Cover({ src, isVideo, poster, alt, label, width, height, priority }: { 
 function Card({ p, showDescription = true, isMobile = false, priority = false }: { p: Project; showDescription?: boolean; isMobile?: boolean; priority?: boolean }) {
   const inner = (
     <>
-      <Cover src={p.cover} isVideo={p.isVideo} poster={p.poster} alt={p.title} label={getHoverLabel(p.href)} width={p.coverW} height={p.coverH} priority={priority} />
+      <Cover src={p.cover} isVideo={p.isVideo} poster={p.poster} alt={p.title} label={p.hoverLabel ?? getHoverLabel(p.href)} width={p.coverW} height={p.coverH} priority={priority} />
 
       <p
         className="cap-trim"
