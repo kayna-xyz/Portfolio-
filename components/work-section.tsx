@@ -76,15 +76,13 @@ const PROJECTS: Project[] = [
     href: "/case-study/signal-32",
   },
   {
-    cover: "/filler-cover.mp4",
-    poster: "/filler-cover-poster.webp",
-    isVideo: true,
-    coverW: 1280,
-    coverH: 870,
-    category: "PRODUCT DESIGNER / ENGINEERING · PERSONAL PROJECTS",
-    title: "FDA Filler Selector",
-    tag: "Included 63+ Types of Fillers",
-    href: "https://v0-filler-search-tool.vercel.app/",
+    cover: "/flowr-cover.webp",
+    coverW: 1600,
+    coverH: 1244,
+    category: "PRODUCT DESIGNER · TEAM PROJECT",
+    title: "FigBuild, Flowr App",
+    description: "Designing a meditation app on an unexisted wearable",
+    href: "https://cynthiajin.com/projects/flowr",
   },
 ]
 
