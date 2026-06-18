@@ -17,7 +17,9 @@ Read the reference file(s) relevant to the change:
 |Page structure, the 16-column grid, where things sit on the page|`references/layout.md`|
 |The top nav or the footer (links, ordering, hover states)|`references/navigation-and-footer.md`|
 |A case-study "outcome" section (the stat cards + data visuals)|`references/case-study-outcome.md`|
+|Handwriting margin notes, hand-drawn sketches (简笔画), storyboard cycles, or grouping braces|`references/illustrations-and-notes.md`|
 |Adding/replacing any image or video (covers, clips, screenshots)|`references/media.md`|
+|The 🎮 effects-stack butterflies — adding/removing/processing sprites|`references/effects-stack-butterflies.md`|
 |Any visual decision at all (you should always read this)|`references/design-principles.md`|
 
 `design-principles.md` is non-optional for any visual change — it encodes the taste rules that make this portfolio different from a generic Vercel/shadcn template. Skipping it is how the site gets ruined.

@@ -16,6 +16,7 @@ const SOCIAL = [
   { label: "Linkedin", href: "https://www.linkedin.com/in/kayna-h-77ab8a2a1/" },
   { label: "Github",   href: "https://github.com/kayna-xyz" },
   { label: "Resume",   href: "/resume.pdf" },
+  { label: "Portfolio Review", href: "/portfolio-review" },
 ]
 
 const EMAIL = "kaynahuang325@gmail.com"

@@ -409,3 +409,241 @@ html {
   filter: blur(20px);
 }
 
+
+/* ---- Effect Stack (desktop-only playful easter egg) ---- */
+.effect-controller {
+  position: fixed;
+  top: 150px;
+  right: -14px; /* fixed 42px box, 1/3 (14px) peeks off the right edge */
+  z-index: 9100; /* above the effect capture layer so it stays clickable */
+  width: 42px;
+  height: 42px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 0;
+  margin: 0;
+  padding: 0;
+  background: transparent;
+  font-size: 42px;
+  line-height: 1;
+  cursor: pointer;
+  transform: rotate(15deg); /* tilted 15° */
+  filter: drop-shadow(0 6px 10px rgba(0, 0, 0, 0.28));
+  transition: transform 0.2s ease, filter 0.2s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+.effect-controller:hover {
+  transform: translateX(-14px) rotate(15deg); /* slide fully into view on hover */
+  filter: drop-shadow(0 8px 14px rgba(0, 0, 0, 0.32));
+}
+
+/* glass pill: the five items (4 stickers + ✕) centred, 14px apart.
+   Real glass = backdrop refraction + white inner shadow (Figma Glass /
+   Inner-shadow: #FFF 65%, x6 y4.5 blur14), plus a soft outer drop shadow.
+   Outer handles position + animation; inner holds the backdrop-filter
+   (kept transform-free so the blur renders). */
+.effect-tray {
+  position: fixed;
+  z-index: 9101; /* above the effect capture layer so stickers stay clickable */
+  transform-origin: center center;
+  transition: opacity 0.24s ease, transform 0.24s cubic-bezier(0.22, 1, 0.36, 1);
+  /* glass lives on this element — the one with transform/opacity — so the
+     backdrop-filter sees the page behind it, not an empty parent backdrop */
+  border-radius: 999px;
+  background: rgba(244, 246, 250, 0.6);
+  /* NOTE: write ONLY the standard property. The build minifier (Lightning CSS)
+     collapses a standard + `-webkit-` pair down to the `-webkit-` one, which
+     Chrome 142+ no longer supports — leaving the glass un-blurred. */
+  backdrop-filter: blur(12px) saturate(1.4);
+  box-shadow:
+    0 10px 30px rgba(0, 0, 0, 0.12),
+    inset 6px 5px 14px rgba(255, 255, 255, 0.65),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.35);
+}
+.effect-tray-glass {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 14px 30px;
+  border-radius: inherit;
+}
+/* each sticker is a button so it can react to hover / active (picked-up) */
+.effect-sticker-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 0;
+  margin: 0;
+  padding: 0;
+  background: transparent;
+  cursor: pointer;
+  transform: scale(1);
+  transition: transform 0.16s cubic-bezier(0.22, 1, 0.36, 1), filter 0.16s ease;
+  -webkit-tap-highlight-color: transparent;
+  outline: none;
+}
+.effect-sticker-btn:focus,
+.effect-sticker-btn:focus-visible {
+  outline: none;
+}
+.effect-sticker-btn:hover {
+  transform: scale(1.18);
+  filter: drop-shadow(0 3px 6px rgba(0, 0, 0, 0.22));
+}
+.effect-sticker-btn:active {
+  transform: scale(0.96);
+}
+/* the picked-up tool stays lifted + gently bobs so you know it is in hand */
+.effect-sticker-btn.is-active {
+  transform: scale(1.22);
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.28));
+  animation: effectStickerBob 1.4s ease-in-out infinite;
+}
+@keyframes effectStickerBob {
+  0%, 100% { transform: scale(1.22) translateY(0); }
+  50% { transform: scale(1.22) translateY(-3px); }
+}
+.effect-sticker {
+  object-fit: contain;
+  display: block;
+  user-select: none;
+  pointer-events: none;
+}
+.effect-close {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 0;
+  margin: 0;
+  padding: 0;
+  background: transparent;
+  font-size: 22px;
+  line-height: 1;
+  color: rgba(0, 0, 0, 0.35);
+  cursor: pointer;
+  transition: color 150ms ease;
+  -webkit-tap-highlight-color: transparent;
+}
+.effect-close:hover {
+  color: #ff9100;
+}
+
+/* ---- Effect engine layers (particles, capture, follower cursor) ---- */
+/* particle layer: every bubble / pepe / butterfly lives here */
+.fx-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9001;
+  pointer-events: none;
+  overflow: hidden;
+}
+/* capture layer: only catches input while a tool is in hand; hides the
+   native cursor so the follower element can stand in for it */
+.fx-capture {
+  position: fixed;
+  inset: 0;
+  z-index: 9000;
+  pointer-events: none;
+}
+.fx-capture--active {
+  pointer-events: auto;
+  cursor: none;
+}
+/* follower: the picked-up tool, drawn where the cursor would be */
+.fx-follower {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 52px;
+  height: 52px;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  pointer-events: none;
+  z-index: 9002;
+  display: none;
+  filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.3));
+  will-change: transform;
+}
+.fx-capture--active .fx-follower {
+  display: block;
+}
+
+/* bubbles — a circle (Figma cornerRadius 96 = fully round) that lenses the page
+   behind it. The element itself stays fully opaque so its backdrop-filter
+   (refraction + blur, set per-particle in JS) renders at full strength; the
+   glass-sphere image is a separate 35%-opacity shell on ::after, so the bubble
+   reads as see-through soap film WITHOUT washing out the refraction. The drop
+   shadow (box-shadow) is also set per-particle in JS so it scales with size. */
+.fx-bubble {
+  position: absolute;
+  left: 0;
+  top: 0;
+  border-radius: 50%;
+  pointer-events: none;
+  will-change: transform, opacity;
+}
+.fx-bubble::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: url("/effects/bubble-glass.webp") center / contain no-repeat;
+  opacity: 0.35;
+}
+.fx-bubble--charge {
+  /* the growing wand bubble is anchored on its own centre while charging */
+  transform: translate(-50%, -50%);
+}
+
+/* pepe rain */
+.fx-pepe {
+  position: absolute;
+  left: 0;
+  top: 0;
+  pointer-events: none;
+  will-change: transform;
+}
+
+/* butterflies — one wing-photo sprite per butterfly. The flap is a smooth
+   horizontal fold of the whole span (the 2D projection of wings tilting up):
+   one piece, so there is never a seam or a split body. Box width/height +
+   centring margins are set inline per butterfly. */
+.fx-bfly {
+  position: absolute;
+  left: 0;
+  top: 0;
+  pointer-events: none;
+  will-change: transform;
+  filter: drop-shadow(0 3px 5px rgba(0, 0, 0, 0.16));
+}
+.fx-bfly-flap {
+  width: 100%;
+  height: 100%;
+  transform-origin: 50% 58%;
+  animation: fxBflyFlap var(--fx-flap-dur, 0.22s) ease-in-out infinite alternate;
+}
+.fx-bfly-flap img {
+  display: block;
+  width: 100%;
+  height: auto;
+  -webkit-user-drag: none;
+  user-select: none;
+}
+@keyframes fxBflyFlap {
+  from { transform: scaleX(1); }
+  to { transform: scaleX(var(--fx-flap-min, 0.4)); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fx-bfly-flap { animation-duration: 0.7s; }
+  .effect-tray { transition: opacity 0.18s ease; }
+  .effect-controller { transition: none; }
+}
+
+/* desktop only — no controller / tray on mobile */
+@media (max-width: 767px) {
+  .effect-controller { display: none; }
+  .effect-tray { display: none; }
+}
