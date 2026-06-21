@@ -66,7 +66,7 @@ export default function HeroSection() {
               maxWidth: "560px",
             }}
           >
-            With <span style={{ color: "rgba(0,0,0,0.75)" }}>3 years of experience</span> of designing products from scratch and tinkering products that at-scale. Currently studying <span style={{ color: "rgba(0,0,0,0.75)" }}>Human-Computer Interaction</span> at Barnard / Columbia as a rising junior. Drawn to <span style={{ color: "rgba(0,0,0,0.75)" }}>explore the next frontier of human-AI interaction, and business-driven products.</span>
+            With <span style={{ color: "rgba(0,0,0,0.75)" }}>3 years of experience</span> designing products from scratch and tinkering with products at scale. Currently studying <span style={{ color: "rgba(0,0,0,0.75)" }}>Human-Computer Interaction</span> at Barnard / Columbia as a rising junior. Drawn to <span style={{ color: "rgba(0,0,0,0.75)" }}>explore the next frontier of human-AI interaction, and business-driven products.</span>
           </p>
 
           <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>

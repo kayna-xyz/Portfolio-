@@ -115,7 +115,7 @@ export default function AboutPage() {
                   I&apos;m a generalist designer with a solid foundation in product design, product strategy, and frontend engineering.
                 </p>
                 <p className="cap-trim" style={bodyStyle}>
-                  The reason drove me into product design is the original passion of tech and the arts.
+                  What drew me into product design is my original passion for tech and the arts.
                 </p>
                 <p className="cap-trim" style={bodyStyle}>
                   I&apos;m currently pursuing a degree in Cognitive Science (Human-Computer Interaction) with minors in Economics &amp; Political Science at Barnard College of Columbia University, and have worked at several AI unicorns focused on SaaS for prosumers.
@@ -135,7 +135,7 @@ export default function AboutPage() {
             </Section>
 
             <Section label="INTERESTS">
-              <p className="cap-trim" style={bodyStyle}>Besides of arts and tech, I&apos;m also interested in:</p>
+              <p className="cap-trim" style={bodyStyle}>Besides arts and tech, I&apos;m also interested in:</p>
               <ul style={{ ...bodyStyle, paddingLeft: "20px", listStyleType: "disc" }}>
                 <li>Poker</li>
                 <li>Beverage mixing &amp; making coffee</li>
