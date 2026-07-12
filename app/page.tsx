@@ -1,14 +1,11 @@
-import Navbar from "@/components/navbar"
-import HeroSection from "@/components/hero-section"
-import WorkSection from "@/components/work-section"
-import Footer from "@/components/footer"
+import type { Metadata } from "next"
+import KaynoteApp from "./kynotes/kaynote-app"
+
+export const metadata: Metadata = {
+  title: "KyNotes",
+  description: "Kayna's notes, an intro and a blog kept in a little Apple Notes corner of the site.",
+}
+
 export default function Page() {
-  return (
-    <main className="relative page-fade-in">
-      <Navbar />
-      <HeroSection />
-      <WorkSection />
-      <Footer />
-    </main>
-  )
+  return <KaynoteApp />
 }
