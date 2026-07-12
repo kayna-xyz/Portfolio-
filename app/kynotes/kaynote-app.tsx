@@ -506,7 +506,7 @@ function SearchIcon() {
 export default function KaynoteApp() {
   const router = useRouter()
   const [selectedId, setSelectedId] = useState("about-me")
-  const [noteOpen, setNoteOpen] = useState(false) // mobile: note pane visible
+  const [noteOpen, setNoteOpen] = useState(true) // mobile: note pane visible; start on the about note
   const [query, setQuery] = useState("")
   const [copied, setCopied] = useState(false)
 
