@@ -2,13 +2,14 @@
 
 import Link from "next/link"
 
+import ResumeGate from "@/components/resume-gate"
+
 const MONO = "var(--font-reddit-mono), ui-monospace, monospace"
 const TWK = "var(--font-twk), system-ui, -apple-system, sans-serif"
 
 const MENU = [
   { label: "Home", href: "/" },
-  { label: "Blog", href: "/blog" },
-  { label: "About", href: "/experience" },
+  { label: "KyNotes", href: "/kynotes" },
 ]
 
 const SOCIAL = [
@@ -16,7 +17,6 @@ const SOCIAL = [
   { label: "Linkedin", href: "https://www.linkedin.com/in/kayna-h-77ab8a2a1/" },
   { label: "Github",   href: "https://github.com/kayna-xyz" },
   { label: "Resume",   href: "/resume.pdf" },
-  { label: "Portfolio Review", href: "/portfolio-review" },
 ]
 
 const EMAIL = "kaynahuang325@gmail.com"
@@ -75,18 +75,24 @@ export default function Footer() {
           </div>
           <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
             <p style={headerStyle}>Find Me On</p>
-            {SOCIAL.map((s) => (
-              <a
-                key={s.label}
-                href={s.href}
-                target={s.href.startsWith("http") ? "_blank" : undefined}
-                rel={s.href.startsWith("http") ? "noopener noreferrer" : undefined}
-                className="footer-link"
-                style={linkStyle}
-              >
-                {s.label}
-              </a>
-            ))}
+            {SOCIAL.map((s) =>
+              s.label === "Resume" ? (
+                <ResumeGate key={s.label} className="footer-link" style={linkStyle}>
+                  {s.label}
+                </ResumeGate>
+              ) : (
+                <a
+                  key={s.label}
+                  href={s.href}
+                  target={s.href.startsWith("http") ? "_blank" : undefined}
+                  rel={s.href.startsWith("http") ? "noopener noreferrer" : undefined}
+                  className="footer-link"
+                  style={linkStyle}
+                >
+                  {s.label}
+                </a>
+              )
+            )}
           </div>
         </div>
 

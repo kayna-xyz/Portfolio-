@@ -5,8 +5,7 @@ import Link from "next/link"
 const TWK = "var(--font-twk), system-ui, -apple-system, sans-serif"
 
 const LINKS = [
-  { label: "Blog", href: "/blog" },
-  { label: "About", href: "/experience" },
+  { label: "KyNotes", href: "/kynotes" },
 ]
 
 export default function Navbar() {
@@ -17,8 +16,11 @@ export default function Navbar() {
         display: "flex",
         alignItems: "center",
         justifyContent: "space-between",
-        background: "#FDFBFA",
-        borderBottom: "1px solid rgba(0,0,0,0.15)",
+        // iOS-toolbar frosted glass: translucent bg + backdrop blur (standard
+        // property only — Lightning CSS drops the -webkit- prefixed pair).
+        // No hairline — the blur itself separates the bar from content.
+        background: "rgba(253,251,250,0.72)",
+        backdropFilter: "blur(20px) saturate(180%)",
       }}
     >
       <Link

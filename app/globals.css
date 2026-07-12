@@ -44,7 +44,7 @@ html {
    ───────────────────────────────────────────────────────────────────────── */
 
 /* Navbar */
-.site-nav { padding: 20px 40px; }
+.site-nav { padding: 20px 40px; position: sticky; top: 0; z-index: 100; }
 .site-nav-links { gap: 24px; }
 
 /* Homepage hero — shown on desktop, omitted on mobile by design */

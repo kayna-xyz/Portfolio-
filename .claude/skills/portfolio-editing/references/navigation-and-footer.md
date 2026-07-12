@@ -13,10 +13,9 @@ Spans the full page width with `20px` vertical padding (top + bottom) and `40px`
 
 **Right side:** Nav links, arranged in this exact order from left to right:
 
-1. `Blog`
-2. `About`
+1. `KayNote` (links to `/kaynote`)
 
-(`Home` and `Playground` were removed from the nav on **both desktop and mobile** — the `KAYNA HUANG` wordmark covers Home.)
+(`Home` and `Playground` were removed from the nav on **both desktop and mobile** — the `KAYNA HUANG` wordmark covers Home. `Blog` and `About` were replaced by `KayNote` in July 2026: `/kaynote` is a full-screen Apple Notes replica page holding the intro/about note and blog notes. It is an intentional, self-contained design-system exception — SF Pro system font stack, its own colors, no site nav/footer. Do not reuse its styles elsewhere; old routes `/blog` and `/experience` redirect to it via `next.config.mjs`.)
 
 - Font: TWK Lausanne 400, 16px
 - Color: `text-muted` (`#000000` at 35%) in resting state
@@ -61,7 +60,7 @@ The footer is a single horizontal line:
 
 **Homepage footer variant:** the homepage has an expanded footer area above the standard footer line, containing:
 
-- `Menu` section on the left with: Home, Blog, About (each on its own line, 16px TWK Lausanne, `text-muted`)
+- `Menu` section on the left with: Home, KayNote (each on its own line, 16px TWK Lausanne, `text-muted`)
 - `Find Me On` section below Menu with: X, Linkedin, Github, Resume (each on its own line, same styling)
 - `LAST PUSH — MAY 2026` timestamp (Reddit Mono Medium, 16px, `text-muted`)
 - Contact prompt on the right: "If you are also interested in **product, future of technology, and start-ups**, let's connect!" with email below (16px TWK Lausanne, body in `text-muted`, bolded phrase in `text-strong`)
