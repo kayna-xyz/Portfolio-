@@ -333,11 +333,11 @@ const SECTIONS: Section[] = [
         snippet: "where my product design work lives",
         date: "July 11, 2026 at 10:02 AM",
         searchText:
-          "portfolio product design work case studies close kaynotes where my product design work lives",
+          "portfolio product design work case studies close notes where my product design work lives",
         body: (
           <>
             <p>
-              if you want to see my product design portfolio, close KyNotes (you know how to
+              if you want to see my product design portfolio, close Notes (you know how to
               close it).
             </p>
             <p>don&apos;t worry, you can always come back.</p>
@@ -535,7 +535,7 @@ export default function KaynoteApp() {
     const url = window.location.href
     if (typeof navigator.share === "function") {
       try {
-        await navigator.share({ title: "KyNotes", url })
+        await navigator.share({ title: "Notes", url })
         return
       } catch {
         // fall through to clipboard if the user dismissed the sheet
@@ -558,7 +558,7 @@ export default function KaynoteApp() {
         <div className="kn-lights">
           <button
             className="kn-light kn-light--red"
-            aria-label="Close KyNotes, back to home"
+            aria-label="Close Notes, back to home"
             title="Back to home"
             onClick={() => router.push("/portfolio")}
           />

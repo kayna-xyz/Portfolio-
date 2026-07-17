@@ -9,7 +9,7 @@ const TWK = "var(--font-twk), system-ui, -apple-system, sans-serif"
 
 const MENU = [
   { label: "Portfolio", href: "/portfolio" },
-  { label: "KyNotes", href: "/" },
+  { label: "Notes", href: "/" },
 ]
 
 const SOCIAL = [
