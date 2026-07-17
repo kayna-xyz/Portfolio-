@@ -41,7 +41,7 @@ const PROJECTS: Project[] = [
     cover: "/opusclip-cover.png",
     coverW: 1642,
     coverH: 1138,
-    category: "PRODUCT DESIGNER · CONTRACT · JUNE 2026 – PRESENT",
+    category: "PRODUCT DESIGNER · CONTRACT · JUNE 2026 – AUG 2026",
     title: "OpusClip, Agent Opus",
     tag: "Series B",
     description: "Designing an agent powered editor inside of OpusClip, a video clipping SaaS",
