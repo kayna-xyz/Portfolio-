@@ -48,7 +48,7 @@ html {
 .site-nav-links { gap: 24px; }
 
 /* Homepage hero — shown on desktop, omitted on mobile by design */
-.hero-section { display: block; }
+.hero-section { display: flex; justify-content: center; }
 
 /* Homepage work section */
 .work-section { padding: 40px; }
