@@ -9,12 +9,15 @@ export default function HeroSection() {
     <section
       className="hero-section"
       style={{
-        // The hero owns the first viewport: min-height fills the screen below
-        // the 64px nav, art vertically centered. The art's canvas carries a
-        // transparent feather margin (~7.4% of canvas height) top and bottom,
-        // so visible gaps read larger than the padding values.
-        padding: "80px 40px 64px 40px",
-        minHeight: "calc(100vh - 64px)",
+        // The hero owns the first viewport, centered against the FULL screen
+        // (not the area below the nav): it slides under the translucent
+        // sticky nav via the negative margin, so the 64px bar counts as part
+        // of the top spacing. Padding floors are symmetric (nav 64 + 24) so
+        // flex centering lands on the true viewport center. The art's canvas
+        // adds its own ~7.4% transparent feather above and below.
+        padding: "calc(64px + 24px) 40px calc(64px + 24px) 40px",
+        marginTop: "-64px",
+        minHeight: "100vh",
         alignItems: "center",
         background: "#FDFBFA",
       }}
