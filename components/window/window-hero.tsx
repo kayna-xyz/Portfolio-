@@ -81,7 +81,7 @@ export default function WindowHero() {
             exit={{ opacity: 0 }}
             transition={{ duration: 0.35, ease: "easeInOut" }}
           >
-            <WindowScene scene={scene} width="min(700px, 48vw)" />
+            <WindowScene scene={scene} width="min(840px, 56vw)" />
           </motion.div>
         </AnimatePresence>
       </div>

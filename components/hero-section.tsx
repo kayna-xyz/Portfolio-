@@ -9,11 +9,13 @@ export default function HeroSection() {
     <section
       className="hero-section"
       style={{
-        // The art's canvas carries ~43px of transparent feather margin on top
-        // and bottom (wall panel starts at 7.4% of canvas height), so the
-        // *visible* gaps are padding + 43px: 64+43 above ≈ 24+40 (work-section
-        // top padding) + 43 below — optically equal spacing.
-        padding: "64px 40px 24px 40px",
+        // The hero owns the first viewport: min-height fills the screen below
+        // the 64px nav, art vertically centered. The art's canvas carries a
+        // transparent feather margin (~7.4% of canvas height) top and bottom,
+        // so visible gaps read larger than the padding values.
+        padding: "80px 40px 64px 40px",
+        minHeight: "calc(100vh - 64px)",
+        alignItems: "center",
         background: "#FDFBFA",
       }}
     >
