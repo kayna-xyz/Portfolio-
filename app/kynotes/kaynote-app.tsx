@@ -327,23 +327,6 @@ const SECTIONS: Section[] = [
           </>
         ),
       },
-      {
-        id: "portfolio",
-        title: "where is the portfolio?",
-        snippet: "where my product design work lives",
-        date: "July 11, 2026 at 10:02 AM",
-        searchText:
-          "portfolio product design work case studies close notes where my product design work lives",
-        body: (
-          <>
-            <p>
-              if you want to see my product design portfolio, close Notes (you know how to
-              close it).
-            </p>
-            <p>don&apos;t worry, you can always come back.</p>
-          </>
-        ),
-      },
     ],
   },
   {

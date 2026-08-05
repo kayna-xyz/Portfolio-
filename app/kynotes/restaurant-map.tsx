@@ -116,6 +116,14 @@ export default function RestaurantMap() {
   const rowRefs = useRef<Record<string, HTMLButtonElement | null>>({})
   const [active, setActive] = useState<string | null>(null)
   const [openR, setOpenR] = useState<Restaurant | null>(null)
+  const [photoIdx, setPhotoIdx] = useState(0)
+  const photoStrip = useRef<HTMLDivElement>(null)
+
+  // new card → carousel back to the first photo
+  useEffect(() => {
+    setPhotoIdx(0)
+    photoStrip.current?.scrollTo({ left: 0 })
+  }, [openR])
 
   useEffect(() => {
     let cancelled = false
@@ -261,17 +269,58 @@ export default function RestaurantMap() {
               ✕
             </button>
             {openR.photos.length > 0 && (
-              <div className="kn-food-photos">
-                {openR.photos.map(([w, h], i) => (
-                  <img
-                    key={i}
-                    src={`/kaynote/food/${openR.slug}-${i + 1}.webp`}
-                    alt={`${openR.name}, photo ${i + 1}`}
-                    width={w}
-                    height={h}
-                    loading="lazy"
-                  />
-                ))}
+              <div className="kn-food-carousel">
+                <div
+                  className="kn-food-photos"
+                  ref={photoStrip}
+                  onScroll={(e) => {
+                    const el = e.currentTarget
+                    setPhotoIdx(Math.round(el.scrollLeft / el.clientWidth))
+                  }}
+                >
+                  {openR.photos.map(([w, h], i) => {
+                    const src = `/kaynote/food/${openR.slug}-${i + 1}.webp`
+                    return (
+                      <div
+                        key={i}
+                        className="kn-food-slide"
+                        onClick={() => {
+                          const el = photoStrip.current
+                          if (!el || openR.photos.length < 2) return
+                          const next = (i + 1) % openR.photos.length
+                          el.scrollTo({ left: next * el.clientWidth, behavior: "smooth" })
+                        }}
+                      >
+                        {/* blurred cover copy fills the frame so contain never shows bare bars */}
+                        <img className="kn-food-slide-bg" src={src} alt="" aria-hidden="true" loading="lazy" />
+                        <img
+                          src={src}
+                          alt={`${openR.name}, photo ${i + 1}`}
+                          width={w}
+                          height={h}
+                          loading="lazy"
+                        />
+                      </div>
+                    )
+                  })}
+                </div>
+                {openR.photos.length > 1 && (
+                  <div className="kn-food-dots">
+                    {openR.photos.map((_, i) => (
+                      <button
+                        key={i}
+                        className={`kn-food-dot${i === photoIdx ? " is-active" : ""}`}
+                        aria-label={`Photo ${i + 1} of ${openR.photos.length}`}
+                        onClick={() =>
+                          photoStrip.current?.scrollTo({
+                            left: i * photoStrip.current.clientWidth,
+                            behavior: "smooth",
+                          })
+                        }
+                      />
+                    ))}
+                  </div>
+                )}
               </div>
             )}
             <p className="kn-food-modal-title">
@@ -474,7 +523,7 @@ export default function RestaurantMap() {
         .kn-food-modal {
           position: relative;
           width: 100%;
-          max-width: 400px;
+          max-width: 560px;
           max-height: calc(100dvh - 48px);
           overflow-y: auto;
           background: #ffffff;
@@ -483,26 +532,72 @@ export default function RestaurantMap() {
           box-shadow: 0 24px 60px rgba(0, 0, 0, 0.3);
           animation: kn-food-pop-in 0.22s cubic-bezier(0.2, 0.9, 0.3, 1.2);
         }
-        .kn-food-photos {
-          display: flex;
-          gap: 2px;
+        .kn-food-carousel {
+          position: relative;
           margin: -28px -28px 0;
           border-radius: 14px 14px 0 0;
           overflow: hidden;
         }
-        .kn-food-photos img {
-          flex: 1 1 0;
-          width: 0;
-          height: 132px;
-          object-fit: cover;
-          display: block;
+        .kn-food-photos {
+          display: flex;
+          overflow-x: auto;
+          scroll-snap-type: x mandatory;
+          scrollbar-width: none; /* Firefox */
         }
-        .kn-food-photos img:only-child {
-          /* flex:none + width:100% avoids Safari's flex-img distortion; cover never stretches */
+        .kn-food-photos::-webkit-scrollbar {
+          display: none; /* Chrome / Safari */
+        }
+        .kn-food-slide {
+          position: relative;
           flex: none;
           width: 100%;
-          height: 280px;
-          object-position: center 30%;
+          height: 340px;
+          scroll-snap-align: start;
+          overflow: hidden;
+          cursor: pointer;
+        }
+        .kn-food-slide:only-child {
+          cursor: default;
+        }
+        .kn-food-photos .kn-food-slide-bg {
+          position: absolute;
+          inset: 0;
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          filter: blur(28px) brightness(0.92) saturate(1.15);
+          transform: scale(1.2);
+        }
+        .kn-food-slide img + img {
+          position: relative;
+          display: block;
+          width: 100%;
+          height: 100%;
+          object-fit: contain;
+        }
+        .kn-food-dots {
+          position: absolute;
+          bottom: 12px;
+          left: 0;
+          right: 0;
+          display: flex;
+          justify-content: center;
+          gap: 6px;
+          pointer-events: none;
+        }
+        .kn-food-dot {
+          width: 7px;
+          height: 7px;
+          padding: 0;
+          border: none;
+          border-radius: 50%;
+          background: rgba(255, 255, 255, 0.55);
+          box-shadow: 0 0 3px rgba(0, 0, 0, 0.3);
+          cursor: pointer;
+          pointer-events: auto;
+        }
+        .kn-food-dot.is-active {
+          background: #ffffff;
         }
         .kn-food-close {
           position: absolute;
@@ -609,6 +704,9 @@ export default function RestaurantMap() {
             flex: none;
             width: 100%;
             height: 300px;
+          }
+          .kn-food-slide {
+            height: 260px;
           }
         }
       `}</style>
