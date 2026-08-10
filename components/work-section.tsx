@@ -64,7 +64,7 @@ const PROJECTS: Project[] = [
     category: "ENGINEERING · AUG 2026",
     title: "TokiPet, Terminal Pet",
     tags: [{ label: "Open Source", icon: "/github-logo.webp" }],
-    description: "Designing an ASCII pet that lives in your terminal and keeps you company while you code",
+    description: "Built an ASCII pet that lives in your terminal and keeps you company while you code",
     href: "https://tokipet.vercel.app/",
   },
   {
