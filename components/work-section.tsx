@@ -78,18 +78,6 @@ const PROJECTS: Project[] = [
     href: "/case-study/lluna",
   },
   {
-    cover: "/claude-cover.mp4",
-    poster: "/claude-cover-poster.webp",
-    isVideo: true,
-    coverW: 1280,
-    coverH: 870,
-    category: "PRODUCT DESIGNER / ENGINEERING · PERSONAL PROJECT",
-    title: "Claude Mini App, VC Internal Tool",
-    tags: [{ label: "Top 25 AI Unicorns Benchmarked" }],
-    description: "Building an internal tool for VC to benchmark early-stage startups",
-    href: "/case-study/signal-32",
-  },
-  {
     cover: "/flowr-cover.webp",
     coverW: 1600,
     coverH: 1244,
