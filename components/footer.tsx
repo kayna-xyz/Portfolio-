@@ -99,6 +99,7 @@ export default function Footer() {
         {/* Right column: contact + email at top, LAST PUSH mid, BUILT BY at bottom */}
         <div style={{ display: "flex", flexDirection: "column" }}>
           <p
+            className="footer-contact"
             style={{
               fontFamily: TWK,
               fontWeight: 400,
@@ -117,7 +118,7 @@ export default function Footer() {
           </p>
           <a
             href={`mailto:${EMAIL}`}
-            className="footer-link"
+            className="footer-link footer-contact"
             style={{ ...linkStyle, marginTop: "12px" }}
           >
             {EMAIL}

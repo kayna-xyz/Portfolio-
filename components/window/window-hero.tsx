@@ -54,25 +54,30 @@ export default function WindowHero() {
   const city = manifest.cities[scene.cityId]
   const location = city.locations[scene.locationId]
 
+  // Layout (desktop 3-column row / mobile stacked grid) lives in globals.css
+  // under `.hero-inner` and friends, so the breakpoint is pure CSS.
   return (
-    <div
-      style={{
-        display: "grid",
-        gridTemplateColumns: "1fr auto 1fr",
-        alignItems: "center",
-        gap: "40px",
-        width: "100%",
-      }}
-    >
-      {/* ── Left: nameplate */}
-      <div style={{ justifySelf: "start" }}>
-        <p style={strongLine}>{city.name}</p>
-        {location.address && <p style={mutedLine}>{location.address}</p>}
+    <div className="hero-inner">
+      {/* ── Nameplate (desktop: left; mobile: above the window, no city name) */}
+      <div className="hero-nameplate">
+        <p className="hero-city" style={strongLine}>{city.name}</p>
+        {location.address && (
+          // Mobile shows the address without the trailing state code
+          // ("Battery Spencer, Sausalito, CA" → "Battery Spencer, Sausalito");
+          // both variants render and CSS picks one, keeping the breakpoint
+          // pure CSS like the rest of the hero.
+          <p style={mutedLine}>
+            <span className="hero-addr-full">{location.address}</span>
+            <span className="hero-addr-short">
+              {location.address.replace(/,\s*[A-Z]{2}$/, "")}
+            </span>
+          </p>
+        )}
         <LocalTime timezone={location.timezone} />
       </div>
 
-      {/* ── Center: the window (cross-faded when it changes) */}
-      <div style={{ position: "relative" }}>
+      {/* ── The window (cross-faded when it changes; sized by `.hero-window`) */}
+      <div className="hero-window">
         <AnimatePresence mode="wait" initial={false}>
           <motion.div
             key={index}
@@ -81,12 +86,12 @@ export default function WindowHero() {
             exit={{ opacity: 0 }}
             transition={{ duration: 0.35, ease: "easeInOut" }}
           >
-            <WindowScene scene={scene} width="min(840px, 56vw)" />
+            <WindowScene scene={scene} width="100%" />
           </motion.div>
         </AnimatePresence>
       </div>
 
-      {/* ── Right: swap to another window */}
+      {/* ── Swap to another window (desktop: right; mobile: below, right-aligned) */}
       <button
         className="hero-refresh"
         onClick={() => setIndex((i) => (i + 1) % scenePresets.length)}

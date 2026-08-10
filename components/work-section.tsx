@@ -246,8 +246,11 @@ function Card({ p, showDescription = true, isMobile = false, priority = false }:
       <div
         style={{
           display: "flex",
-          flexDirection: "row",
-          alignItems: "center",
+          // Mobile: the title gets its own line and the tag pills sit on a
+          // left-aligned row below it — one consistent pattern for every card,
+          // whether its tag string is short or long.
+          flexDirection: isMobile ? "column" : "row",
+          alignItems: isMobile ? "flex-start" : "center",
           justifyContent: "space-between",
           gap: isMobile ? "12px" : "16px",
           marginTop: isMobile ? "16px" : "20px",
@@ -272,7 +275,7 @@ function Card({ p, showDescription = true, isMobile = false, priority = false }:
             style={{
               display: "flex",
               flexWrap: "wrap",
-              justifyContent: "flex-end",
+              justifyContent: isMobile ? "flex-start" : "flex-end",
               alignItems: "center",
               gap: isMobile ? "8px" : "12px",
               marginTop: isMobile ? "0" : "-10px",

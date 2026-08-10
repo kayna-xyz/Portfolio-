@@ -47,8 +47,27 @@ html {
 .site-nav { padding: 20px 40px; position: sticky; top: 0; z-index: 100; }
 .site-nav-links { gap: 24px; }
 
-/* Homepage hero — shown on desktop, omitted on mobile by design */
-.hero-section { display: flex; justify-content: center; }
+/* Homepage hero — the Window daydream owns the first viewport on every size.
+   The hero is centered against the FULL screen (not the area below the nav):
+   it slides under the translucent sticky nav via the negative margin, so the
+   nav bar counts as part of the top spacing. Padding floors are symmetric
+   (nav height + breathing room) so flex centering lands on the true viewport
+   center. The art's canvas adds its own ~7.4% transparent feather. */
+.hero-section {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: calc(64px + 24px) 40px;
+  margin-top: -64px;
+  min-height: 100vh;
+  background: #FDFBFA;
+}
+/* Desktop: [nameplate | window | change-view] on one centered row.
+   Mobile: window on top (full width), nameplate bottom-left, action bottom-right. */
+.hero-inner { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 40px; width: 100%; }
+.hero-nameplate { justify-self: start; }
+.hero-addr-short { display: none; }
+.hero-window { position: relative; width: min(840px, 56vw); }
 
 /* Homepage work section */
 .work-section { padding: 40px; }
@@ -170,7 +189,23 @@ html {
   .site-nav { padding: 16px 20px; }
   .site-nav-links { gap: 20px; }
 
-  .hero-section { display: none; }
+  /* Mobile nav is ~56px tall (16px padding); keep the same slide-under trick */
+  .hero-section { padding: calc(56px + 20px) 20px 32px 20px; margin-top: -56px; min-height: 100svh; }
+  /* Mobile hero stack: nameplate on top (address + clock only — the big
+     city name is desktop-only), window art, then the action bottom-right
+     under the art. The art canvas carries a 6.7% transparent feather margin
+     per side, so it's scaled up by 100/86.6 and pulled out with negative
+     margins to land the VISIBLE wall panel's edges exactly on the 20px
+     content padding, flush with the nameplate above. The canvas then pokes
+     ~7px past the screen edge — clip it so the page can't scroll sideways. */
+  .hero-section { overflow-x: clip; }
+  .hero-inner { grid-template-columns: 1fr; gap: 24px; row-gap: 24px; }
+  .hero-city { display: none; }
+  .hero-addr-full { display: none; }
+  .hero-addr-short { display: inline; }
+  .hero-nameplate { grid-row: 1; grid-column: 1; }
+  .hero-window { grid-row: 2; grid-column: 1; width: 115.47%; margin: 0 -7.735%; }
+  .hero-refresh { grid-row: 3; grid-column: 1; justify-self: end; }
 
   .work-section { padding: 24px 20px 40px 20px; }
   .work-tagline { display: none; }
@@ -179,6 +214,8 @@ html {
 
   .site-footer { padding: 40px 20px; }
   .footer-grid { grid-template-columns: 1fr; }
+  /* The contact blurb + email are desktop-only; socials cover contact here */
+  .footer-contact { display: none; }
   .footer-lastpush { margin-top: 40px; }
   .footer-builtby { margin-top: 12px; text-align: left; }
 
