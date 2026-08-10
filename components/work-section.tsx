@@ -12,6 +12,11 @@ function getHoverLabel(href?: string): string {
   return "Try!"
 }
 
+interface Tag {
+  label: string
+  icon?: string
+}
+
 interface Project {
   cover: string
   isVideo?: boolean
@@ -20,7 +25,7 @@ interface Project {
   coverH?: number
   category: string
   title: string
-  tag?: string
+  tags?: Tag[]
   description?: string
   href?: string
   hoverLabel?: string
@@ -33,7 +38,10 @@ const PROJECTS: Project[] = [
     coverH: 880,
     category: "PRODUCT DESIGNER · INTERNSHIP · SUMMER 2025",
     title: "HeyGen, AI Avatar SaaS",
-    tag: "Forbes AI 50",
+    tags: [
+      { label: "Forbes AI 50" },
+      { label: "Backed by Conviction", icon: "/conviction-logo.webp" },
+    ],
     description: "Architecting a seamless experience of AI avatar products for prosumers.",
     href: "/case-study/heygen-enterprise",
   },
@@ -43,16 +51,21 @@ const PROJECTS: Project[] = [
     coverH: 1138,
     category: "PRODUCT DESIGNER · CONTRACT · JUNE 2026 – AUG 2026",
     title: "OpusClip, Agent Opus",
-    tag: "Series B",
+    tags: [
+      { label: "Series B" },
+      { label: "Backed by SoftBank Vision Fund", icon: "/softbank-logo.webp" },
+    ],
     description: "Designing an agent powered editor inside of OpusClip, a video clipping SaaS",
   },
   {
-    cover: "/perplexity-cover.png",
-    coverW: 914,
-    coverH: 632,
-    category: "PRODUCT DESIGNER · PERSONAL PROJECT",
-    title: "Perplexity Travel Redesign",
-    description: "Redesigning Perplexity Travel experience.",
+    cover: "/tokipet-cover.webp",
+    coverW: 1547,
+    coverH: 1121,
+    category: "ENGINEERING · AUG 2026",
+    title: "TokiPet, Terminal Pet",
+    tags: [{ label: "Open Source", icon: "/github-logo.webp" }],
+    description: "Designing an ASCII pet that lives in your terminal and keeps you company while you code",
+    href: "https://tokipet.vercel.app/",
   },
   {
     cover: "/lluna-cover.png",
@@ -60,7 +73,7 @@ const PROJECTS: Project[] = [
     coverH: 1312,
     category: "ENGINEERING · MAR 2026 – MAY 2026",
     title: "Lluna, Skincare Consultant’s Copilot",
-    tag: "AI SaaS",
+    tags: [{ label: "AI SaaS" }],
     description: "Building an AI Copilot for uplifting skincare consultant’s revenue",
     href: "/case-study/lluna",
   },
@@ -72,7 +85,7 @@ const PROJECTS: Project[] = [
     coverH: 870,
     category: "PRODUCT DESIGNER / ENGINEERING · PERSONAL PROJECT",
     title: "Claude Mini App, VC Internal Tool",
-    tag: "Top 25 AI Unicorns Benchmarked",
+    tags: [{ label: "Top 25 AI Unicorns Benchmarked" }],
     description: "Building an internal tool for VC to benchmark early-stage startups",
     href: "/case-study/signal-32",
   },
@@ -82,6 +95,7 @@ const PROJECTS: Project[] = [
     coverH: 1244,
     category: "PRODUCT DESIGNER · TEAM PROJECT",
     title: "FigBuild, Flowr App",
+    tags: [{ label: "Figma Hackathon", icon: "/figma-logo.webp" }],
     description: "Designing a meditation app for a nonexistent wearable",
     href: "https://cynthiajin.com/projects/flowr",
     hoverLabel: "Meditation time",
@@ -253,26 +267,49 @@ function Card({ p, showDescription = true, isMobile = false, priority = false }:
         >
           {p.title}
         </h3>
-        {p.tag && (
-          <span
+        {p.tags && p.tags.length > 0 && (
+          <div
             style={{
-              display: "inline-flex",
+              display: "flex",
+              flexWrap: "wrap",
+              justifyContent: "flex-end",
               alignItems: "center",
-              height: isMobile ? "24px" : "28px",
-              padding: isMobile ? "0 10px" : "0 12px",
-              fontFamily: TWK,
-              fontWeight: 400,
-              fontSize: isMobile ? "14px" : "16px",
-              color: "rgba(0,0,0,0.5)",
-              background: "rgba(0,0,0,0.05)",
-              borderRadius: "999px",
-              whiteSpace: "nowrap",
+              gap: isMobile ? "8px" : "12px",
               marginTop: isMobile ? "0" : "-10px",
               marginBottom: isMobile ? "0" : "-10px",
             }}
           >
-            {p.tag}
-          </span>
+            {p.tags.map((t) => (
+              <span
+                key={t.label}
+                style={{
+                  display: "inline-flex",
+                  alignItems: "center",
+                  gap: isMobile ? "6px" : "8px",
+                  height: isMobile ? "24px" : "28px",
+                  padding: isMobile ? "0 10px" : "0 12px",
+                  fontFamily: TWK,
+                  fontWeight: 400,
+                  fontSize: isMobile ? "14px" : "16px",
+                  color: "rgba(0,0,0,0.5)",
+                  background: "rgba(0,0,0,0.05)",
+                  borderRadius: "999px",
+                  whiteSpace: "nowrap",
+                }}
+              >
+                {t.icon && (
+                  <Image
+                    src={t.icon}
+                    alt=""
+                    width={58}
+                    height={64}
+                    style={{ width: "auto", height: isMobile ? "13px" : "15px", display: "block" }}
+                  />
+                )}
+                {t.label}
+              </span>
+            ))}
+          </div>
         )}
       </div>
 
