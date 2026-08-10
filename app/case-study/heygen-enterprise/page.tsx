@@ -96,8 +96,9 @@ export default function HeyGenCaseStudy() {
         <CSOutcome
           variant="cards"
           stats={[
-            { label: "Annual revenue", stat: "$80M → $100M+ ARR", description: "Significant ARR growth with reduced churn rates.", viz: "coins" },
-            { label: "LiveAvatar engagement", stat: "15–25% session duration ↑", description: "Higher LiveAvatar usage frequency and session length among pilot clients.", viz: "curve-up" },
+            { label: "Product growth", stat: "Worked on a $60M → $200M ARR product", description: "HeyGen's AI video platform scaled rapidly during my time there, with the enterprise workspace at the core of that growth.", viz: "coins" },
+            { label: "Design scope", stat: "4 core modules redesigned", description: "Navigation, notifications, LiveAvatar experience, and CRM/Apps pages across the enterprise workspace.", viz: "curve-up" },
+            { label: "Workflow efficiency", stat: "Fewer steps to core features", description: "Unified navigation and clearer states make daily enterprise workflows easier to complete.", viz: "curve-up" },
           ]}
         />
       </CSSection>

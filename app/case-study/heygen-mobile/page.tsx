@@ -84,7 +84,7 @@ export default function HeyGenMobileCaseStudy() {
           <CSOutcome
             variant="cards"
             stats={[
-              { label: "Navigation", stat: "Fewer steps to core features", description: "Core features are now clearly visible, driving conversions for ARR.", viz: "curve-up" },
+              { label: "Navigation", stat: "Fewer steps to core features", description: "Core features are now clearly visible and easier to reach from the home screen.", viz: "curve-up" },
               { label: "Color editor", stat: "30%+ faster color decisions", description: "At least a 30% reduction in time to make editing decisions on video backgrounds.", viz: "curve-up" },
             ]}
           />
