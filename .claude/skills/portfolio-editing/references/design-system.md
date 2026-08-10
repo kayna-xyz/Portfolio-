@@ -121,7 +121,7 @@ Used for:
 
 - **Nav bar bottom border** — separates the top navigation from page content
 - **Footer top border** — separates the project grid from the footer
-- **Project cover image border** — a 1px outline around every project cover on the homepage (and the case study cover image)
+- **Project cover image border** — a 1px outline around every project cover on the homepage (and the case study cover image). **Desktop-only for homepage project covers**: on mobile (≤768px) the covers are borderless (Kayna's call, Aug 2026).
 
 The principle in `design-principles.md` "no borders on containers" still applies elsewhere — these three uses are the documented exceptions.
 

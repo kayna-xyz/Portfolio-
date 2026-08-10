@@ -102,7 +102,7 @@ const PROJECTS: Project[] = [
   },
 ]
 
-function Cover({ src, isVideo, poster, alt, label, width, height, priority }: { src: string; isVideo?: boolean; poster?: string; alt: string; label: string; width?: number; height?: number; priority?: boolean }) {
+function Cover({ src, isVideo, poster, alt, label, width, height, priority, isMobile = false }: { src: string; isVideo?: boolean; poster?: string; alt: string; label: string; width?: number; height?: number; priority?: boolean; isMobile?: boolean }) {
   const [hovered, setHovered] = useState(false)
   const [videoReady, setVideoReady] = useState(false)
   const wrapperRef = useRef<HTMLDivElement>(null)
@@ -162,7 +162,9 @@ function Cover({ src, isVideo, poster, alt, label, width, height, priority }: { 
         position: "relative",
         width: "100%",
         borderRadius: "18px",
-        border: "1px solid rgba(0,0,0,0.15)",
+        // Hairline only on desktop — mobile covers sit borderless for a
+        // cleaner full-width card.
+        border: isMobile ? undefined : "1px solid rgba(0,0,0,0.15)",
         overflow: "hidden",
         boxSizing: "border-box",
         cursor: hovered ? "none" : undefined,
@@ -227,7 +229,7 @@ function Cover({ src, isVideo, poster, alt, label, width, height, priority }: { 
 function Card({ p, showDescription = true, isMobile = false, priority = false }: { p: Project; showDescription?: boolean; isMobile?: boolean; priority?: boolean }) {
   const inner = (
     <>
-      <Cover src={p.cover} isVideo={p.isVideo} poster={p.poster} alt={p.title} label={p.hoverLabel ?? getHoverLabel(p.href)} width={p.coverW} height={p.coverH} priority={priority} />
+      <Cover src={p.cover} isVideo={p.isVideo} poster={p.poster} alt={p.title} label={p.hoverLabel ?? getHoverLabel(p.href)} width={p.coverW} height={p.coverH} priority={priority} isMobile={isMobile} />
 
       <p
         className="cap-trim"
