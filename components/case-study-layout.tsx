@@ -67,7 +67,7 @@ export function CaseStudyLayout({ navItems, children }: Props) {
           <nav className="cs-sidebar">
             <div className="cs-sidebar-inner">
             <button
-              onClick={() => router.push("/portfolio")}
+              onClick={() => router.push("/")}
               style={{
                 fontFamily: TWK,
                 fontWeight: 400,

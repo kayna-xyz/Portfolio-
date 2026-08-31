@@ -8,8 +8,8 @@ const MONO = "var(--font-reddit-mono), ui-monospace, monospace"
 const TWK = "var(--font-twk), system-ui, -apple-system, sans-serif"
 
 const MENU = [
-  { label: "Portfolio", href: "/portfolio" },
-  { label: "About", href: "/" },
+  { label: "Portfolio", href: "/" },
+  { label: "About", href: "/about" },
 ]
 
 const SOCIAL = [

@@ -5,12 +5,13 @@ const nextConfig = {
   },
   async redirects() {
     return [
-      { source: '/experience', destination: '/', permanent: true },
-      { source: '/blog', destination: '/', permanent: true },
-      { source: '/kaynote', destination: '/', permanent: true },
-      { source: '/kaynotes', destination: '/', permanent: true },
-      { source: '/kynotes', destination: '/', permanent: true },
-      { source: '/portfolio-review', destination: '/', permanent: false },
+      { source: '/portfolio', destination: '/', permanent: true },
+      { source: '/experience', destination: '/about', permanent: true },
+      { source: '/blog', destination: '/about', permanent: true },
+      { source: '/kaynote', destination: '/about', permanent: true },
+      { source: '/kaynotes', destination: '/about', permanent: true },
+      { source: '/kynotes', destination: '/about', permanent: true },
+      { source: '/portfolio-review', destination: '/about', permanent: false },
     ]
   },
   images: {

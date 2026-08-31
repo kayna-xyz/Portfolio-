@@ -798,7 +798,7 @@ export default function KaynoteApp() {
             className="kn-light kn-light--red"
             aria-label="Close Notes, back to home"
             title="Back to home"
-            onClick={() => router.push("/portfolio")}
+            onClick={() => router.push("/")}
           />
           <span className="kn-light kn-light--yellow" />
           <span className="kn-light kn-light--green" />

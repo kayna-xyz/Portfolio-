@@ -5,7 +5,7 @@ import Link from "next/link"
 const TWK = "var(--font-twk), system-ui, -apple-system, sans-serif"
 
 const LINKS = [
-  { label: "About", href: "/" },
+  { label: "About", href: "/about" },
 ]
 
 export default function Navbar() {
@@ -24,7 +24,7 @@ export default function Navbar() {
       }}
     >
       <Link
-        href="/portfolio"
+        href="/"
         style={{
           fontFamily: TWK,
           fontWeight: 400,
