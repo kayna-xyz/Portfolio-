@@ -23,7 +23,7 @@ interface Props {
 
 const SOCIAL = [
   { label: "X", href: "https://x.com/kayna_xyz" },
-  { label: "Linkedin", href: "https://www.linkedin.com/in/kayna-h-77ab8a2a1/" },
+  { label: "Linkedin", href: "https://www.linkedin.com/in/kayna-huang-77ab8a2a1/" },
   { label: "Github", href: "https://github.com/kayna-xyz" },
   { label: "Email", href: "mailto:kaynahuang325@gmail.com" },
 ]

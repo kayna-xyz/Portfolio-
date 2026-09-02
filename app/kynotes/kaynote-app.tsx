@@ -1,8 +1,9 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import { useEffect, useLayoutEffect, useRef, useState } from "react"
 import { useRouter } from "next/navigation"
 
+import IosAlert from "@/components/ios-alert"
 import RestaurantMap from "./restaurant-map"
 import TradingPanel from "./trading-panel"
 
@@ -18,11 +19,14 @@ const LINK = "#b8860b"
 type Note = {
   id: string
   title: string
+  heading?: string // pane title when it should differ from the sidebar row (about → "Kayna Huang")
   snippet: string
   date: string
   searchText: string
   body: React.ReactNode
   wide?: boolean // let the body span the full note pane (e.g. the bookshelf)
+  essay?: boolean // long-form note: narrower measure + draft figures in the right margin
+  building?: boolean // not ready yet: the row stays listed but opens a "still building" alert instead
 }
 
 type Section = {
@@ -515,27 +519,399 @@ function Bookshelf() {
   )
 }
 
-type Photo = {
+type Stamp = {
   src: string
   alt: string
-  width: number
-  height: number
+  caption: string // engraved lettering, bottom left
+  value: string // denomination, bottom right
+  ink: string // lettering color, postal blue / red like real engraved stamps
+  w: number // stamp width, px — must be a multiple of the 13px perforation tile
+  h: number // stamp height, px — must be a multiple of the 13px perforation tile
+  rot: number // resting tilt, deg
+  left: string // scatter position within the sheet
+  top: number
+  pos?: string // object-position for the photo crop
 }
 
-const INTRO_PHOTOS: Photo[] = [
-  { src: "/kaynote/intro/me-1.webp", alt: "black-and-white portrait by a window", width: 900, height: 900 },
-  { src: "/kaynote/intro/me-3.webp", alt: "on a street in SoHo, New York", width: 900, height: 1261 },
+// intro photos as postage stamps scattered on a sheet of grid paper.
+// perforated edges are punched by the stamp's dotted background gradient;
+// stamp dimensions stay multiples of 13 so holes land exactly on every edge.
+const STAMPS: Stamp[] = [
+  {
+    src: "/kaynote/intro/me-1.webp",
+    alt: "black-and-white portrait by a window",
+    caption: "K·HUANG",
+    value: "1c",
+    ink: "#2b35a8",
+    w: 156,
+    h: 169,
+    rot: -8,
+    left: "1%",
+    top: 42,
+    pos: "center 22%",
+  },
+  {
+    src: "/kaynote/intro/me-2.webp",
+    alt: "with a snowman in front of Butler Library, Columbia University",
+    caption: "COLUMBIA",
+    value: "13c",
+    ink: "#c2451e",
+    w: 156,
+    h: 195,
+    rot: 5,
+    left: "35%",
+    top: 0,
+  },
+  {
+    src: "/kaynote/intro/me-3.webp",
+    alt: "on a street in SoHo, New York",
+    caption: "SOHO NYC",
+    value: "5c",
+    ink: "#2b35a8",
+    w: 143,
+    h: 182,
+    rot: -6,
+    left: "68%",
+    top: 82,
+  },
 ]
 
-// Display-only grid — the intro photos are deliberately not clickable.
-function PhotoGallery({ photos, columns }: { photos: Photo[]; columns?: number }) {
+// Display-only scatter — the stamps are deliberately not clickable.
+// ── Draft margin: photos and scribbles taped into the blank right half of the page ──
+// Each figure is tied to an underlined phrase in the text by a shared footnote number.
+// The figure lives inside the paragraph/list item it belongs to (`.kn-anno`, position:
+// relative) and is pushed out into the margin with per-figure offsets so the column
+// never looks aligned; `Essay` nudges figures apart at runtime when two would overlap.
+// Everything is a <span> so a figure is valid inside <p> and <li>.
+type FigProps = {
+  n: number // footnote number, same as the <Mark n> it belongs to
+  caption: string
+  src?: string // /kaynote/essay/*.webp
+  alt?: string
+  width?: number
+  height?: number
+  w?: number // rendered photo width in the margin
+  dx?: number // distance from the text column's right edge
+  dy?: number // vertical nudge from the anchor's top
+  tilt?: number // degrees
+  stat?: string
+  source?: string
+}
+
+function Fig({ n, caption, src, alt, width, height, w = 180, dx = 60, dy = 0, tilt = 0, stat, source }: FigProps) {
   return (
-    <div className={`kn-art-grid${columns === 3 ? " kn-art-grid-3" : ""}`}>
-      {photos.map((a) => (
-        <span className="kn-art-thumb" key={a.src}>
-          <img src={a.src} alt={a.alt} width={a.width} height={a.height} loading="lazy" />
-        </span>
+    <span
+      className={`kn-fig${src ? " kn-fig--photo" : ""}`}
+      style={{ "--w": `${w}px`, "--dx": `${dx}px`, "--dy": `${dy}px`, "--tilt": `${tilt}deg` } as React.CSSProperties}
+      aria-hidden="true"
+    >
+      <span className="kn-fig-n">{n}</span>
+      {src && <img src={src} alt={alt ?? ""} width={width} height={height} loading="lazy" />}
+      {stat && <span className="kn-fig-stat">{stat}</span>}
+      <span className="kn-fig-cap">{caption}</span>
+      {source && <span className="kn-fig-src">{source}</span>}
+    </span>
+  )
+}
+
+// the phrase a figure comments on: wavy underline + the figure's footnote number.
+// Without `n` it is just an underline, for a line worth remembering on its own.
+function Mark({ n, children }: { n?: number; children: React.ReactNode }) {
+  return (
+    <>
+      <span className="kn-mark">{children}</span>
+      {n !== undefined && <sup className="kn-ref">{n}</sup>}
+    </>
+  )
+}
+
+function Essay({ children }: { children: React.ReactNode }) {
+  const ref = useRef<HTMLDivElement>(null)
+  useLayoutEffect(() => {
+    const root = ref.current
+    if (!root) return
+    const settle = () => {
+      const figs = Array.from(root.querySelectorAll<HTMLElement>(".kn-fig"))
+      const margin = window.matchMedia("(min-width: 1400px)").matches
+      figs.forEach((f) => (f.style.top = ""))
+      if (!margin) return
+      // keep figures from landing on each other (only when they share an x range)
+      const placed: DOMRect[] = []
+      for (const fig of figs) {
+        let r = fig.getBoundingClientRect()
+        let push = 0
+        for (let guard = 0; guard < 12; guard++) {
+          // sub-pixel slack, otherwise a figure just pushed below a neighbour keeps
+          // "hitting" it and the loop never gets to the next one
+          const hit = placed.find(
+            (p) => r.left < p.right + 12 && r.right > p.left - 12 && r.top < p.bottom + 15 && r.bottom > p.top,
+          )
+          if (!hit) break
+          const need = Math.ceil(hit.bottom + 16 - r.top)
+          push += need
+          fig.style.top = `calc(var(--dy) + ${push}px)`
+          r = fig.getBoundingClientRect()
+        }
+        placed.push(r)
+      }
+    }
+    settle()
+    document.fonts?.ready.then(settle)
+    const imgs = Array.from(root.querySelectorAll("img"))
+    imgs.forEach((im) => im.addEventListener("load", settle))
+    window.addEventListener("resize", settle)
+    return () => {
+      window.removeEventListener("resize", settle)
+      imgs.forEach((im) => im.removeEventListener("load", settle))
+    }
+  }, [])
+  return (
+    <div ref={ref} className="kn-essay">
+      {children}
+    </div>
+  )
+}
+
+// intro paragraphs with the portrait on the right; the circle's diameter equals the
+// text block's height. The two depend on each other (a wider circle narrows the text,
+// which adds lines), so iterate to the fixed point after mount and on resize.
+// The iteration is capped: text that wraps per character (e.g. the page run through
+// Chrome's translate into Chinese) gains height faster than the circle takes width, so
+// without a ceiling it diverges until the portrait fills the page.
+const AVATAR_MAX = 240
+function IntroWithAvatar({ children }: { children: React.ReactNode }) {
+  const textRef = useRef<HTMLDivElement>(null)
+  const imgRef = useRef<HTMLImageElement>(null)
+
+  useLayoutEffect(() => {
+    const text = textRef.current
+    const img = imgRef.current
+    if (!text || !img) return
+    const fit = () => {
+      if (window.matchMedia("(max-width: 767px)").matches) return // stacked, CSS sizes it
+      const row = text.parentElement
+      // never let the circle take more than ~2/5 of the row, and never past the hard cap
+      const max = Math.min(AVATAR_MAX, Math.floor(((row?.clientWidth ?? 840) - 40) * 0.4))
+      let size = Math.min(img.offsetHeight || 200, max)
+      for (let i = 0; i < 6; i++) {
+        img.style.width = `${size}px`
+        img.style.height = `${size}px`
+        const next = Math.min(text.offsetHeight, max)
+        if (Math.abs(next - size) < 1) break
+        size = next
+      }
+    }
+    fit()
+    document.fonts?.ready.then(fit)
+    window.addEventListener("resize", fit)
+    // re-fit when the copy itself changes under us (browser translation swaps the text nodes)
+    const mo = new MutationObserver(fit)
+    mo.observe(text, { childList: true, characterData: true, subtree: true })
+    return () => {
+      window.removeEventListener("resize", fit)
+      mo.disconnect()
+    }
+  }, [])
+
+  return (
+    <div className="kn-intro">
+      <div className="kn-intro-text" ref={textRef}>
+        {children}
+      </div>
+      <img
+        ref={imgRef}
+        className="kn-intro-avatar"
+        src="/kaynote/me-avatar.webp"
+        alt="Kayna Huang"
+        width={200}
+        height={200}
+      />
+    </div>
+  )
+}
+
+function StampScatter() {
+  return (
+    <div className="kn-stamp-scene">
+      <div className="kn-stamps">
+        {STAMPS.map((s) => (
+          <figure
+            key={s.src}
+            className="kn-stamp"
+            style={
+              {
+                width: s.w,
+                height: s.h,
+                left: s.left,
+                top: s.top,
+                "--rot": `${s.rot}deg`,
+                "--ink": s.ink,
+              } as React.CSSProperties
+            }
+          >
+            <img src={s.src} alt={s.alt} loading="lazy" style={{ objectPosition: s.pos }} />
+            <figcaption>
+              <span>{s.caption}</span>
+              <span>{s.value}</span>
+            </figcaption>
+          </figure>
+        ))}
+      </div>
+    </div>
+  )
+}
+
+type XpCard = {
+  sub: string // one-liner under the name, iOS contact-card style
+  desc: string
+  facts: [string, string][] // label → value rows, hairline-separated
+}
+
+type XpRow = {
+  id: string
+  logo: string // /kaynote/logos/*.png, or a bare emoji for personal ventures
+  name: string
+  role?: string
+  when: string
+  detail: string
+  card?: XpCard // hover the logo to open it; rows without one are plain
+}
+
+// public figures only — investors, ARR, valuation all come from press
+// coverage (Forbes / Sacra / company announcements), never internal data
+const EXPERIENCE: XpRow[] = [
+  {
+    id: "opusclip",
+    logo: "/kaynote/logos/opusclip.svg",
+    name: "OpusClip",
+    role: "Design Engineering",
+    when: "Summer 2026",
+    detail: "Special Projects, AI Video Editor",
+    card: {
+      sub: "AI video editing agent",
+      desc: "An AI agent that turns long-form video into short clips people actually watch. 10M+ creators, 170M+ clips generated.",
+      facts: [
+        ["backed by", "SoftBank Vision Fund 2, DCM, AI Grant"],
+        ["ARR", "$20M, 18 months after launch"],
+        ["last round", "$215M post, Series B (2025)"],
+      ],
+    },
+  },
+  {
+    id: "heygen",
+    logo: "/kaynote/logos/heygen.png",
+    name: "HeyGen",
+    role: "Product Design Intern",
+    when: "Summer 2025",
+    detail: "AI Avatar Products & Mobile",
+    card: {
+      sub: "AI avatar video platform",
+      desc: "Studio-quality avatar video generated from a script. 30M+ users in 196 countries, 85% of the Fortune 100.",
+      facts: [
+        ["backed by", "Benchmark, Thrive, Bond, Conviction"],
+        ["ARR", "$100M → $200M+ in 8 months (2026)"],
+        ["last round", "$500M post, Series A (2024)"],
+      ],
+    },
+  },
+  {
+    id: "earth-odyssey",
+    logo: "#e4ded7",
+    name: "Earth Odyssey",
+    when: "2022 – present",
+    detail: "hackathons, friends & arts",
+    card: {
+      sub: "A long-running personal venture",
+      desc: "Organizing AdventureX, China's largest hackathon, investing in friends, and making arts.",
+      facts: [
+        ["founded", "2022"],
+        ["hq", "New York"],
+      ],
+    },
+  },
+]
+
+const EDUCATION: XpRow[] = [
+  {
+    id: "columbia",
+    logo: "/kaynote/logos/columbia.png",
+    name: "Columbia University",
+    role: "Barnard College",
+    when: "",
+    detail: "Cognitive Science (AI/ML), Minors in Political Science & Economics",
+  },
+]
+
+// logo list with an iOS-style company card hanging off the hovered logo
+function ExperienceRows({ rows }: { rows: XpRow[] }) {
+  const [card, setCard] = useState<{ row: XpRow; x: number; y: number } | null>(null)
+
+  const showCard = (row: XpRow, el: HTMLElement) => {
+    if (!row.card) return
+    const rect = el.getBoundingClientRect()
+    setCard({
+      row,
+      x: Math.min(Math.max(rect.left + rect.width / 2, 160), window.innerWidth - 160),
+      y: rect.bottom + 12,
+    })
+  }
+
+  // logo is either an image path or a flat color swatch (personal ventures)
+  const logo = (row: XpRow, size: number) =>
+    row.logo.startsWith("/") ? (
+      <img src={row.logo} alt={`${row.name} logo`} width={size} height={size} />
+    ) : (
+      <span className="kn-xp-swatch" style={{ background: row.logo }} aria-hidden="true" />
+    )
+
+  return (
+    <div className="kn-xp">
+      {rows.map((row) => (
+        <div className="kn-xp-row" key={row.id}>
+          <span
+            className="kn-xp-logo"
+            onMouseEnter={(e) => showCard(row, e.currentTarget)}
+            onMouseLeave={() => setCard(null)}
+          >
+            {logo(row, 40)}
+          </span>
+          <div className="kn-xp-main">
+            <p className="kn-xp-line1">
+              <span className="kn-xp-name">
+                {row.name}
+                {row.role ? `, ${row.role}` : ""}
+              </span>
+              {row.when && <span className="kn-xp-when">{row.when}</span>}
+            </p>
+            <p className="kn-xp-detail">{row.detail}</p>
+          </div>
+        </div>
       ))}
+
+      {card && card.row.card && (
+        <div
+          className="kn-co-card"
+          role="tooltip"
+          style={{ left: card.x, top: card.y, transform: "translate(-50%, 0)" }}
+        >
+          <div className="kn-co-head">
+            <span className="kn-co-logo">{logo(card.row, 44)}</span>
+            <div>
+              <p className="kn-co-name">{card.row.name}</p>
+              <p className="kn-co-sub">{card.row.card.sub}</p>
+            </div>
+          </div>
+          <p className="kn-co-desc">{card.row.card.desc}</p>
+          <div className="kn-co-facts">
+            {card.row.card.facts.map(([label, value]) => (
+              <p key={label}>
+                <span>{label}</span>
+                <span>{value}</span>
+              </p>
+            ))}
+          </div>
+        </div>
+      )}
     </div>
   )
 }
@@ -546,116 +922,333 @@ const SECTIONS: Section[] = [
     notes: [
       {
         id: "about-me",
-        title: "about",
-        snippet: "product designer & design engineer",
-        date: "July 11, 2026 at 9:47 AM",
+        title: "About",
+        heading: "Kayna Huang",
+        snippet: "A generalist designer",
+        date: "September 2, 2026 at 10:08 AM",
         searchText:
-          "about me kayna huang product designer design engineer cognitive science political science barnard columbia HCI AI creative tools opusclip video AI heygen reach me email kh3443 what i think about on X arts lover",
+          "about me kayna huang generalist design engineer product designer cognitive science AI ML machine learning barnard columbia EEG research psychology lab frontier technology consumer product prototypes human-centered design experience opusclip design engineering special projects ai video editor heygen product design intern ai avatar products mobile earth odyssey adventurex hackathon investing friends education political science economics art facial aesthetics fashion poker zhejiang new york startups entrepreneur reach me email kh3443 on X",
         body: (
           <>
-            <p style={{ marginTop: 0 }}>
-              kayna huang, product designer &amp; design engineer
+            <IntroWithAvatar>
+              <p style={{ marginTop: 0 }}>
+                I&apos;m a generalist design engineer and product designer, currently studying
+                Cognitive Science with a focus in AI and machine learning at Barnard College,
+                Columbia University, and working on EEG research at a psychology lab at Columbia.
+              </p>
+              <p>
+                A fascination with frontier technology and products is what started my career.
+                Along the way I picked up the tools and processes to turn new technology into
+                consumer product prototypes, and the methods to iterate product experiences at
+                scale. I focus on bringing product sense and human-centered design to thinking
+                through, building, and iterating frontier products people genuinely love.
+              </p>
+            </IntroWithAvatar>
+            <p className="kn-subhead">Experience</p>
+            <ExperienceRows rows={EXPERIENCE} />
+            <p className="kn-subhead">Education</p>
+            <ExperienceRows rows={EDUCATION} />
+            <p className="kn-subhead">Off hours</p>
+            <p>
+              Outside of work, I love art, fashion, and facial aesthetics! I play the occasional
+              game of poker. I was born and raised in Zhejiang, China, and New York is home now.
             </p>
             <p>
-              building creative tools at{" "}
-              <NoteLink href="https://www.forbes.com/sites/ianshepherd/2025/03/13/softbank-is-betting-on-the-future-of-ai-content-creation-with-opusclip/">
-                Opusclip
-              </NoteLink>
-              , and designed video AI products at{" "}
-              <NoteLink href="https://heygen.com">HeyGen</NoteLink>. studying cognitive science
-              &amp; political science at Barnard/Columbia, with specialization in hci &amp; ai
+              I grew up in an entrepreneur&apos;s family. My father&apos;s entrepreneurial spirit
+              and engineering background shaped me deeply: they showed me how hard it is to build a
+              business, and gave me a huge passion for tech startups, one I&apos;ve decided to
+              devote myself to.
             </p>
             <p>
-              reach me at{" "}
-              <NoteLink href="mailto:kh3443@columbia.edu">kh3443@columbia.edu</NoteLink>
+              If you have any ideas or just want to chat, you can find me on{" "}
+              <NoteLink href="https://x.com/kayna_xyz">X</NoteLink>, or email me at{" "}
+              <NoteLink href="mailto:kh3443@columbia.edu">kh3443@columbia.edu</NoteLink>.
             </p>
-            <p className="kn-subhead">anything else?</p>
-            <ul>
-              <li>
-                <NoteJump noteId="what-i-think-about">what i think about</NoteJump>
-              </li>
-              <li>
-                on <NoteLink href="https://x.com/kayna_xyz">X</NoteLink>
-              </li>
-              <li>arts lover</li>
-            </ul>
-            <PhotoGallery photos={INTRO_PHOTOS} columns={3} />
           </>
         ),
       },
     ],
   },
   {
-    label: "blog",
+    label: "design",
     notes: [
       {
         id: "what-i-think-about",
-        title: "what I think about",
-        snippet: "the future of technology and humanity",
-        date: "July 11, 2026 at 10:21 AM",
+        title: "Software Isn't Dead",
+        snippet: "Design, making things, and the collage formula",
+        date: "September 2, 2026 at 11:40 AM",
+        essay: true,
         searchText:
-          "what I think about questions mode of thinking founders great products apple figma AI reshape institutional jobs reprice labor market binary 0/1 evaluate product design future of technology impact product-first startup",
+          "where is the next generation of interaction what a designer thinks about in this era software is not dead intelligent software personal agent entropy fire collage formula design making things new things are collages of mature parts cursor coding ai iphone touchscreen macos electric car battery tiktok swipe feed attention economy newton glass timing first mover second mover internet era mobile era multi-device era gui lui chatgpt bci brain computer interface ar xr robotics no-interface ai assistant instinct text it or call it voice runway real-time generative ui oura ring wearables vision pro apple neuralink noland arbaugh nori a3 humanoid household robot yc columbia bottom-up practice future of designers next application era agi model plateau recursive self-improvement rsi commodity consumers markets design is collage",
         body: (
-          <>
-            <p>the future of technology and humanity.</p>
+          <Essay>
+            <p style={{ marginTop: 0 }}>
+              Software isn&apos;t dead. When the technology underneath it changes, software
+              combines with the new technology and turns into something new. Maybe it will be
+              called intelligent software, maybe a personal agent. Nobody knows yet.
+            </p>
+            <p>
+              Every landmark consumer company was built on a shift in how we interact. There will be more
+              shifts underneath us, and the way we build things will keep getting more complex.{" "}
+              <Mark>
+                AI arrived right on time: it lets us build more complex things in a world where
+                entropy only rises, at the same cost in human time that drilling wood for fire once
+                took.
+              </Mark>{" "}
+              As a designer, I keep coming back to one question: where is the next generation of
+              interaction?
+            </p>
+            <p className="kn-subhead">Design, making things, and the collage formula</p>
+            <p>
+              I call it the collage formula: new things are not invented from nothing. They are
+              collages of existing things, assembled the moment one of the parts finally matures.
+            </p>
+            <ul>
+              <li className="kn-anno">
+                Cursor = coding + models that got good enough to write it.{" "}
+                <Mark n={1}>$2B in annual revenue three years after launch</Mark>, on top of
+                someone else&apos;s model.
+                <Fig
+                  n={1}
+                  stat="$2B"
+                  caption="Cursor ARR, March 2026, on a model it didn't train"
+                  source="TechCrunch"
+                  dx={72}
+                  dy={-18}
+                  tilt={-3}
+                  w={200}
+                />
+              </li>
+              <li className="kn-anno">
+                <Mark n={2}>iPhone</Mark> = a capacitive touchscreen that got good enough + a
+                shrunken macOS. $499 on January 9, 2007.
+                <Fig
+                  n={2}
+                  src="/kaynote/essay/iphone2007.webp"
+                  alt="the original iPhone"
+                  width={360}
+                  height={618}
+                  w={104}
+                  dx={300}
+                  dy={-40}
+                  tilt={4}
+                  caption="the first one. a touchscreen and a small mac."
+                />
+              </li>
+              <li className="kn-anno">
+                The electric car = the car we already had + a battery that got{" "}
+                <Mark n={3}>cheap enough</Mark>, roughly 90% cheaper per kWh than in 2010.
+                <Fig
+                  n={3}
+                  stat="$1,400 → $115"
+                  caption="a battery pack per kWh, 2010 → 2024"
+                  source="BloombergNEF"
+                  dx={40}
+                  dy={60}
+                  tilt={2}
+                  w={210}
+                />
+              </li>
+              <li>
+                TikTok = the feed + the phone&apos;s own nature. One hand, one thumb, so the move
+                is a swipe. Swipe made the feed the interface, and the feed made the attention
+                economy real: 100M users in nine months, a billion a month by 2021.
+              </li>
+            </ul>
+            <p>
+              But, careful. The part people miss is the timing. The parts have to have just
+              crossed the line.
+              Newton had the tablet in 1993 and Glass had the headset in 2013, both a decade
+              early, and they are remembered as jokes. The first mover proves the demand. The
+              second one, arriving once the parts are cheap and the demand is proven, usually gets
+              the market.
+            </p>
+            <p className="kn-subhead">How the surface has moved</p>
+            <p>
+              The industry has gone through three surfaces, and each one was built on the one
+              before it.
+            </p>
             <ul>
               <li>
-                what is the mode of thinking shared by the founders of great products (e.g.,
-                Apple, Figma)?
+                The internet era. The browser, the page, the link, the search box. Google and
+                Amazon were built on a text field.
               </li>
-              <li>how will AI reshape institutional jobs and reprice the labor market?</li>
-              <li>is there a binary (0/1) method that can evaluate product design?</li>
-              <li>future of technology</li>
+              <li className="kn-anno">
+                The mobile era. The touchscreen in the pocket. Uber, Instagram, and TikTok were
+                built on things a desktop never had, a location, a camera, <Mark n={4}>a thumb</Mark>.
+                <Fig
+                  n={4}
+                  stat="30 → 9 → 2"
+                  caption="months to 100M users: Instagram, TikTok, ChatGPT. each surface is faster."
+                  source="UBS"
+                  dx={120}
+                  dy={-10}
+                  tilt={-2}
+                  w={220}
+                />
+              </li>
               <li>
-                how can I make an impact on the world through my experience in product and design,
-                and by building a product-first startup?
+                The multi-device era, now. The surface stops being one rectangle and spreads across
+                the body and the room.
               </li>
-              <li>etc</li>
             </ul>
-          </>
-        ),
-      },
-      {
-        id: "reading-list",
-        title: "my reading list",
-        snippet: "everything I've been reading",
-        date: "February 15, 2026 at 10:12 AM",
-        wide: true,
-        searchText:
-          "my reading list everything I've been reading books metro 2033 brave new world 1984 animal farm dune 2001 a space odyssey the three-body problem 三体 steve jobs isaacson aiming high masayoshi son 孙正义 leonardo da vinci 达芬奇 zero to one excellent sheep self-made man norah vincent sci-fi 黄仁勋 英伟达之芯 nvidia jensen huang 毛泽东传 王兴传 美团 elon musk 马斯克 isaacson the airbnb story 爱彼迎 只有偏执狂才能生存 安迪格鲁夫 only the paranoid survive 从优秀到卓越 good to great 吉姆柯林斯 段永平投资问答录 因为独特 王宁 泡泡玛特 pop mart 置身事内 兰小欢 创新与企业家精神 彼得德鲁克 drucker innovation and entrepreneurship andy grove jim collins",
-        body: (
-          <>
-            <p>people, business, and sci-fi, left to right. hover on the books to see more.</p>
-            <Bookshelf />
-          </>
+            <p>In the multi-device era, this is where interaction stands today:</p>
+            <ul>
+              <li>
+                GUI → LUI. Language on top of the screen. You stop learning the tool, you tell it.
+                ChatGPT reached 100M users in two months, the fastest consumer product ever.
+              </li>
+              <li className="kn-anno">
+                No-interface assistants. Voice, a chat box, an agent in the background. The best
+                of them feel like instinct: you don&apos;t open them, they are just there.{" "}
+                <Mark n={5}>Instinct</Mark> is the current example. You text it or call
+                it, and it uses a phone and a computer the way a person would. It raised at a
+                $2.5B valuation within weeks of launch while still invite-only. The interface has
+                not disappeared, it has moved out of sight, and someone still has to design what
+                you cannot see.
+                <Fig
+                  n={5}
+                  src="/kaynote/essay/instinct.webp"
+                  alt="Instinct's text cursor"
+                  width={400}
+                  height={267}
+                  w={150}
+                  dx={250}
+                  dy={-30}
+                  tilt={-3}
+                  caption="Instinct's entire interface. $2.5B, August 2026."
+                />
+              </li>
+              <li>
+                Real-time generative UI. Runway&apos;s lab showed interfaces rendered as you use
+                them. If the screen is generated per moment, the designer stops drawing screens
+                and starts designing the rules that generate them.
+              </li>
+              <li className="kn-anno">
+                Wearables that read you. <Mark n={6}>Oura</Mark> is a ring with no screen at
+                all. You don&apos;t use it, it uses you, and the phone reads the result out. 5.5
+                million rings sold, a billion dollars of revenue in 2025, and it is the first
+                mass-market device where the interaction is simply wearing it.
+                <Fig
+                  n={6}
+                  src="/kaynote/essay/oura.webp"
+                  alt="Oura rings"
+                  width={560}
+                  height={436}
+                  w={184}
+                  dx={44}
+                  dy={30}
+                  tilt={2}
+                  caption="no screen. 5.5M sold, $11B, October 2025."
+                />
+              </li>
+              <li className="kn-anno">
+                <Mark n={7}>AR / XR</Mark>. The interface leaves the rectangle and enters the
+                room. Vision Pro shipped in 2024 at $3,499. The parts are here, the price has not
+                crossed the line.
+                <Fig
+                  n={7}
+                  src="/kaynote/essay/visionpro.webp"
+                  alt="Apple Vision Pro"
+                  width={560}
+                  height={441}
+                  w={190}
+                  dx={256}
+                  dy={-20}
+                  tilt={-2}
+                  caption="Vision Pro, $3,499. the Newton of the room?"
+                />
+              </li>
+              <li className="kn-anno">
+                <Mark n={8}>BCI</Mark>. Intent skips the hands. Neuralink put its first implant
+                in a person in January 2024. What is a click when the signal is a thought?
+                <Fig
+                  n={8}
+                  src="/kaynote/essay/neuralink.webp"
+                  alt="Noland Arbaugh, Neuralink's first patient"
+                  width={440}
+                  height={544}
+                  w={124}
+                  dx={70}
+                  dy={40}
+                  tilt={3}
+                  caption="Noland Arbaugh, patient one, 2024. moves a cursor by thinking."
+                />
+              </li>
+              <li className="kn-anno">
+                <Mark n={9}>Robotics</Mark>. Interaction leaves the screen entirely and gets
+                a body. The parts are lining up the way they once did for the phone: first-person
+                video to learn from, motors and batteries made cheap by the EV supply chain, and
+                models that follow instructions. When they cross the line, the household robot
+                walks into every home the way the washing machine did. Nori A3 is an early sign,
+                a two-armed household robot out of YC&apos;s summer 2026 batch that costs $1,688,
+                about the price of a laptop, and took $350k of orders in its first six weeks. The
+                founder studied at Columbia.
+                <Fig
+                  n={9}
+                  src="/kaynote/essay/nori.webp"
+                  alt="Nori A3 robots in the workshop"
+                  width={560}
+                  height={315}
+                  w={220}
+                  dx={232}
+                  dy={30}
+                  tilt={-2}
+                  caption="Nori A3 in the workshop. $1,688, 19 joints, ships fall 2026."
+                />
+              </li>
+            </ul>
+            <p className="kn-subhead">Where designers go from here</p>
+            <p>
+              I don&apos;t have the answer, and I have stopped trusting anyone who says they do.
+              Interface shifts are not predicted from the top down. They show up in bottom-up
+              practice, in what people actually pick up and keep using, and only in hindsight do
+              they look obvious. The only way to see the future is to build in it. The first mover
+              does not necessarily win.
+            </p>
+            <p>
+              What I firmly believe: AGI, or something close enough to it that the label stops
+              mattering, is here. Model capability will either hit a ceiling or fold into a
+              recursive self-improvement loop, and either way the model itself stops being the
+              scarce thing. It becomes a part in the collage, the way the battery did.
+            </p>
+            <p>
+              But remember: consumers and markets never go away. And the design process follows
+              the collage formula too, much like the way things get invented. A designer does not create from
+              nothing, but we always have to think about which part has just matured, which
+              platform it belongs on, and what we can build there. Designers hold the tools to
+              make products and to tell their story, and that matters enormously. The market will
+              know it more and more. Build boldly.
+            </p>
+          </Essay>
         ),
       },
       {
         id: "post-ai-design",
-        title: "in the post-AI era, design is no longer what it used to be.",
-        snippet: "the fundamentals of a design builder",
+        title: "Design Engineering Fundamentals",
+        snippet: "Notes, reading, and tools of a design builder",
         date: "January 19, 2026 at 8:30 PM",
         searchText:
-          "in the post-AI era design is no longer what it used to be fundamentals of a design builder design engineering product design vercel design playground tools reading",
+          "design engineering fundamentals of a design builder design engineering product design vercel design playground tools reading",
         body: (
           <>
             <p>
-              the fundamentals of a design builder: notes on design engineering &amp; product
+              The fundamentals of a design builder: notes on design engineering &amp; product
               design, articles worth reading, and tools I actually use.
             </p>
-            <p className="kn-subhead">reading</p>
+            <p className="kn-subhead">Reading</p>
             <ul>
               <li>
-                what design engineering takes,{" "}
+                What design engineering takes,{" "}
                 <NoteLink href="https://vercel.com/blog/design-engineering-at-vercel">
                   design engineering at Vercel
                 </NoteLink>
               </li>
             </ul>
-            <p className="kn-subhead">tools</p>
+            <p className="kn-subhead">Tools</p>
             <ul>
               <li>
-                a new kind of design playground,{" "}
+                A new kind of design playground,{" "}
                 <NoteLink href="https://github.com/B1u3B01t/design-playground">
                   design-playground on GitHub
                 </NoteLink>
@@ -667,35 +1260,60 @@ const SECTIONS: Section[] = [
     ],
   },
   {
-    label: "trading",
+    label: "lifestyle",
     notes: [
       {
+        id: "reading-list",
+        title: "My Reading List",
+        snippet: "Everything I've been reading",
+        date: "February 15, 2026 at 10:12 AM",
+        wide: true,
+        searchText:
+          "my reading list everything I've been reading books metro 2033 brave new world 1984 animal farm dune 2001 a space odyssey the three-body problem 三体 steve jobs isaacson aiming high masayoshi son 孙正义 leonardo da vinci 达芬奇 zero to one excellent sheep self-made man norah vincent sci-fi 黄仁勋 英伟达之芯 nvidia jensen huang 毛泽东传 王兴传 美团 elon musk 马斯克 isaacson the airbnb story 爱彼迎 只有偏执狂才能生存 安迪格鲁夫 only the paranoid survive 从优秀到卓越 good to great 吉姆柯林斯 段永平投资问答录 因为独特 王宁 泡泡玛特 pop mart 置身事内 兰小欢 创新与企业家精神 彼得德鲁克 drucker innovation and entrepreneurship andy grove jim collins",
+        body: (
+          <>
+            <p>People, business, and sci-fi, left to right. Hover on the books to see more.</p>
+            <Bookshelf />
+          </>
+        ),
+      },
+      {
         id: "trading-portfolio",
-        title: "invest",
-        snippet: "pocket robinhood",
+        title: "Invest",
+        snippet: "Pocket Robinhood",
         date: "July 11, 2026 at 11:32 AM",
         wide: true,
         searchText:
           "my trading portfolio trading investing invest crypto bitcoin btc markets stocks robinhood watchlist news prices nvda nvidia googl google hood orcl oracle crm salesforce hsai amba mbly asml qcom clsk mu micron nbis slv silver s&p 500 nasdaq dark mode",
         body: <TradingPanel />,
       },
-    ],
-  },
-  {
-    label: "lifestyle",
-    notes: [
       {
         id: "restaurants",
-        title: "🍽️ restaurants in nyc",
-        snippet: "the best in new york city",
+        title: "🍽️ Restaurants in NYC",
+        snippet: "The best in New York City",
         date: "July 11, 2026 at 1:12 PM",
         wide: true,
         searchText:
           "restaurants in NYC new york food eat kayna's special collection restaurant list map japanese omakase sushi korean kotobuki kimura yakitori taisho davelle genki tsukimi sushi ikumi mori noda unique omakase ume odo ito nakaji tsubame class on 38th senya sushi noz bar masa hirohisa tosokchon samwoojung antoya moono anto korean steak house oiji mi 53 yong chuan yongchuan happy hot hunan columbia murray's cheese a pasta bar sea le jardin bistro zou zou's ping's dudleys our new york vodka le café louis vuitton",
         body: (
           <>
-            <p>kayna&apos;s special collection of foods in new york city.</p>
+            <p>Kayna&apos;s special collection of foods in New York City.</p>
             <RestaurantMap />
+          </>
+        ),
+      },
+      {
+        id: "artspedia",
+        title: "Artspedia",
+        snippet: "Still building",
+        date: "September 2, 2026 at 2:40 PM",
+        building: true,
+        searchText:
+          "artspedia arts pictures photos art collection stamps postage kayna huang columbia butler library snowman soho nyc",
+        body: (
+          <>
+            <p style={{ marginTop: 0 }}>Arts and pictures, an ongoing collection.</p>
+            <StampScatter />
           </>
         ),
       },
@@ -747,11 +1365,28 @@ export default function KaynoteApp() {
   const [noteOpen, setNoteOpen] = useState(true) // mobile: note pane visible; start on the about note
   const [query, setQuery] = useState("")
   const [copied, setCopied] = useState(false)
+  const [buildingNote, setBuildingNote] = useState<Note | null>(null) // "still building" alert target
+
+  // Open a note, or show the still-building alert when it isn't ready yet
+  const openNote = (note: Note) => {
+    if (note.building) {
+      setBuildingNote(note)
+      return
+    }
+    setSelectedId(note.id)
+    setNoteOpen(true)
+  }
 
   // NoteJump links inside note bodies dispatch this event to switch notes
   useEffect(() => {
     const onOpenNote = (e: Event) => {
-      setSelectedId((e as CustomEvent<string>).detail)
+      const id = (e as CustomEvent<string>).detail
+      const note = SECTIONS.flatMap((s) => s.notes).find((n) => n.id === id)
+      if (note?.building) {
+        setBuildingNote(note)
+        return
+      }
+      setSelectedId(id)
       setNoteOpen(true)
     }
     window.addEventListener("kaynotes:open-note", onOpenNote)
@@ -812,10 +1447,7 @@ export default function KaynoteApp() {
                 <button
                   key={note.id}
                   className={`kn-row${note.id === selectedId ? " is-selected" : ""}`}
-                  onClick={() => {
-                    setSelectedId(note.id)
-                    setNoteOpen(true)
-                  }}
+                  onClick={() => openNote(note)}
                 >
                   <span className="kn-row-title">{note.title}</span>
                   <span className="kn-row-snippet">{note.snippet}</span>
@@ -853,10 +1485,23 @@ export default function KaynoteApp() {
         {/* key remounts the paper per note so the fade-in replays on every switch */}
         <div className="kn-paper" key={selected.id}>
           <p className="kn-date">{selected.date}</p>
-          <h1 className="kn-title">{selected.title}</h1>
-          <div className={`kn-body${selected.wide ? " kn-body--wide" : ""}`}>{selected.body}</div>
+          <h1 className="kn-title">{selected.heading ?? selected.title}</h1>
+          <div
+            className={`kn-body${selected.wide ? " kn-body--wide" : ""}${selected.essay ? " kn-body--essay" : ""}`}
+          >
+            {selected.body}
+          </div>
         </div>
       </section>
+
+      {buildingNote && (
+        <IosAlert
+          title={buildingNote.title}
+          message="still building. check back soon."
+          onDismiss={() => setBuildingNote(null)}
+          buttons={[{ label: "OK", onClick: () => setBuildingNote(null), bold: true }]}
+        />
+      )}
 
       <style jsx>{`
         .kn-app {
@@ -1085,25 +1730,137 @@ export default function KaynoteApp() {
           font-weight: 700;
           letter-spacing: -0.01em;
           color: ${INK};
-          max-width: 680px;
+          max-width: 840px;
           margin: 0 0 10px;
           line-height: 1.25;
         }
         .kn-body {
-          max-width: 680px;
+          max-width: 840px;
         }
         .kn-body--wide {
           max-width: none;
         }
+        .kn-body--essay {
+          max-width: 680px;
+        }
+        /* ── Draft margin (essay): underlined phrases, arrows, taped photos ── */
+        .kn-body :global(.kn-essay) {
+          position: relative;
+        }
+        .kn-body :global(.kn-anno) {
+          position: relative;
+        }
+        .kn-body :global(.kn-mark) {
+          text-decoration: underline wavy rgba(0, 0, 0, 0.45);
+          text-decoration-thickness: 1px;
+          text-underline-offset: 3px;
+        }
+        .kn-body :global(sup.kn-ref) {
+          font-size: 10px;
+          font-weight: 600;
+          line-height: 0;
+          vertical-align: super;
+          margin-left: 2px;
+          color: ${GRAY};
+        }
+        .kn-body :global(.kn-fig-n) {
+          display: inline-block;
+          font-size: 15px;
+          line-height: 20px;
+          width: 20px;
+          height: 20px;
+          text-align: center;
+          border: 1px solid rgba(0, 0, 0, 0.45);
+          border-radius: 50%;
+          color: ${INK};
+          margin-bottom: 4px;
+        }
+        .kn-body :global(.kn-fig--photo) {
+          position: relative;
+        }
+        .kn-body :global(.kn-fig--photo .kn-fig-n) {
+          position: absolute;
+          left: -8px;
+          top: -8px;
+          background: #ffffff;
+          margin: 0;
+          z-index: 1;
+        }
+        .kn-body :global(.kn-fig) {
+          display: block;
+          width: var(--w);
+          max-width: 100%;
+          margin: 12px 0 8px;
+          transform: rotate(var(--tilt));
+          font-family: "IntrudingCat", cursive;
+          font-size: 15px;
+          line-height: 18px;
+          color: ${GRAY};
+          pointer-events: none;
+        }
+        .kn-body :global(.kn-fig img) {
+          display: block;
+          width: 100%;
+          height: auto;
+          margin-bottom: 6px;
+          border-radius: 3px;
+          box-shadow: 0 1px 2px rgba(0, 0, 0, 0.18), 0 6px 14px rgba(0, 0, 0, 0.1);
+        }
+        .kn-body :global(.kn-fig-stat) {
+          display: block;
+          font-size: 30px;
+          line-height: 32px;
+          color: ${INK};
+        }
+        .kn-body :global(.kn-fig-cap) {
+          display: block;
+        }
+        .kn-body :global(.kn-fig-src) {
+          display: block;
+          margin-top: 2px;
+          font-size: 13px;
+          color: rgba(0, 0, 0, 0.3);
+        }
+        /* wide panes: throw the figures out into the blank right half of the page */
+        @media (min-width: 1400px) {
+          .kn-body :global(.kn-fig) {
+            position: absolute;
+            left: calc(100% + var(--dx));
+            top: var(--dy);
+            margin: 0;
+          }
+        }
+
         .kn-body :global(p) {
           font-size: 14px;
           line-height: 20px;
           color: ${INK};
           margin: 0 0 12px;
         }
+        .kn-body :global(.kn-intro) {
+          display: flex;
+          align-items: flex-start;
+          gap: 40px;
+          margin: 8px 0 16px;
+        }
+        .kn-body :global(.kn-intro-text) {
+          flex: 1;
+          min-width: 0;
+        }
+        .kn-body :global(.kn-intro-text p:last-child) {
+          margin-bottom: 0;
+        }
+        .kn-body :global(img.kn-intro-avatar) {
+          flex: none;
+          display: block;
+          width: 200px;
+          height: 200px;
+          border-radius: 50%;
+          object-fit: cover;
+        }
         .kn-body :global(p.kn-subhead) {
           font-weight: 700;
-          margin-top: 24px;
+          margin-top: 32px;
         }
         .kn-body :global(ul) {
           margin: 0 0 12px;
@@ -1115,6 +1872,35 @@ export default function KaynoteApp() {
           line-height: 20px;
           color: ${INK};
           margin-bottom: 0;
+        }
+        /* Apple-Notes-style table: hairline grid, bold first column */
+        .kn-body :global(.kn-table-wrap) {
+          overflow-x: auto;
+          margin: 16px 0 16px;
+        }
+        .kn-body :global(.kn-table) {
+          width: 100%;
+          border-collapse: collapse;
+          font-size: 14px;
+          line-height: 20px;
+          color: ${INK};
+        }
+        .kn-body :global(.kn-table th),
+        .kn-body :global(.kn-table td) {
+          border: 1px solid rgba(0, 0, 0, 0.14);
+          padding: 8px 10px;
+          text-align: left;
+          vertical-align: top;
+          font-weight: 400;
+        }
+        .kn-body :global(.kn-table thead th) {
+          font-weight: 700;
+          background: rgba(0, 0, 0, 0.03);
+        }
+        .kn-body :global(.kn-table tbody th) {
+          font-weight: 600;
+          white-space: nowrap;
+          width: 1%;
         }
 
         /* ── Bookshelf (reading list): wallpapered wall + white shelf ── */
@@ -1318,35 +2104,204 @@ export default function KaynoteApp() {
           color: ${INK};
           margin: 12px 0 0;
         }
-        /* ── Art gallery (arts note), Apple Notes photo grid ── */
-        .kn-body :global(.kn-art-grid) {
-          display: grid;
-          grid-template-columns: repeat(6, 1fr);
-          gap: 6px;
-          margin: 16px 0 20px;
+        /* ── Experience rows: logo + role, iOS company card on logo hover ── */
+        .kn-body :global(.kn-xp) {
+          margin: 8px 0 24px;
         }
-        .kn-body :global(.kn-art-grid-3) {
-          grid-template-columns: repeat(3, 1fr);
-          max-width: 480px;
-          margin-top: 28px;
+        .kn-body :global(.kn-xp-row) {
+          display: flex;
+          align-items: center;
+          gap: 12px;
+          padding: 10px 0;
         }
-        .kn-body :global(.kn-art-thumb) {
-          border: none;
-          padding: 0;
-          background: none;
-          border-radius: 4px;
+        .kn-body :global(.kn-xp-logo) {
+          flex: none;
+          width: 40px;
+          height: 40px;
+          border-radius: 9px;
           overflow: hidden;
-          aspect-ratio: 1;
+          background: #ffffff;
+          display: flex;
+          align-items: center;
+          justify-content: center;
         }
-        .kn-body :global(.kn-art-thumb img) {
+        .kn-body :global(.kn-xp-logo img) {
           width: 100%;
           height: 100%;
+          object-fit: contain;
+          display: block;
+        }
+        .kn-body :global(.kn-xp-swatch) {
+          display: block;
+          width: 100%;
+          height: 100%;
+        }
+        .kn-body :global(.kn-xp-main) {
+          flex: 1;
+          min-width: 0;
+        }
+        .kn-body :global(p.kn-xp-line1) {
+          display: flex;
+          align-items: baseline;
+          justify-content: space-between;
+          gap: 12px;
+          margin: 0;
+        }
+        .kn-body :global(.kn-xp-name) {
+          font-weight: 600;
+        }
+        .kn-body :global(.kn-xp-when) {
+          flex: none;
+          font-size: 13px;
+          color: ${GRAY};
+        }
+        .kn-body :global(p.kn-xp-detail) {
+          margin: 1px 0 0;
+          font-size: 13px;
+          color: ${GRAY};
+        }
+        /* company card: same fixed-position pattern as the bookshelf preview */
+        .kn-body :global(.kn-co-card) {
+          position: fixed;
+          z-index: 60;
+          width: 300px;
+          background: #ffffff;
+          border-radius: 14px;
+          padding: 16px;
+          text-align: left;
+          box-shadow:
+            0 2px 8px rgba(0, 0, 0, 0.12),
+            0 18px 44px rgba(0, 0, 0, 0.22);
+          pointer-events: none;
+          animation: kn-fade-in 0.15s ease-out;
+        }
+        .kn-body :global(.kn-co-head) {
+          display: flex;
+          gap: 12px;
+          align-items: center;
+        }
+        .kn-body :global(.kn-co-logo) {
+          flex: none;
+          width: 44px;
+          height: 44px;
+          border-radius: 10px;
+          overflow: hidden;
+          background: #ffffff;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+        .kn-body :global(.kn-co-logo img) {
+          width: 100%;
+          height: 100%;
+          object-fit: contain;
+          display: block;
+        }
+        .kn-body :global(p.kn-co-name) {
+          font-size: 15px;
+          font-weight: 700;
+          line-height: 1.3;
+          margin: 0;
+        }
+        .kn-body :global(p.kn-co-sub) {
+          font-size: 12px;
+          color: ${GRAY};
+          margin: 2px 0 0;
+        }
+        .kn-body :global(p.kn-co-desc) {
+          font-size: 13px;
+          line-height: 19px;
+          margin: 12px 0 0;
+        }
+        .kn-body :global(.kn-co-facts) {
+          margin-top: 12px;
+          border-top: 1px solid #ececec;
+        }
+        .kn-body :global(.kn-co-facts p) {
+          display: flex;
+          justify-content: space-between;
+          align-items: baseline;
+          gap: 16px;
+          margin: 0;
+          padding: 7px 0;
+          font-size: 12px;
+          line-height: 16px;
+        }
+        .kn-body :global(.kn-co-facts p + p) {
+          border-top: 1px solid #ececec;
+        }
+        .kn-body :global(.kn-co-facts p span:first-child) {
+          flex: none;
+          color: ${GRAY};
+        }
+        .kn-body :global(.kn-co-facts p span:last-child) {
+          text-align: right;
+        }
+
+        /* ── Intro stamps: photos as postage stamps scattered on grid paper ── */
+        .kn-body :global(.kn-stamp-scene) {
+          position: relative;
+          margin: 32px 0 8px;
+          padding: 36px 0 32px;
+          background-image:
+            linear-gradient(#e9e9ee 1px, transparent 1px),
+            linear-gradient(90deg, #e9e9ee 1px, transparent 1px);
+          background-size: 26px 26px;
+        }
+        .kn-body :global(.kn-stamp-scene)::after {
+          /* soft white vignette so the grid paper fades into the note page */
+          content: "";
+          position: absolute;
+          inset: 0;
+          box-shadow: inset 0 0 44px 30px #ffffff;
+          pointer-events: none;
+        }
+        .kn-body :global(.kn-stamps) {
+          position: relative;
+          max-width: 560px;
+          height: 300px;
+          margin: 0 auto;
+        }
+        .kn-body :global(.kn-stamp) {
+          position: absolute;
+          margin: 0;
+          display: flex;
+          flex-direction: column;
+          padding: 12px 12px 8px;
+          /* perforation: transparent holes punched every 13px along the rim.
+             the gradient tiles holes across the whole stamp; ::before fills
+             the interior back in, so only the edge holes stay open */
+          background: radial-gradient(circle, transparent 4.5px, #fdfdfb 5px);
+          background-size: 13px 13px;
+          background-position: -6.5px -6.5px;
+          transform: rotate(var(--rot, 0deg));
+          /* drop-shadow follows the perforated alpha, so the scallops cast real edges */
+          filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.14)) drop-shadow(0 10px 18px rgba(0, 0, 0, 0.1));
+        }
+        .kn-body :global(.kn-stamp)::before {
+          content: "";
+          position: absolute;
+          inset: 6.5px;
+          background: #fdfdfb;
+          z-index: -1;
+        }
+        .kn-body :global(.kn-stamp img) {
+          flex: 1;
+          min-height: 0;
+          width: 100%;
           object-fit: cover;
           display: block;
         }
-        /* intro photos are portraits of people — crop from the top so faces stay in frame */
-        .kn-body :global(.kn-art-grid-3 .kn-art-thumb img) {
-          object-position: center top;
+        .kn-body :global(.kn-stamp figcaption) {
+          display: flex;
+          justify-content: space-between;
+          align-items: baseline;
+          padding-top: 5px;
+          font-family: Georgia, "Times New Roman", serif;
+          font-size: 9px;
+          font-weight: 700;
+          letter-spacing: 0.08em;
+          color: var(--ink, #2b35a8);
         }
         @keyframes kn-fade-in {
           from {
@@ -1456,13 +2411,43 @@ export default function KaynoteApp() {
           .kn-paper {
             padding: 12px 20px 48px;
           }
+          /* narrow pane: photo above the intro text at a fixed size */
+          .kn-body :global(.kn-intro) {
+            flex-direction: column-reverse;
+            /* equal room above the photo (after the title) and below it (before the text) */
+            gap: 20px;
+            margin-top: 20px;
+          }
+          .kn-body :global(img.kn-intro-avatar) {
+            width: 160px !important;
+            height: 160px !important;
+          }
           .kn-body :global(.kn-shelf) {
             grid-template-columns: repeat(2, 1fr);
             column-gap: 20px;
             row-gap: 28px;
           }
-          .kn-body :global(.kn-art-grid) {
-            grid-template-columns: repeat(3, 1fr);
+          /* scale the stamp sheet down so the scatter fits the narrow pane */
+          .kn-body :global(.kn-stamps) {
+            zoom: 0.72;
+          }
+          /* essay: no margin to tape figures into, so they sit centered under their paragraph */
+          .kn-body :global(.kn-fig) {
+            margin: 14px auto 10px;
+            text-align: center;
+          }
+          /* tables: let the label column wrap so the two content columns keep their room */
+          .kn-body :global(.kn-table) {
+            font-size: 13px;
+            line-height: 18px;
+          }
+          .kn-body :global(.kn-table th),
+          .kn-body :global(.kn-table td) {
+            padding: 6px 8px;
+          }
+          .kn-body :global(.kn-table tbody th) {
+            white-space: normal;
+            width: auto;
           }
           /* on mobile, dark mode only applies once the trading note is open —
              the list view stays light like the rest of the app */
