@@ -839,20 +839,38 @@ const EDUCATION: XpRow[] = [
     role: "Barnard College",
     when: "",
     detail: "Cognitive Science (AI/ML), Minors in Political Science & Economics",
+    card: {
+      sub: "Cognitive Science, AI/ML focus",
+      desc: "Selected coursework across computer science, political science, and economics.",
+      facts: [
+        ["COMS W4701", "Artificial Intelligence"],
+        ["COMS W4170", "User Interface Design"],
+        ["COMS W4771", "Machine Learning"],
+        ["COMS W4705", "Natural Language Processing"],
+        ["POLS", "China's Foreign Relations"],
+        ["ECON", "Micro, Macro & Global Economics"],
+      ],
+    },
   },
 ]
 
 // logo list with an iOS-style company card hanging off the hovered logo
 function ExperienceRows({ rows }: { rows: XpRow[] }) {
-  const [card, setCard] = useState<{ row: XpRow; x: number; y: number } | null>(null)
+  const [card, setCard] = useState<{ row: XpRow; x: number; y: number; above: boolean } | null>(
+    null,
+  )
 
   const showCard = (row: XpRow, el: HTMLElement) => {
     if (!row.card) return
     const rect = el.getBoundingClientRect()
+    // hang below the logo; flip above when the card would run off the bottom of the viewport
+    const estHeight = 120 + row.card.facts.length * 31
+    const above = rect.bottom + 12 + estHeight > window.innerHeight
     setCard({
       row,
       x: Math.min(Math.max(rect.left + rect.width / 2, 160), window.innerWidth - 160),
-      y: rect.bottom + 12,
+      y: above ? rect.top - 12 : rect.bottom + 12,
+      above,
     })
   }
 
@@ -892,7 +910,11 @@ function ExperienceRows({ rows }: { rows: XpRow[] }) {
         <div
           className="kn-co-card"
           role="tooltip"
-          style={{ left: card.x, top: card.y, transform: "translate(-50%, 0)" }}
+          style={{
+            left: card.x,
+            top: card.y,
+            transform: card.above ? "translate(-50%, -100%)" : "translate(-50%, 0)",
+          }}
         >
           <div className="kn-co-head">
             <span className="kn-co-logo">{logo(card.row, 44)}</span>
@@ -927,14 +949,15 @@ const SECTIONS: Section[] = [
         snippet: "A generalist designer",
         date: "September 2, 2026 at 10:08 AM",
         searchText:
-          "about me kayna huang generalist design engineer product designer cognitive science AI ML machine learning barnard columbia EEG research psychology lab frontier technology consumer product prototypes human-centered design experience opusclip design engineering special projects ai video editor heygen product design intern ai avatar products mobile earth odyssey adventurex hackathon investing friends education political science economics art facial aesthetics fashion poker zhejiang new york startups entrepreneur reach me email kh3443 on X",
+          "about me kayna huang generalist design engineer product designer cognitive science AI ML machine learning barnard columbia EEG encoding models visual cognition lab frontier technology consumer product prototypes human-centered design experience opusclip design engineering special projects ai video editor heygen product design intern ai avatar products mobile earth odyssey adventurex hackathon investing friends education political science economics art facial aesthetics fashion poker zhejiang new york startups entrepreneur reach me email kh3443 on X",
         body: (
           <>
             <IntroWithAvatar>
               <p style={{ marginTop: 0 }}>
                 I&apos;m a generalist design engineer and product designer, currently studying
                 Cognitive Science with a focus in AI and machine learning at Barnard College,
-                Columbia University, and working on EEG research at a psychology lab at Columbia.
+                Columbia University, and working on EEG and encoding models at the Visual Cognition
+                Lab at Columbia.
               </p>
               <p>
                 A fascination with frontier technology and products is what started my career.
@@ -1260,6 +1283,28 @@ const SECTIONS: Section[] = [
     ],
   },
   {
+    label: "research",
+    notes: [
+      {
+        id: "thought-to-text",
+        title: "Thought-to-Text Interfaces",
+        snippet: "More research details to come",
+        date: "September 12, 2026 at 3:20 PM",
+        building: true,
+        searchText:
+          "research thought to text interfaces EEG encoding models decoding language from brain signals visual cognition lab columbia neural decoding brain computer interface",
+        body: (
+          <>
+            <p style={{ marginTop: 0 }}>
+              Decoding language from brain signals: EEG, encoding models, and what it would take
+              to type with thought alone. More research details to come.
+            </p>
+          </>
+        ),
+      },
+    ],
+  },
+  {
     label: "lifestyle",
     notes: [
       {
@@ -1315,6 +1360,250 @@ const SECTIONS: Section[] = [
             <p style={{ marginTop: 0 }}>Arts and pictures, an ongoing collection.</p>
             <StampScatter />
           </>
+        ),
+      },
+    ],
+  },
+  {
+    label: "blog",
+    notes: [
+      {
+        id: "founder-theory",
+        title: "Founder Theory",
+        snippet: "IQ decides the category, the business brain is the same",
+        date: "September 2, 2026 at 11:52 AM",
+        searchText:
+          "founder theory IQ intelligence decides the category business brain is the same 智商决定类别 商业脑子都是一样的 founders biographies duan yongping jobs demand distribution margin compound taste",
+        body: (
+          <>
+            <p style={{ marginTop: 0 }}>
+              A theory I keep testing: IQ decides the category, the business brain is the same.
+            </p>
+            <p>
+              Read enough founder biographies (see{" "}
+              <NoteJump noteId="reading-list">my reading list</NoteJump>) and the commercial
+              instincts look identical, spot unmet demand, control distribution, protect margin,
+              survive long enough to compound. A street vendor and Steve Jobs share the same
+              business brain.
+            </p>
+            <p>
+              What differs is the category they get to play in. Raw intelligence, and taste,
+              decides whether that same brain builds a corner store, a consumer app, or a frontier
+              lab. The market caps differ by category, not by better business sense.
+            </p>
+            <p>Draft, more to come.</p>
+          </>
+        ),
+      },
+      {
+        id: "time-machine",
+        title: "Time Machine",
+        snippet: "TikTok & Rednote",
+        date: "September 2, 2026 at 12:05 PM",
+        searchText:
+          "time machine tiktok rednote xiaohongshu 小红书 时光机 masayoshi son 孙正义 markets develop at different speeds ship the future arbitrage chinese apps feed attention",
+        body: (
+          <>
+            <p style={{ marginTop: 0 }}>
+              Masayoshi Son called it the time machine: markets develop at different speeds, so
+              you can step into one that runs ahead, learn the future, and ship it to one that
+              runs behind.
+            </p>
+            <p>
+              TikTok is the proof at scale, a feed refined in the world&apos;s most competitive
+              attention market, landing in the US years ahead of anything local. Rednote is the
+              sequel, an entire lifestyle-commerce playbook arriving overnight.
+            </p>
+            <p>
+              But the machine itself has changed. The one Son described ran one way and took
+              years. The one running now goes both ways and takes weeks.
+            </p>
+            <div className="kn-table-wrap">
+              <table className="kn-table">
+                <thead>
+                  <tr>
+                    <th></th>
+                    <th>Traditional time machine (2000–2015)</th>
+                    <th>Modern time machine (2020s–)</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <th>Direction</th>
+                    <td>One way: US → China → everyone else</td>
+                    <td>Multi-way: US ↔ China → emerging markets</td>
+                  </tr>
+                  <tr>
+                    <th>Core dividend</th>
+                    <td>Information gap: you don&apos;t know what the other side is building</td>
+                    <td>Execution and cognition gap: you know what to build, you can&apos;t land it</td>
+                  </tr>
+                  <tr>
+                    <th>Core driver</th>
+                    <td>Copying business models (Copy to China)</td>
+                    <td>Supply chain, and AI meeting real scenarios (Copy from China, global AI)</td>
+                  </tr>
+                  <tr>
+                    <th>Time window</th>
+                    <td>2 to 5 years</td>
+                    <td>Months, sometimes weeks</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <p>The question I&apos;m sitting with: what else is still inside the machine?</p>
+            <p>Draft, more to come.</p>
+          </>
+        ),
+      },
+      {
+        id: "designer-founders",
+        title: "Designer Founders",
+        snippet: "What a design background does for a founder",
+        date: "September 2, 2026 at 6:40 PM",
+        searchText:
+          "designer founders design background founder 设计背景创始人 设计师创业 airbnb chesky gebbia risd pinterest evan sharp youtube chad hurley notion ivan zhao linear karri saarinen jony ive io openai taste product sense",
+        body: (
+          <>
+            <p style={{ marginTop: 0 }}>
+              A question I want to think through properly: what does a design background actually do
+              for a founder, and where does it fall short?
+            </p>
+            <p>
+              The list is longer than people assume. Airbnb was started in 2008 by two RISD
+              graduates, Brian Chesky and Joe Gebbia. Evan Sharp came to Pinterest from architecture
+              school. Chad Hurley designed the PayPal logo before he co-founded YouTube. Ivan Zhao
+              was a designer before Notion, and Karri Saarinen designed at Airbnb and Coinbase
+              before Linear. In May 2025 OpenAI paid $6.5 billion for io, a hardware company that
+              was mostly Jony Ive and a point of view.
+            </p>
+            <p>
+              What I want to work out is whether the pattern is taste, or something more specific:
+              a habit of building the thing before the pitch, and of seeing the user before the
+              market.
+            </p>
+            <p>Draft, more to come.</p>
+          </>
+        ),
+      },
+      {
+        id: "garage-and-plan",
+        title: "The Garage and the Plan",
+        snippet: "Reading China 2035: bottom-up practice, top-down execution",
+        date: "September 2, 2026 at 6:05 PM",
+        essay: true,
+        searchText:
+          "the garage and the plan china 2035 csis think tank report reading notes 读后感 中美 科技发展 自下而上 自上而下 bottom-up practice top-down execution us china technology high-speed rail ev solar google openai chatgpt spacex five-year plan r&d",
+        body: (
+          <Essay>
+            <p style={{ marginTop: 0 }}>
+              I read a CSIS report on where China&apos;s science and technology is headed by 2035.
+              The thing I kept underlining was not any single forecast. It was the mechanism.
+              The US and China are chasing the same technologies, and they get there by opposite
+              routes.{" "}
+              <Mark>
+                America is bottom-up practice. China is top-down execution. Almost everything else
+                about the two systems follows from that.
+              </Mark>
+            </p>
+            <p className="kn-subhead">What the report is actually saying</p>
+            <p className="kn-anno">
+              The 2035 target was written into law in March 2021, alongside the 14th Five-Year
+              Plan: major breakthroughs in core technologies, a place in the front rank of
+              innovative countries, and R&amp;D spending growing more than 7% a year. It is on
+              track. In 2024 China spent{" "}
+              <Mark n={1}>3.61 trillion yuan</Mark> on R&amp;D, 2.68% of GDP, second in the world.
+              The US spends about 3.4% of GDP. In both countries business pays for roughly three
+              quarters of it. So the money is not the difference. The difference is who picks the
+              target.
+              <Fig
+                n={1}
+                stat="2.68% vs 3.4%"
+                caption="r&d as a share of gdp, china 2024 and the us 2022"
+                source="NBS, NSF"
+                dx={70}
+                dy={-20}
+                tilt={-2}
+                w={220}
+              />
+            </p>
+            <p className="kn-subhead">Top-down execution</p>
+            <p>
+              The Chinese pattern is a plan that names the finish line, then provinces and
+              companies race each other to it until the price collapses and the world buys.
+            </p>
+            <ul>
+              <li className="kn-anno">
+                High-speed rail = one Beijing to Tianjin line in 2008 + a national plan.{" "}
+                <Mark n={2}>48,000 km</Mark> by the end of 2024, about 70% of everything on earth.
+                <Fig
+                  n={2}
+                  stat="0 → 48,000 km"
+                  caption="high-speed rail, 2008 → 2024. built to a plan."
+                  source="NBS"
+                  dx={40}
+                  dy={10}
+                  tilt={3}
+                  w={210}
+                />
+              </li>
+              <li>
+                Electric cars = a 2009 subsidy pilot in ten cities + fifteen years of policy. In
+                2024 China sold 12.9 million new-energy vehicles, over 40% of every new car.
+              </li>
+              <li>
+                Solar = a 2000s industrial policy + provincial competition. China now makes more
+                than 80% of every stage of the panel supply chain.
+              </li>
+            </ul>
+            <p>
+              None of these were invented in China. All of them were executed there better than
+              anywhere else. Execution is the product.
+            </p>
+            <p className="kn-subhead">Bottom-up practice</p>
+            <p>
+              The American pattern is thousands of small bets nobody ordered, the market kills most
+              of them, and the survivor becomes the standard.
+            </p>
+            <ul>
+              <li>
+                Google = a Stanford PhD project in 1996 + a garage in 1998. No policy asked for a
+                search engine.
+              </li>
+              <li>
+                The iPhone = one company&apos;s bet in 2007. The government found out at the
+                keynote like everyone else.
+              </li>
+              <li className="kn-anno">
+                ChatGPT = a nonprofit lab from 2015 + a &quot;research preview&quot; posted on
+                November 30, 2022. <Mark n={3}>100 million users in two months</Mark>, and nobody
+                had planned for a single one of them.
+                <Fig
+                  n={3}
+                  stat="2 months"
+                  caption="chatgpt to 100M users. a research preview, not a plan."
+                  source="UBS"
+                  dx={130}
+                  dy={-10}
+                  tilt={-3}
+                  w={200}
+                />
+              </li>
+              <li>
+                SpaceX = a private company that landed a booster in December 2015 with NASA as a
+                customer, not a boss.
+              </li>
+            </ul>
+            <p>
+              Practice is the product. Nobody knows in advance which bet is the one, which is
+              exactly why the system needs so many of them.
+            </p>
+            <p>
+              Same technologies, opposite routes. One system is built to find the thing, the other
+              to deliver it.
+            </p>
+            <p>Draft, more to come.</p>
+          </Essay>
         ),
       },
     ],
