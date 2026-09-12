@@ -839,9 +839,9 @@ const EDUCATION: XpRow[] = [
     name: "Columbia University",
     role: "Barnard College",
     when: "",
-    detail: "Cognitive Science (AI/ML), Minors in Political Science & Economics",
+    detail: "Cognitive Science (AI/ML) & Political Science",
     card: {
-      sub: "Cognitive Science, AI/ML focus",
+      sub: "Cognitive Science & Political Science",
       desc: "Selected coursework across computer science, political science, and economics.",
       facts: [
         ["COMS W4701", "Artificial Intelligence"],
@@ -977,9 +977,9 @@ const ALL_SECTIONS: Section[] = [
             <IntroWithAvatar>
               <p style={{ marginTop: 0 }}>
                 I&apos;m a generalist design engineer and product designer, currently studying
-                Cognitive Science with a focus in AI and machine learning at Barnard College,
-                Columbia University, and working on EEG and encoding models at the Visual Cognition
-                Lab at Columbia.
+                Cognitive Science (with a focus in AI and machine learning) and Political Science
+                at Barnard College, Columbia University, and working on EEG and encoding models at
+                the Visual Cognition Lab at Columbia.
               </p>
               <p>
                 A fascination with frontier technology and products is what started my career.
