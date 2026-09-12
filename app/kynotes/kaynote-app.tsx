@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useLayoutEffect, useRef, useState } from "react"
+import { Fragment, useEffect, useLayoutEffect, useRef, useState } from "react"
 import { useRouter } from "next/navigation"
 
 import IosAlert from "@/components/ios-alert"
@@ -854,6 +854,25 @@ const EDUCATION: XpRow[] = [
   },
 ]
 
+// A long fact value may only wrap at its commas, so a name like "SoftBank Vision
+// Fund 2" never splits across lines when the row runs out of width
+function CommaBreaks({ text }: { text: string }) {
+  const parts = text.split(", ")
+  return (
+    <>
+      {parts.map((part, i) => (
+        <Fragment key={i}>
+          <span style={{ whiteSpace: "nowrap" }}>
+            {part}
+            {i < parts.length - 1 ? "," : ""}
+          </span>
+          {i < parts.length - 1 ? " " : ""}
+        </Fragment>
+      ))}
+    </>
+  )
+}
+
 // logo list with an iOS-style company card hanging off the hovered logo
 function ExperienceRows({ rows }: { rows: XpRow[] }) {
   const [card, setCard] = useState<{ row: XpRow; x: number; y: number; above: boolean } | null>(
@@ -928,7 +947,9 @@ function ExperienceRows({ rows }: { rows: XpRow[] }) {
             {card.row.card.facts.map(([label, value]) => (
               <p key={label}>
                 <span>{label}</span>
-                <span>{value}</span>
+                <span>
+                  <CommaBreaks text={value} />
+                </span>
               </p>
             ))}
           </div>
@@ -2519,12 +2540,13 @@ export default function KaynoteApp() {
         .kn-body :global(.kn-co-facts p + p) {
           border-top: 1px solid #ececec;
         }
-        .kn-body :global(.kn-co-facts p span:first-child) {
+        .kn-body :global(.kn-co-facts p > span:first-child) {
           flex: none;
           color: ${GRAY};
         }
-        .kn-body :global(.kn-co-facts p span:last-child) {
+        .kn-body :global(.kn-co-facts p > span:last-child) {
           text-align: right;
+          text-wrap: balance; /* a wrapped value splits into two even lines, not one long + one stub */
         }
 
         /* ── Intro stamps: photos as postage stamps scattered on grid paper ── */
