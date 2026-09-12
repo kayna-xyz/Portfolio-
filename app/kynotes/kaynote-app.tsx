@@ -793,8 +793,8 @@ const EXPERIENCE: XpRow[] = [
       desc: "An AI agent that turns long-form video into short clips people actually watch. 10M+ creators, 170M+ clips generated.",
       facts: [
         ["backed by", "SoftBank Vision Fund 2, DCM, AI Grant"],
-        ["ARR", "$20M, 18 months after launch"],
-        ["last round", "$215M post, Series B (2025)"],
+        ["ARR", "$20M"],
+        ["valuation", "$215M"],
       ],
     },
   },
@@ -810,8 +810,8 @@ const EXPERIENCE: XpRow[] = [
       desc: "Studio-quality avatar video generated from a script. 30M+ users in 196 countries, 85% of the Fortune 100.",
       facts: [
         ["backed by", "Benchmark, Thrive, Bond, Conviction"],
-        ["ARR", "$100M → $200M+ in 8 months (2026)"],
-        ["last round", "$500M post, Series A (2024)"],
+        ["ARR", "$200M"],
+        ["valuation", "$2B"],
       ],
     },
   },
@@ -888,7 +888,7 @@ function ExperienceRows({ rows }: { rows: XpRow[] }) {
     const above = rect.bottom + 12 + estHeight > window.innerHeight
     setCard({
       row,
-      x: Math.min(Math.max(rect.left + rect.width / 2, 160), window.innerWidth - 160),
+      x: Math.min(Math.max(rect.left + rect.width / 2, 170), window.innerWidth - 170),
       y: above ? rect.top - 12 : rect.bottom + 12,
       above,
     })
@@ -2480,7 +2480,7 @@ export default function KaynoteApp() {
         .kn-body :global(.kn-co-card) {
           position: fixed;
           z-index: 60;
-          width: 300px;
+          width: 340px; /* wide enough that every fact stays on one line */
           background: #ffffff;
           border-radius: 14px;
           padding: 16px;
