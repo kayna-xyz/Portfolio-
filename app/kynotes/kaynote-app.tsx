@@ -32,6 +32,7 @@ type Note = {
 type Section = {
   label: string
   notes: Note[]
+  unpublished?: boolean // kept in code, never rendered or searchable on the live site
 }
 
 function NoteLink({ href, children }: { href: string; children: React.ReactNode }) {
@@ -959,7 +960,7 @@ function ExperienceRows({ rows }: { rows: XpRow[] }) {
   )
 }
 
-const SECTIONS: Section[] = [
+const ALL_SECTIONS: Section[] = [
   {
     label: "intro",
     notes: [
@@ -1305,6 +1306,7 @@ const SECTIONS: Section[] = [
   },
   {
     label: "research",
+    unpublished: true,
     notes: [
       {
         id: "thought-to-text",
@@ -1387,6 +1389,7 @@ const SECTIONS: Section[] = [
   },
   {
     label: "blog",
+    unpublished: true,
     notes: [
       {
         id: "founder-theory",
@@ -1630,6 +1633,9 @@ const SECTIONS: Section[] = [
     ],
   },
 ]
+
+// Only published sections reach the page, the sidebar, and search
+const SECTIONS: Section[] = ALL_SECTIONS.filter((section) => !section.unpublished)
 
 function ShareIcon() {
   return (
