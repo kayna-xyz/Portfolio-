@@ -984,10 +984,10 @@ const ALL_SECTIONS: Section[] = [
               <p>
                 A fascination with frontier technology and products is what started my career.
                 Along the way I learned how to turn new technology into consumer products, and
-                how to iterate on product experiences that serve millions of people. Going
-                forward, I want to study the relationship between humans and intelligent
-                machines, and use human-centered design to build products that change how
-                people live.
+                how to iterate on product experiences that serve millions of people. In the
+                future, I will continue studying the relationship between humans and
+                intelligent machines, and use human-centered design to build things that
+                change how people live.
               </p>
             </IntroWithAvatar>
             <p className="kn-subhead">Experience</p>
