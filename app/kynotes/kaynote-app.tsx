@@ -971,7 +971,7 @@ const ALL_SECTIONS: Section[] = [
         snippet: "A generalist designer",
         date: "September 2, 2026 at 10:08 AM",
         searchText:
-          "about me kayna huang generalist design engineer product designer cognitive science AI ML machine learning barnard columbia EEG encoding models visual cognition lab frontier technology consumer product prototypes human-centered design experience opusclip design engineering special projects ai video editor heygen product design intern ai avatar products mobile earth odyssey adventurex hackathon investing friends education political science economics art facial aesthetics fashion poker zhejiang new york startups entrepreneur reach me email kh3443 on X",
+          "about me kayna huang generalist design engineer product designer cognitive science AI ML machine learning barnard columbia EEG encoding models visual cognition lab frontier technology consumer products intelligent machines human-centered design experience opusclip design engineering special projects ai video editor heygen product design intern ai avatar products mobile earth odyssey adventurex hackathon investing friends education political science economics art facial aesthetics fashion poker zhejiang new york startups entrepreneur reach me email kh3443 on X",
         body: (
           <>
             <IntroWithAvatar>
@@ -983,10 +983,11 @@ const ALL_SECTIONS: Section[] = [
               </p>
               <p>
                 A fascination with frontier technology and products is what started my career.
-                Along the way I picked up the tools and processes to turn new technology into
-                consumer product prototypes, and the methods to iterate product experiences at
-                scale. I focus on bringing product sense and human-centered design to thinking
-                through, building, and iterating frontier products people genuinely love.
+                Along the way I learned how to turn new technology into consumer products, and
+                how to iterate on product experiences that serve millions of people. Going
+                forward, I want to study the relationship between humans and intelligent
+                machines, and use human-centered design to build products that change how
+                people live.
               </p>
             </IntroWithAvatar>
             <p className="kn-subhead">Experience</p>
