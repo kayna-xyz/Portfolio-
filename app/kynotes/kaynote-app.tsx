@@ -1005,7 +1005,7 @@ const ALL_SECTIONS: Section[] = [
             </p>
             <p>
               If you have any ideas or just want to chat, you can find me on{" "}
-              <NoteLink href="https://x.com/kayna_xyz">X</NoteLink>, or email me at{" "}
+              <NoteLink href="https://x.com/kayna_huang">X</NoteLink>, or email me at{" "}
               <NoteLink href="mailto:kh3443@columbia.edu">kh3443@columbia.edu</NoteLink>.
             </p>
           </>

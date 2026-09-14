@@ -13,7 +13,7 @@ const MENU = [
 ]
 
 const SOCIAL = [
-  { label: "X",        href: "https://x.com/kayna_xyz" },
+  { label: "X",        href: "https://x.com/kayna_huang" },
   { label: "Linkedin", href: "https://www.linkedin.com/in/kayna-huang-77ab8a2a1/" },
   { label: "Github",   href: "https://github.com/kayna-xyz" },
   { label: "Resume",   href: "/resume.pdf" },
