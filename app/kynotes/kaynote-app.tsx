@@ -1000,9 +1000,8 @@ const ALL_SECTIONS: Section[] = [
             </p>
             <p>
               I grew up in an entrepreneur&apos;s family. My father&apos;s entrepreneurial spirit
-              and engineering background shaped me deeply: they showed me how hard it is to build a
-              business, and gave me a huge passion for tech startups, one I&apos;ve decided to
-              devote myself to.
+              shaped me deeply: it showed me how hard it is to build a business, and gave me a huge
+              passion for startups and frontier tech, one I&apos;ve decided to devote myself to.
             </p>
             <p>
               If you have any ideas or just want to chat, you can find me on{" "}
