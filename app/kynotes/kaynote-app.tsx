@@ -999,7 +999,7 @@ const ALL_SECTIONS: Section[] = [
               game of poker. I was born and raised in Zhejiang, China, and New York is home now.
             </p>
             <p>
-              I grew up in an entrepreneur&apos;s family. My father&apos;s entrepreneurial spirit
+              I grew up in an entrepreneur&apos;s family. My father&apos;s spirit
               shaped me deeply: it showed me how hard it is to build a business, and gave me a huge
               passion for startups and frontier tech, one I&apos;ve decided to devote myself to.
             </p>
