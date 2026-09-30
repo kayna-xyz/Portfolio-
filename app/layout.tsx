@@ -26,9 +26,44 @@ const twkLausanne = localFont({
   display: 'swap',
 })
 
+const SITE_URL = 'https://www.kayna.ai'
+const SITE_DESCRIPTION =
+  'Product designer and design engineer in New York, studying Cognitive Science at Barnard College, Columbia. Work from HeyGen, OpusClip, and personal projects.'
+
 export const metadata: Metadata = {
-  title: 'Kayna Huang',
-  description: 'Kayna Huang, Product Designer who builds.',
+  metadataBase: new URL(SITE_URL),
+  title: {
+    default: 'Kayna Huang',
+    template: '%s · Kayna Huang',
+  },
+  description: SITE_DESCRIPTION,
+  alternates: { canonical: '/' },
+  openGraph: {
+    type: 'website',
+    siteName: 'Kayna Huang',
+    title: 'Kayna Huang',
+    description: SITE_DESCRIPTION,
+    url: SITE_URL,
+    locale: 'en_US',
+  },
+  twitter: {
+    card: 'summary',
+    title: 'Kayna Huang',
+    description: SITE_DESCRIPTION,
+    creator: '@kayna_huang',
+  },
+  // Keep the site out of search engines. Bots must still be allowed to crawl
+  // (see app/robots.ts) so they can read this noindex directive.
+  robots: {
+    index: false,
+    follow: false,
+    nocache: true,
+    googleBot: {
+      index: false,
+      follow: false,
+      noimageindex: true,
+    },
+  },
 }
 
 export const viewport: Viewport = {

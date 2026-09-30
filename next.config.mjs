@@ -3,6 +3,16 @@ const nextConfig = {
   typescript: {
     ignoreBuildErrors: true,
   },
+  async headers() {
+    return [
+      {
+        // Belt and braces with the metadata.robots noindex: also covers
+        // non-HTML assets (PDFs, images) that carry no meta tag.
+        source: '/:path*',
+        headers: [{ key: 'X-Robots-Tag', value: 'noindex, nofollow, noimageindex' }],
+      },
+    ]
+  },
   async redirects() {
     return [
       { source: '/portfolio', destination: '/', permanent: true },
