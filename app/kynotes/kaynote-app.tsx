@@ -782,19 +782,43 @@ type XpRow = {
 // coverage (Forbes / Sacra / company announcements), never internal data
 const EXPERIENCE: XpRow[] = [
   {
-    id: "opusclip",
-    logo: "/kaynote/logos/opusclip.svg",
-    name: "OpusClip",
-    role: "Design Engineering",
-    when: "Summer 2026",
-    detail: "Special Projects, AI Video Editor",
+    id: "columbia-research",
+    logo: "/kaynote/logos/columbia.png",
+    name: "Columbia University",
+    role: "Undergraduate Researcher",
+    when: "2026 – present",
+    detail: "EEG & Decoding Models, Visual Cognition Lab",
     card: {
-      sub: "AI video editing agent",
-      desc: "An AI agent that turns long-form video into short clips people actually watch. 10M+ creators, 170M+ clips generated.",
+      sub: "Visual Cognition Lab",
+      desc: "Research on how people see, using EEG recordings and decoding models to read visual perception from brain activity.",
       facts: [
-        ["backed by", "SoftBank Vision Fund 2, DCM, AI Grant"],
-        ["ARR", "$20M"],
-        ["valuation", "$215M"],
+        ["lab", "Visual Cognition Lab"],
+        ["advisor", "Prof. Michelle Greene"],
+        ["focus", "EEG, decoding models, machine learning"],
+      ],
+    },
+  },
+  {
+    id: "design-at-columbia",
+    logo: "#cfe3e5",
+    name: "Design at Columbia",
+    role: "Board",
+    when: "2026 – present",
+    detail: "Columbia's student design club",
+  },
+  {
+    id: "various",
+    logo: "#dcdfe5",
+    name: "Various Companies",
+    role: "Design Engineer",
+    when: "2025 – present",
+    detail: "Intelligent interfaces for early-stage startups",
+    card: {
+      sub: "Independent design engineering",
+      desc: "Building intelligent interfaces for early-stage startups, from first prototype to shipped product.",
+      facts: [
+        ["backed by", "Conviction, Sequoia, and more"],
+        ["since", "May 2025"],
       ],
     },
   },
@@ -852,6 +876,13 @@ const EDUCATION: XpRow[] = [
         ["ECON", "Micro, Macro & Global Economics"],
       ],
     },
+  },
+  {
+    id: "uwc",
+    logo: "/kaynote/logos/uwc.png",
+    name: "United World College",
+    when: "",
+    detail: "High school",
   },
 ]
 
@@ -971,7 +1002,7 @@ const ALL_SECTIONS: Section[] = [
         snippet: "A generalist designer",
         date: "September 2, 2026 at 10:08 AM",
         searchText:
-          "about me kayna huang generalist design engineer product designer cognitive science AI ML machine learning barnard columbia EEG encoding models visual cognition lab frontier technology consumer products intelligent machines human-centered design experience opusclip design engineering special projects ai video editor heygen product design intern ai avatar products mobile earth odyssey adventurex hackathon investing friends education political science economics art facial aesthetics fashion poker zhejiang new york startups entrepreneur reach me email kh3443 on X",
+          "about me kayna huang generalist design engineer product designer cognitive science AI ML machine learning barnard columbia EEG encoding models visual cognition lab frontier technology consumer products intelligent machines human-centered design experience columbia undergraduate researcher visual cognition lab eeg decoding models michelle greene design at columbia board design club various companies design engineer freelance startups conviction sequoia heygen product design intern ai avatar products mobile earth odyssey adventurex hackathon investing friends education political science economics united world college uwc high school art facial aesthetics fashion poker zhejiang new york startups entrepreneur reach me email kh3443 on X",
         body: (
           <>
             <IntroWithAvatar>
