@@ -1011,14 +1011,13 @@ const ALL_SECTIONS: Section[] = [
               game of poker. I was born and raised in Zhejiang, China, and New York is home now.
             </p>
             <p>
-              I grew up in an entrepreneur&apos;s family. My father&apos;s spirit
-              shaped me deeply: it showed me how hard it is to build a business, and gave me a huge
-              passion for startups and frontier tech, one I&apos;ve decided to devote myself to.
+              I grew up in an entrepreneur&apos;s family. It showed me how hard it is to build a
+              business, and drove me into startups and frontier tech.
             </p>
             <p>
               If you have any ideas or just want to chat, you can find me on{" "}
               <NoteLink href="https://x.com/kayna_huang">X</NoteLink>, or email me at{" "}
-              <NoteLink href="mailto:kh3443@columbia.edu">kh3443@columbia.edu</NoteLink>.
+              <NoteLink href="mailto:kh3443@columbia.edu">kh3443@columbia.edu</NoteLink>. ❤️
             </p>
           </>
         ),
