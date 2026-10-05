@@ -479,7 +479,7 @@ export default function RestaurantMap() {
           top: 2px;
           width: 22px;
           height: 22px;
-          background: #b8860b; /* KyNotes gold, same as links and the ★ */
+          background: #dcae3c; /* lighter gold, a step up from the #b8860b link gold */
           border: 2px solid #ffffff;
           border-radius: 50% 50% 50% 0;
           transform: rotate(-45deg);
