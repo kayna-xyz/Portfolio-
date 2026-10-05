@@ -134,11 +134,12 @@ export default function RestaurantMap() {
 
       const map = L.map(mapEl.current)
       mapRef.current = map
-      L.tileLayer("https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png", {
+      // CARTO basemaps went API-key-only (Oct 2026), so the map draws the plain
+      // OSM tiles and the tile pane is desaturated in CSS to keep the light look
+      L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
         attribution:
-          '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/attributions">CARTO</a>',
-        subdomains: "abcd",
-        maxZoom: 20,
+          '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+        maxZoom: 19,
       }).addTo(map)
 
       const bounds = L.latLngBounds([])
@@ -459,6 +460,9 @@ export default function RestaurantMap() {
         .kn-food-map.leaflet-container:focus-visible,
         .kn-food-map .leaflet-interactive:focus {
           outline: none;
+        }
+        .kn-food-map .leaflet-tile-pane {
+          filter: grayscale(1) brightness(1.08) contrast(0.82);
         }
         .kn-food-map.leaflet-container {
           font-family:
