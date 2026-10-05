@@ -479,7 +479,7 @@ export default function RestaurantMap() {
           top: 2px;
           width: 22px;
           height: 22px;
-          background: #ff453a;
+          background: #b8860b; /* KyNotes gold, same as links and the ★ */
           border: 2px solid #ffffff;
           border-radius: 50% 50% 50% 0;
           transform: rotate(-45deg);
@@ -501,7 +501,7 @@ export default function RestaurantMap() {
           transform: rotate(-45deg) scale(1.25);
         }
         .kn-pin--home {
-          background: #007aff;
+          background: #1d1d1f;
         }
         .kn-pin--home::after {
           content: none;
