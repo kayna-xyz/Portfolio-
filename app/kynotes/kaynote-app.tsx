@@ -798,18 +798,23 @@ const EXPERIENCE: XpRow[] = [
     },
   },
   {
+    id: "design-at-columbia",
+    logo: "/kaynote/logos/design-at-columbia.png",
+    name: "Design at Columbia",
+    role: "Board",
+    when: "2026 – present",
+    detail: "Columbia's student design club",
+  },
+  {
     id: "design-engineer",
     logo: "/kaynote/logos/design-engineer.webp",
     name: "Design Engineer",
-    when: "2025 – present",
+    when: "2026 – present",
     detail: "Intelligent interfaces for early-stage startups",
     card: {
       sub: "Independent design engineering",
       desc: "Building intelligent interfaces for early-stage startups, from first prototype to shipped product.",
-      facts: [
-        ["clients", "OpusClip, Design at Columbia, etc."],
-        ["since", "May 2025"],
-      ],
+      facts: [["clients", "OpusClip, Design at Columbia, etc."]],
     },
   },
   {
@@ -828,25 +833,6 @@ const EXPERIENCE: XpRow[] = [
         ["valuation", "$2B"],
       ],
     },
-  },
-]
-
-const LEADERSHIP: XpRow[] = [
-  {
-    id: "design-at-columbia",
-    logo: "#cfe3e5",
-    name: "Design at Columbia",
-    role: "Board",
-    when: "2026 – present",
-    detail: "Columbia's student design club",
-  },
-  {
-    id: "adventurex",
-    logo: "#e4ded7",
-    name: "AdventureX",
-    role: "Organizer",
-    when: "2024 – present",
-    detail: "China's largest hackathon",
   },
 ]
 
@@ -996,7 +982,7 @@ const ALL_SECTIONS: Section[] = [
         snippet: "A generalist designer",
         date: "September 2, 2026 at 10:08 AM",
         searchText:
-          "about me kayna huang generalist design engineer product designer cognitive science AI ML machine learning barnard columbia EEG encoding models visual cognition lab frontier technology consumer products intelligent machines human-centered design experience columbia undergraduate researcher visual cognition lab eeg decoding models michelle greene design at columbia board design club design engineer freelance startups clients opusclip heygen product design intern ai avatar products mobile leadership adventurex hackathon organizer education political science economics united world college uwc high school art facial aesthetics fashion poker zhejiang new york startups entrepreneur reach me email kh3443 on X",
+          "about me kayna huang generalist design engineer product designer cognitive science AI ML machine learning barnard columbia EEG encoding models visual cognition lab frontier technology consumer products intelligent machines human-centered design experience columbia undergraduate researcher visual cognition lab eeg decoding models michelle greene design at columbia board design club design engineer freelance startups clients opusclip heygen product design intern ai avatar products mobile education political science economics united world college uwc high school art facial aesthetics fashion poker zhejiang new york startups entrepreneur reach me email kh3443 on X",
         body: (
           <>
             <IntroWithAvatar>
@@ -1017,8 +1003,6 @@ const ALL_SECTIONS: Section[] = [
             </IntroWithAvatar>
             <p className="kn-subhead">Experience</p>
             <ExperienceRows rows={EXPERIENCE} />
-            <p className="kn-subhead">Leadership</p>
-            <ExperienceRows rows={LEADERSHIP} />
             <p className="kn-subhead">Education</p>
             <ExperienceRows rows={EDUCATION} />
             <p className="kn-subhead">Off hours</p>
