@@ -862,7 +862,7 @@ const EDUCATION: XpRow[] = [
     logo: "/kaynote/logos/uwc.png",
     name: "United World College",
     when: "",
-    detail: "High school",
+    detail: "High school, IB Diploma",
   },
 ]
 
@@ -982,7 +982,7 @@ const ALL_SECTIONS: Section[] = [
         snippet: "A generalist designer",
         date: "September 2, 2026 at 10:08 AM",
         searchText:
-          "about me kayna huang generalist design engineer product designer cognitive science AI ML machine learning barnard columbia EEG encoding models visual cognition lab frontier technology consumer products intelligent machines human-centered design experience columbia undergraduate researcher visual cognition lab eeg decoding models michelle greene design at columbia board design club design engineer freelance startups clients opusclip heygen product design intern ai avatar products mobile education political science economics united world college uwc high school art facial aesthetics fashion poker zhejiang new york startups entrepreneur reach me email kh3443 on X",
+          "about me kayna huang generalist design engineer product designer cognitive science AI ML machine learning barnard columbia EEG encoding models visual cognition lab frontier technology consumer products intelligent machines human-centered design experience columbia undergraduate researcher visual cognition lab eeg decoding models michelle greene design at columbia board design club design engineer freelance startups clients opusclip heygen product design intern ai avatar products mobile education political science economics united world college uwc high school ib diploma art facial aesthetics fashion poker zhejiang new york startups entrepreneur reach me email kh3443 on X",
         body: (
           <>
             <IntroWithAvatar>
