@@ -16,7 +16,7 @@ type Restaurant = {
   address: string
   lat: number
   lng: number
-  group: string
+  group: string // cuisine tag, kept on the data but no longer used to section the list
   kind: string
   desc: string
   price?: string
@@ -33,6 +33,8 @@ const HOME = { lat: 40.761653, lng: -73.980489 }
 // Names, coordinates, categories, prices, ratings, and weekly hours come from
 // Kayna's "nyc food" Google Maps list + each place's Google Maps record
 // (snapshot: July 2026 — hours may drift). Descriptions are editorial.
+// Oct 2026 additions (no cid yet) link out via a Google Maps search instead;
+// their photos: [] until Kayna drops <slug>-1..n.webp into /public/kaynote/food/.
 const RESTAURANTS: Restaurant[] = [
   { name: "Genki Omakase", slug: "genki-omakase", photos: [[640, 480], [360, 480], [640, 480]], address: "552 LaGuardia Pl", lat: 40.729163, lng: -73.99829, group: "japanese", kind: "sushi", desc: "neighborhood omakase counter on LaGuardia Pl, some of the best-value sushi downtown.", price: "$100+", rating: "4.8", hours: [["Monday", "12–3 PM, 5–11 PM"], ["Tuesday", "12–3 PM, 5–11 PM"], ["Wednesday", "12–3 PM, 5–11 PM"], ["Thursday", "12–3 PM, 5–11 PM"], ["Friday", "12–3 PM, 5–11 PM"], ["Saturday", "12–3 PM, 5–11 PM"], ["Sunday", "12–3 PM, 5–11 PM"]], cid: "13666852317520710636" },
   { name: "Tsukimi", slug: "tsukimi", photos: [[602, 480], [640, 480], [360, 480]], address: "228 E 10th St", lat: 40.729091, lng: -73.985436, group: "japanese", kind: "japanese", desc: "seasonal kaiseki-style tasting menus in the East Village.", price: "$100+", rating: "4.6", hours: [["Monday", "Closed"], ["Tuesday", "Closed"], ["Wednesday", "5–8:30 PM"], ["Thursday", "5–8:30 PM"], ["Friday", "5–8:30 PM"], ["Saturday", "5–8 PM"], ["Sunday", "5–8 PM"]], cid: "16383114659820241904" },
@@ -59,7 +61,7 @@ const RESTAURANTS: Restaurant[] = [
   { name: "Anto Korean Steak House", slug: "anto", photos: [[640, 480], [640, 426], [640, 480]], address: "37 W 32nd St", lat: 40.7481097, lng: -73.9872039, group: "korean", kind: "korean", desc: "Korean fine-dining steakhouse.", price: "$100+", rating: "4.2", closed: true, cid: "883224496520455166" },
   { name: "Oiji Mi", slug: "oiji-mi", photos: [[640, 438], [360, 480], [360, 480]], address: "17 W 19th St", lat: 40.739663, lng: -73.992474, group: "korean", kind: "korean", desc: "Michelin-starred modern Korean in Flatiron.", price: "$100+", rating: "4.6", hours: [["Monday", "5–10 PM"], ["Tuesday", "5–10 PM"], ["Wednesday", "5–10 PM"], ["Thursday", "5–10 PM"], ["Friday", "5–10 PM"], ["Saturday", "5–10 PM"], ["Sunday", "5–10 PM"]], cid: "6673956965559402765" },
   { name: "Murray's Cheese", slug: "murrays-cheese", photos: [[640, 424], [640, 480], [360, 480]], address: "254 Bleecker St", lat: 40.730977, lng: -74.003071, group: "everything else", kind: "cheese shop", desc: "Bleecker St cheese institution since 1940, the melts are lunch.", rating: "4.6", hours: [["Monday", "9 AM–8 PM"], ["Tuesday", "9 AM–8 PM"], ["Wednesday", "9 AM–8 PM"], ["Thursday", "9 AM–8 PM"], ["Friday", "9 AM–8 PM"], ["Saturday", "9 AM–8 PM"], ["Sunday", "9 AM–8 PM"]], cid: "16516863484208182237" },
-  { name: "A Pasta Bar", slug: "a-pasta-bar", photos: [[640, 426], [360, 480], [640, 360]], address: "330 W Broadway", lat: 40.722373, lng: -74.003991, group: "everything else", kind: "italian", desc: "counter-side fresh pasta tasting in SoHo.", price: "$50–100", rating: "4.4", hours: [["Monday", "5–11 PM"], ["Tuesday", "5–11 PM"], ["Wednesday", "5–11 PM"], ["Thursday", "12–11 PM"], ["Friday", "12–11:30 PM"], ["Saturday", "12–11:30 PM"], ["Sunday", "12–11 PM"]], cid: "2296321089685406682" },
+  { name: "A Pasta Bar", slug: "a-pasta-bar", photos: [[640, 426], [360, 480], [640, 360]], address: "330 W Broadway", lat: 40.722373, lng: -74.003991, group: "italian", kind: "italian", desc: "counter-side fresh pasta tasting in SoHo.", price: "$50–100", rating: "4.4", hours: [["Monday", "5–11 PM"], ["Tuesday", "5–11 PM"], ["Wednesday", "5–11 PM"], ["Thursday", "12–11 PM"], ["Friday", "12–11:30 PM"], ["Saturday", "12–11:30 PM"], ["Sunday", "12–11 PM"]], cid: "2296321089685406682" },
   { name: "SEA by Jungsik", slug: "sea-by-jungsik", photos: [[640, 426], [524, 480], [320, 480]], address: "151 W 30th St", lat: 40.748435, lng: -73.991776, group: "everything else", kind: "seafood", desc: "seafood tasting from the Jungsik team.", price: "$100+", rating: "4.3", closed: true, cid: "16483700828865346750" },
   { name: "Le Jardin Bistro", slug: "le-jardin-bistro", photos: [[640, 480], [517, 480], [360, 480]], address: "95 Delancey St", lat: 40.718628, lng: -73.989231, group: "everything else", kind: "french", desc: "French bistro on Delancey St with a proper garden room.", price: "$50–100", rating: "4.7", hours: [["Monday", "Closed"], ["Tuesday", "Closed"], ["Wednesday", "5–11 PM"], ["Thursday", "5–11 PM"], ["Friday", "5–11 PM"], ["Saturday", "11 AM–3 PM, 5–11 PM"], ["Sunday", "11 AM–3 PM, 5–11 PM"]], cid: "16794796001842017844" },
   { name: "Zou Zou's", slug: "zou-zous", photos: [[362, 480], [640, 480], [360, 480]], address: "385 9th Ave", lat: 40.752905, lng: -73.998536, group: "everything else", kind: "mediterranean", desc: "eastern-Mediterranean spreads and manoushe near Hudson Yards.", price: "$100+", rating: "4.4", hours: [["Monday", "11:30 AM–3 PM, 5–10 PM"], ["Tuesday", "11:30 AM–3 PM, 5–11 PM"], ["Wednesday", "11:30 AM–3 PM, 5–11 PM"], ["Thursday", "11:30 AM–3 PM, 5–11 PM"], ["Friday", "11:30 AM–3 PM, 5–11 PM"], ["Saturday", "11 AM–3 PM, 5–11 PM"], ["Sunday", "11 AM–3 PM, 5–10 PM"]], cid: "15379348448960698669" },
@@ -70,12 +72,25 @@ const RESTAURANTS: Restaurant[] = [
   { name: "Antoya Korean BBQ", slug: "antoya", photos: [[640, 427], [360, 480], [360, 480]], address: "37 W 32nd St", lat: 40.7481097, lng: -73.9872039, group: "korean", kind: "korean bbq", desc: "charcoal Korean BBQ in the heart of K-town.", rating: "4.4", hours: [["Monday", "11 AM–11 PM"], ["Tuesday", "11 AM–11 PM"], ["Wednesday", "11 AM–11 PM"], ["Thursday", "11 AM–11 PM"], ["Friday", "11 AM–1 AM"], ["Saturday", "11 AM–1 AM"], ["Sunday", "11 AM–11 PM"]], cid: "9631307537278659460" },
   { name: "Moono", slug: "moono", photos: [[640, 426], [379, 480], [360, 480]], address: "29 E 32nd St", lat: 40.7464411, lng: -73.9833073, group: "korean", kind: "korean", desc: "modern Korean tasting room on E 32nd St.", price: "$50–100", rating: "4.4", fav: true, hours: [["Monday", "5–10:30 PM"], ["Tuesday", "5–10:30 PM"], ["Wednesday", "5–10:30 PM"], ["Thursday", "5–10:30 PM"], ["Friday", "5–10:30 PM"], ["Saturday", "12–2:30 PM, 5–10:30 PM"], ["Sunday", "12–2:30 PM, 5–10:30 PM"]], cid: "121591186117386335" },
   { name: "53", slug: "53", photos: [[640, 427], [360, 480], [360, 480]], address: "53 W 53rd St", lat: 40.7617694, lng: -73.9780863, group: "everything else", kind: "asian", desc: "modern Asian fine dining in the MoMA tower.", price: "$100+", rating: "4.3", fav: true, hours: [["Monday", "11:45 AM–2:30 PM, 5–10 PM"], ["Tuesday", "11:45 AM–2:30 PM, 5–10 PM"], ["Wednesday", "11:45 AM–2:30 PM, 5–10 PM"], ["Thursday", "11:45 AM–2:30 PM, 5–10 PM"], ["Friday", "11:45 AM–2:30 PM, 5–10 PM"], ["Saturday", "5–10 PM"], ["Sunday", "12–3 PM, 5–10 PM"]], cid: "16242187502021557545" },
-  { name: "Yong Chuan", slug: "yong-chuan", photos: [[640, 457], [308, 480], [320, 480]], address: "90 Clinton St", lat: 40.7182555, lng: -73.9852297, group: "everything else", kind: "chinese", desc: "Chinese spot on Clinton St, Lower East Side.", price: "$40–90", rating: "4.6", fav: true, hours: [["Monday", "5–11 PM"], ["Tuesday", "5–11 PM"], ["Wednesday", "5–11 PM"], ["Thursday", "5–11 PM"], ["Friday", "5 PM–12 AM"], ["Saturday", "11 AM–3 PM, 5 PM–12 AM"], ["Sunday", "11 AM–3 PM, 5–11 PM"]], cid: "15422291113039188773" },
+  { name: "Yong Chuan", slug: "yong-chuan", photos: [[640, 457], [308, 480], [320, 480]], address: "90 Clinton St", lat: 40.7182555, lng: -73.9852297, group: "everything else", kind: "chinese", desc: "Chinese spot on Clinton St, Lower East Side.", price: "$40–90", rating: "4.6", hours: [["Monday", "5–11 PM"], ["Tuesday", "5–11 PM"], ["Wednesday", "5–11 PM"], ["Thursday", "5–11 PM"], ["Friday", "5 PM–12 AM"], ["Saturday", "11 AM–3 PM, 5 PM–12 AM"], ["Sunday", "11 AM–3 PM, 5–11 PM"]], cid: "15422291113039188773" },
   { name: "Milano Market", slug: "milano-market", photos: [], address: "2892 Broadway", lat: 40.80590, lng: -73.96626, group: "everything else", kind: "deli", desc: "Italian market and deli by Columbia, the sandwich counter carried many late study nights.", price: "$10–20", rating: "4.4", hours: [["Monday", "6 AM–11 PM"], ["Tuesday", "6 AM–11 PM"], ["Wednesday", "6 AM–11 PM"], ["Thursday", "6 AM–11 PM"], ["Friday", "6 AM–11 PM"], ["Saturday", "6 AM–11 PM"], ["Sunday", "6 AM–11 PM"]], cid: "" },
   { name: "Happy Hot Hunan", slug: "happy-hot-hunan", photos: [[360, 480], [640, 438], [360, 480]], address: "969 Amsterdam Ave", lat: 40.8013559, lng: -73.9647057, group: "everything else", kind: "hunan", desc: "my Columbia dining hall, Hunan classics on Amsterdam Ave.", price: "$20–30", rating: "4.0", hours: [["Monday", "11 AM–10 PM"], ["Tuesday", "11 AM–10 PM"], ["Wednesday", "11 AM–10 PM"], ["Thursday", "11 AM–10 PM"], ["Friday", "11 AM–10 PM"], ["Saturday", "11 AM–10 PM"], ["Sunday", "11 AM–10 PM"]], cid: "15690843892670988939" },
+  { name: "Osteria La Baia", slug: "osteria-la-baia", photos: [], address: "129 W 52nd St", lat: 40.7615871, lng: -73.9803324, group: "italian", kind: "italian", desc: "coastal Italian a block from home, the octopus and burrata are the move.", price: "$50–100", hours: [["Monday", "11:30 AM–2:30 PM, 5–10 PM"], ["Tuesday", "11:30 AM–2:30 PM, 5–10 PM"], ["Wednesday", "11:30 AM–2:30 PM, 5–10 PM"], ["Thursday", "11:30 AM–2:30 PM, 5–10 PM"], ["Friday", "11:30 AM–2:30 PM, 5–10 PM"], ["Saturday", "4–10 PM"], ["Sunday", "4–9 PM"]], cid: "" },
+  { name: "Felice 56", slug: "felice-56", photos: [], address: "15 W 56th St", lat: 40.7629314, lng: -73.9753351, group: "italian", kind: "italian", desc: "Tuscan trattoria inside the Chambers Hotel, the easiest good dinner near home.", price: "$30–50", fav: true, hours: [["Monday", "12–9 PM"], ["Tuesday", "12–9 PM"], ["Wednesday", "12–9 PM"], ["Thursday", "12–9 PM"], ["Friday", "12–9 PM"], ["Saturday", "5–9 PM"], ["Sunday", "12–9 PM"]], cid: "" },
+  { name: "Casa Lever", slug: "casa-lever", photos: [], address: "390 Park Ave", lat: 40.7595773, lng: -73.972688, group: "italian", kind: "italian", desc: "Milanese dining room inside Lever House, Warhols on the walls.", price: "$100+", hours: [["Monday", "7 AM–10 PM"], ["Tuesday", "7 AM–10 PM"], ["Wednesday", "7 AM–10 PM"], ["Thursday", "7 AM–10 PM"], ["Friday", "7 AM–10 PM"], ["Saturday", "Closed"], ["Sunday", "Closed"]], cid: "" },
+  { name: "Nerai", slug: "nerai", photos: [], address: "55 E 54th St", lat: 40.7602502, lng: -73.9730407, group: "everything else", kind: "greek", desc: "upscale Greek on E 54th St, whole grilled fish in a bright white room.", price: "$50–100", hours: [["Monday", "11:45 AM–2 PM, 5–10 PM"], ["Tuesday", "11:45 AM–2 PM, 5–10 PM"], ["Wednesday", "11:45 AM–2 PM, 5–10 PM"], ["Thursday", "11:45 AM–2 PM, 5–10 PM"], ["Friday", "11:45 AM–2 PM, 5–10:30 PM"], ["Saturday", "5–10:30 PM"], ["Sunday", "Closed"]], cid: "" },
+  { name: "The Bar at Baccarat Hotel", slug: "baccarat-bar", photos: [], address: "28 W 53rd St", lat: 40.7608074, lng: -73.9773639, group: "everything else", kind: "bar", desc: "crystal-chandeliered hotel bar two blocks from home, no reservations, first come first served.", price: "$50–100", hours: [["Monday", "4 PM–12 AM"], ["Tuesday", "4 PM–12 AM"], ["Wednesday", "4 PM–12 AM"], ["Thursday", "4 PM–12 AM"], ["Friday", "4 PM–12 AM"], ["Saturday", "4 PM–12 AM"], ["Sunday", "4–11 PM"]], cid: "" },
+  { name: "HED NYC", slug: "hed-nyc", photos: [], address: "461 W 23rd St", lat: 40.747284, lng: -74.0029815, group: "thai", kind: "thai", desc: "Thai tasting menu in Chelsea from the Hed Verythai team, the best Thai I've had in the city.", price: "$100+", cid: "" },
+  { name: "Dagg Thai", slug: "dagg-thai", photos: [], address: "10 E 39th St", lat: 40.7511092, lng: -73.9815702, group: "thai", kind: "thai", desc: "Thai bistro between 5th and Madison, happy hour from 4:30.", price: "$30–50", fav: true, hours: [["Monday", "11:30 AM–3:30 PM, 4:30–10:30 PM"], ["Tuesday", "11:30 AM–3:30 PM, 4:30–10:30 PM"], ["Wednesday", "11:30 AM–3:30 PM, 4:30–10:30 PM"], ["Thursday", "11:30 AM–3:30 PM, 4:30–10:30 PM"], ["Friday", "4:30–11 PM"], ["Saturday", "4:30–11 PM"], ["Sunday", "4:30–10:30 PM"]], cid: "" },
+  { name: "Narkara", slug: "narkara", photos: [], address: "5 E 17th St", lat: 40.7378347, lng: -73.9918011, group: "thai", kind: "thai", desc: "northern Thai off Union Square, Lanna dishes you don't see anywhere else in the city.", price: "$50–100", hours: [["Monday", "Closed"], ["Tuesday", "5–9 PM"], ["Wednesday", "5–9 PM"], ["Thursday", "5–9 PM"], ["Friday", "5–10 PM"], ["Saturday", "12–2:30 PM, 5–10 PM"], ["Sunday", "12–2:30 PM, 5–9 PM"]], cid: "" },
+  { name: "CHOJI", slug: "choji", photos: [], address: "46 E 8th St", lat: 40.7311009, lng: -73.9939204, group: "everything else", kind: "matcha & boba", desc: "matcha, coffee, and boba by Washington Square, the Thai milk tea is the order.", price: "$10–20", fav: true, hours: [["Monday", "11 AM–9 PM"], ["Tuesday", "11 AM–9 PM"], ["Wednesday", "11 AM–9 PM"], ["Thursday", "11 AM–9 PM"], ["Friday", "11 AM–9 PM"], ["Saturday", "11 AM–9 PM"], ["Sunday", "11 AM–9 PM"]], cid: "" },
+  { name: "Mido Omakase", slug: "mido-omakase", photos: [], address: "88 W 3rd St", lat: 40.7297663, lng: -73.9992377, group: "japanese", kind: "sushi", desc: "value omakase on W 3rd St by Washington Square.", price: "$100+", hours: [["Monday", "5–10 PM"], ["Tuesday", "5–10 PM"], ["Wednesday", "5–10 PM"], ["Thursday", "5–10 PM"], ["Friday", "5–10 PM"], ["Saturday", "5–10 PM"], ["Sunday", "5–10 PM"]], cid: "" },
+  { name: "Sapps", slug: "sapps", photos: [], address: "2888 Broadway", lat: 40.8055983, lng: -73.9653069, group: "japanese", kind: "japanese", desc: "casual Japanese by Columbia, the lunch specials carried a lot of weekdays.", price: "$20–40", hours: [["Monday", "11:30 AM–10 PM"], ["Tuesday", "11:30 AM–10 PM"], ["Wednesday", "11:30 AM–10 PM"], ["Thursday", "11:30 AM–10 PM"], ["Friday", "11:30 AM–11 PM"], ["Saturday", "11:30 AM–10 PM"], ["Sunday", "11:30 AM–10 PM"]], cid: "" },
+  { name: "Tartina", slug: "tartina", photos: [], address: "1034 Amsterdam Ave", lat: 40.8036171, lng: -73.9636412, group: "italian", kind: "italian", desc: "Italian on the corner of 111th and Amsterdam, spaghetti alla Nerano and weekend brunch.", price: "$30–60", hours: [["Monday", "12–10:30 PM"], ["Tuesday", "12–10:30 PM"], ["Wednesday", "12–10:30 PM"], ["Thursday", "12–11 PM"], ["Friday", "12–11 PM"], ["Saturday", "11 AM–11 PM"], ["Sunday", "11 AM–10:30 PM"]], cid: "" },
+  { name: "Osteria 106", slug: "osteria-106", photos: [], address: "53 W 106th St", lat: 40.7990589, lng: -73.9616388, group: "italian", kind: "italian", desc: "neighborhood Italian on W 106th St, a short walk down from campus.", price: "$30–60", hours: [["Monday", "4–10 PM"], ["Tuesday", "4–10 PM"], ["Wednesday", "4–10 PM"], ["Thursday", "4–10 PM"], ["Friday", "4–10 PM"], ["Saturday", "4–10 PM"], ["Sunday", "4–10 PM"]], cid: "" },
+  { name: "Pisticci", slug: "pisticci", photos: [], address: "125 La Salle St", lat: 40.8141743, lng: -73.9603481, group: "italian", kind: "italian", desc: "Morningside Heights Italian institution, live jazz in the cellar on Mondays.", price: "$30–60", hours: [["Monday", "11 AM–11 PM"], ["Tuesday", "11 AM–11 PM"], ["Wednesday", "11 AM–11 PM"], ["Thursday", "11 AM–11 PM"], ["Friday", "11 AM–11 PM"], ["Saturday", "11 AM–11 PM"], ["Sunday", "11 AM–11 PM"]], cid: "" },
+  { name: "Le Monde", slug: "le-monde", photos: [], address: "2885 Broadway", lat: 40.8057782, lng: -73.9658657, group: "everything else", kind: "french", desc: "French bistro across from Columbia, croque monsieur and steak frites.", price: "$30–60", hours: [["Monday", "9 AM–9:30 PM"], ["Tuesday", "9 AM–9:30 PM"], ["Wednesday", "9 AM–9:30 PM"], ["Thursday", "9 AM–9:30 PM"], ["Friday", "9 AM–10 PM"], ["Saturday", "9 AM–3:30 PM, 4–10 PM"], ["Sunday", "9 AM–3:30 PM, 4–9 PM"]], cid: "" },
 ]
-
-const GROUPS = ["japanese", "korean", "everything else"]
 
 // Home gets a card too — rendered through the same modal as the restaurants.
 const HOME_CARD: Restaurant = {
@@ -237,24 +252,22 @@ export default function RestaurantMap() {
             </button>
           ))}
         </div>
-        {GROUPS.map((group) => (
-          <div key={group}>
-            <p className="kn-food-group">{group}</p>
-            {RESTAURANTS.filter((r) => r.group === group).map((r) => (
-              <button
-                key={r.name}
-                ref={(el) => {
-                  rowRefs.current[r.name] = el
-                }}
-                className={`kn-food-row${active === r.name ? " is-active" : ""}${r.closed ? " is-closed" : ""}`}
-                onClick={() => selectRestaurant(r)}
-              >
-                <span className="kn-food-name">{r.name}</span>
-                <span className="kn-food-addr">{r.address}</span>
-              </button>
-            ))}
-          </div>
-        ))}
+        <div>
+          <p className="kn-food-group">All</p>
+          {RESTAURANTS.map((r) => (
+            <button
+              key={r.name}
+              ref={(el) => {
+                rowRefs.current[r.name] = el
+              }}
+              className={`kn-food-row${active === r.name ? " is-active" : ""}${r.closed ? " is-closed" : ""}`}
+              onClick={() => selectRestaurant(r)}
+            >
+              <span className="kn-food-name">{r.name}</span>
+              <span className="kn-food-addr">{r.address}</span>
+            </button>
+          ))}
+        </div>
       </div>
       <div className="kn-food-map" ref={mapEl} aria-label="Map of restaurants in New York" />
 
@@ -348,11 +361,15 @@ export default function RestaurantMap() {
             )}
             <p className="kn-food-modal-addr">
               {openR.address}
-              {openR.cid ? (
+              {openR.cid || openR.kind ? (
                 <>
                   {" · "}
                   <a
-                    href={`https://maps.google.com/?cid=${openR.cid}`}
+                    href={
+                      openR.cid
+                        ? `https://maps.google.com/?cid=${openR.cid}`
+                        : `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${openR.name} ${openR.address} New York`)}`
+                    }
                     target="_blank"
                     rel="noopener noreferrer"
                   >

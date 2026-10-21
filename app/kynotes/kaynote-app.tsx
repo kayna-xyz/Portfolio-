@@ -1372,7 +1372,7 @@ const ALL_SECTIONS: Section[] = [
         date: "July 11, 2026 at 1:12 PM",
         wide: true,
         searchText:
-          "restaurants in NYC new york food eat kayna's special collection restaurant list map japanese omakase sushi korean kotobuki kimura yakitori taisho davelle genki tsukimi sushi ikumi mori noda unique omakase ume odo ito nakaji tsubame class on 38th senya sushi noz bar masa hirohisa tosokchon samwoojung antoya moono anto korean steak house oiji mi 53 yong chuan yongchuan happy hot hunan columbia murray's cheese a pasta bar sea le jardin bistro zou zou's ping's dudleys our new york vodka le café louis vuitton",
+          "restaurants in NYC new york food eat kayna's special collection restaurant list map japanese omakase sushi korean kotobuki kimura yakitori taisho davelle genki tsukimi sushi ikumi mori noda unique omakase ume odo ito nakaji tsubame class on 38th senya sushi noz bar masa hirohisa tosokchon samwoojung antoya moono anto korean steak house oiji mi 53 yong chuan yongchuan happy hot hunan columbia murray's cheese a pasta bar sea le jardin bistro zou zou's ping's dudleys our new york vodka le café louis vuitton osteria la baia felice 56 casa lever nerai baccarat bar hed nyc dagg thai narkara choji thai mido omakase sapps tartina osteria 106 pisticci le monde italian greek french",
         body: (
           <>
             <p>Kayna&apos;s special collection of foods in New York City.</p>
@@ -1702,6 +1702,17 @@ export default function KaynoteApp() {
     setSelectedId(note.id)
     setNoteOpen(true)
   }
+
+  // Deep link: /about?note=<id> opens that note on load (used by the portfolio-review deck).
+  useEffect(() => {
+    const id = new URLSearchParams(window.location.search).get("note")
+    if (!id) return
+    const note = SECTIONS.flatMap((s) => s.notes).find((n) => n.id === id)
+    if (note && !note.building) {
+      setSelectedId(id)
+      setNoteOpen(true)
+    }
+  }, [])
 
   // NoteJump links inside note bodies dispatch this event to switch notes
   useEffect(() => {
