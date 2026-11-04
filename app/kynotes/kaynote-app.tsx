@@ -1395,6 +1395,478 @@ const ALL_SECTIONS: Section[] = [
           </>
         ),
       },
+      {
+        id: "designer-founder-library",
+        title: "Designer Founder Library",
+        snippet: "Founders with a design or HCI background",
+        date: "November 1, 2026 at 2:13 PM",
+        searchText:
+          "designer founder library design background hci human computer interaction founders 设计背景创始人 设计师创业 人机交互 airbnb chesky gebbia risd snapchat evan spiegel stanford product design instagram mike krieger pinterest evan sharp youtube chad hurley twitter biz stone foursquare dennis crowley nyu itp mailchimp ben chestnut notion ivan zhao etsy rob kalin kickstarter charles adler tinder bumble chris gulczynski garry tan posterous gumroad sahil lavingia vine dom hofmann vimeo zach klein musical.ly alex zhu 朱骏 scale ai lucy guo canva melanie perkins cameron adams figma dylan field linear karri saarinen framer koen bok jorn van dijk webflow magdalin invision clark valberg dribbble dan cederholm abstract josh brewer zeplin pelin kenez rive guido rosso spline alejandro leon typekit jeffrey veen 37signals basecamp jason fried semplice mymind tobias van schneider vsco greg lutze halide sebastiaan de with mobbin mailbox gentry underwood pulse akshay kothari replit haya odeh typeform david okuniev craft balint orosz cron raphael schaad runway cristobal valenzuela tome henri liriani sundial julie zhuo jony ive io lovefrom evans hankey tang tan humane imran chaudhri bethany bongiorno light phone joe hollier google 30 weeks duolingo luis von ahn cmu trifacta jeff heer observable mike bostock d3 spotfire recorded future christopher ahlberg nielsen norman group don norman jakob nielsen ideo david kelley bill moggridge d.school pebble eric migicovsky waterloo firefly pattie maes mit media lab dyson james dyson rca yves behar fuseproject august fisker henrik fisker art center teenage engineering jesper kouthoofd frog hartmut esslinger xiaomi 小米 刘德 张楠 kelly zhang 图吧 douyin 抖音 tiktok bytedance 字节跳动 heygen wayne liang cmu carnegie mellon benji taylor family ethereum wallet twitter head of design steve jobs jack dorsey kevin systrom alexis ohanian tony fadell nest 张小龙 foxmail wechat",
+        body: (
+          <>
+            <p style={{ marginTop: 0 }}>
+              A running list of founders who came from design or HCI before they came to
+              building companies. I keep it because the list is longer than people assume, and
+              because I want to know what the background actually does for them.
+            </p>
+            <p>
+              Two ways in: trained (design school, architecture, or an HCI program) or practiced
+              (worked as a designer before founding). The last group is the disputed one, people
+              with no design training who are still called designers, kept here on purpose so the
+              rest of the list stays honest.
+            </p>
+
+            <p className="kn-subhead">Consumer internet</p>
+            <div className="kn-table-wrap">
+              <table className="kn-table kn-table--wide">
+                <thead>
+                  <tr>
+                    <th>Who</th>
+                    <th>Built</th>
+                    <th>Design background</th>
+                    <th>By the numbers</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <th>Brian Chesky<br />Joe Gebbia</th>
+                    <td>Airbnb</td>
+                    <td>Both studied industrial design at RISD. The first Airbnb was an air mattress and a website they designed themselves in 2007.</td>
+                    <td>Public since 2020; $11.1B revenue in 2024</td>
+                  </tr>
+                  <tr>
+                    <th>Evan Spiegel</th>
+                    <td>Snapchat</td>
+                    <td>Product design major at Stanford. Snapchat started as a class project in 2011.</td>
+                    <td>Public since 2017; $5.4B revenue in 2024</td>
+                  </tr>
+                  <tr>
+                    <th>Mike Krieger</th>
+                    <td>Instagram</td>
+                    <td>Stanford Symbolic Systems, master&apos;s work in human-computer interaction. The HCI half of the Instagram pair.</td>
+                    <td>Sold to Facebook for $1B in 2012</td>
+                  </tr>
+                  <tr>
+                    <th>Evan Sharp</th>
+                    <td>Pinterest</td>
+                    <td>Architecture at Columbia GSAPP, then a designer at Facebook. Designed the grid before he was a co-founder.</td>
+                    <td>Public since 2019; $3.6B revenue in 2024</td>
+                  </tr>
+                  <tr>
+                    <th>Chad Hurley</th>
+                    <td>YouTube</td>
+                    <td>Graphic design degree. PayPal&apos;s first designer, drew its logo, then co-founded YouTube in 2005.</td>
+                    <td>Sold to Google for $1.65B in 2006</td>
+                  </tr>
+                  <tr>
+                    <th>Biz Stone</th>
+                    <td>Twitter</td>
+                    <td>Book cover designer at Little, Brown before Blogger and Twitter.</td>
+                    <td>Taken private for $44B in 2022</td>
+                  </tr>
+                  <tr>
+                    <th>Dennis Crowley</th>
+                    <td>Foursquare</td>
+                    <td>NYU ITP. Dodgeball, the Foursquare prototype, was his thesis project.</td>
+                    <td>Raised over $350M; merged with Factual in 2020</td>
+                  </tr>
+                  <tr>
+                    <th>Ben Chestnut</th>
+                    <td>Mailchimp</td>
+                    <td>Industrial design at Georgia Tech. Mailchimp began as a side project of his web design shop.</td>
+                    <td>Sold to Intuit for $12B in 2021, bootstrapped</td>
+                  </tr>
+                  <tr>
+                    <th>Ivan Zhao</th>
+                    <td>Notion</td>
+                    <td>Cognitive science at UBC, then a designer at Inkling. Notion&apos;s first years were mostly him drawing the tool.</td>
+                    <td>$10B valuation, 2021</td>
+                  </tr>
+                  <tr>
+                    <th>Rob Kalin</th>
+                    <td>Etsy</td>
+                    <td>Painter and furniture maker who built the first Etsy site for people like him.</td>
+                    <td>Public since 2015; $2.8B revenue in 2024</td>
+                  </tr>
+                  <tr>
+                    <th>Charles Adler</th>
+                    <td>Kickstarter</td>
+                    <td>The designer of the founding trio, responsible for the product and its look.</td>
+                    <td>Over $8B pledged by backers since 2009</td>
+                  </tr>
+                  <tr>
+                    <th>Chris Gulczynski</th>
+                    <td>Tinder, Bumble</td>
+                    <td>Co-founder and designer at both. The swipe is his.</td>
+                    <td>Tinder about $2B revenue in 2024; Bumble public since 2021</td>
+                  </tr>
+                  <tr>
+                    <th>Garry Tan</th>
+                    <td>Posterous, Initialized</td>
+                    <td>Palantir&apos;s first designer, now president of Y Combinator.</td>
+                    <td>Posterous sold to Twitter in 2012; Initialized manages over $3B</td>
+                  </tr>
+                  <tr>
+                    <th>Alex Zhu 朱骏</th>
+                    <td>musical.ly/TikTok</td>
+                    <td>Civil engineering at Zhejiang University, then years as a designer and &quot;futurist&quot; at SAP. The app that became TikTok.</td>
+                    <td>Sold to ByteDance for about $1B in 2017</td>
+                  </tr>
+                  <tr>
+                    <th>张楠 Kelly Zhang</th>
+                    <td>图吧, then Douyin and TikTok</td>
+                    <td>China Academy of Art. Founded the photo community 图吧 in 2011, sold it to ByteDance in 2014, then ran Douyin and TikTok as CEO.</td>
+                    <td>ByteDance valued at over $300B, 2025</td>
+                  </tr>
+                  <tr>
+                    <th>Lucy Guo</th>
+                    <td>Scale AI, Passes</td>
+                    <td>Computer science and HCI at Carnegie Mellon, dropped out as a Thiel Fellow, product designer at Snap and Quora.</td>
+                    <td>Meta bought 49% of Scale at a $29B valuation in 2025</td>
+                  </tr>
+                  <tr>
+                    <th>Melanie Perkins<br />Cameron Adams</th>
+                    <td>Canva</td>
+                    <td>Perkins taught design software at UWA and started with a yearbook tool. Adams designed Google Wave.</td>
+                    <td>$42B valuation, 2025; over $3B annualized revenue</td>
+                  </tr>
+                  <tr>
+                    <th>Benji Taylor</th>
+                    <td>Family/Aave</td>
+                    <td>Led design at Twitter, then co-founded Family, the Ethereum wallet other designers keep citing.</td>
+                    <td>Sold to Aave Labs in 2025</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <p className="kn-subhead">Tools for designers</p>
+            <div className="kn-table-wrap">
+              <table className="kn-table kn-table--wide">
+                <thead>
+                  <tr>
+                    <th>Who</th>
+                    <th>Built</th>
+                    <th>Design background</th>
+                    <th>By the numbers</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <th>Dylan Field</th>
+                    <td>Figma</td>
+                    <td>Design intern at Flipboard, left Brown as a Thiel Fellow in 2012 to build Figma.</td>
+                    <td>Public since 2025; $749M revenue in 2024</td>
+                  </tr>
+                  <tr>
+                    <th>Karri Saarinen</th>
+                    <td>Linear</td>
+                    <td>Principal designer at Airbnb, led design at Coinbase.</td>
+                    <td>$1.25B valuation, 2025</td>
+                  </tr>
+                  <tr>
+                    <th>Koen Bok<br />Jorn van Dijk</th>
+                    <td>Framer</td>
+                    <td>Designers behind Sofa, sold to Facebook, where they designed before starting Framer.</td>
+                    <td>$2B valuation, 2025</td>
+                  </tr>
+                  <tr>
+                    <th>Sergie Magdalin<br />Vlad Magdalin</th>
+                    <td>Webflow</td>
+                    <td>Sergie a designer, Vlad a designer who learned to code. Built the tool they wanted.</td>
+                    <td>$4B valuation, 2022</td>
+                  </tr>
+                  <tr>
+                    <th>Clark Valberg</th>
+                    <td>InVision</td>
+                    <td>Ran a UX agency first; InVision came out of the handoff problem.</td>
+                    <td>$1.9B valuation in 2018; shut down in 2024</td>
+                  </tr>
+                  <tr>
+                    <th>Dan Cederholm</th>
+                    <td>Dribbble</td>
+                    <td>Web designer and author at SimpleBits.</td>
+                    <td>Sold to Tiny in 2017</td>
+                  </tr>
+                  <tr>
+                    <th>Josh Brewer</th>
+                    <td>Abstract</td>
+                    <td>Principal designer at Twitter.</td>
+                    <td>Raised $57M by 2018</td>
+                  </tr>
+                  <tr>
+                    <th>Greg Lutze</th>
+                    <td>VSCO</td>
+                    <td>Designer, co-founded with a photographer.</td>
+                    <td>Over 2M paying subscribers in 2019</td>
+                  </tr>
+                  <tr>
+                    <th>Jian Jie Liau</th>
+                    <td>Mobbin</td>
+                    <td>Started Mobbin as a designer&apos;s side project in Singapore.</td>
+                    <td>Bootstrapped, profitable</td>
+                  </tr>
+                  <tr>
+                    <th>Haya Odeh</th>
+                    <td>Replit</td>
+                    <td>Co-founder and head of design.</td>
+                    <td>$3B valuation, 2025; $150M ARR</td>
+                  </tr>
+                  <tr>
+                    <th>David Okuniev</th>
+                    <td>Typeform</td>
+                    <td>Designer; Typeform grew out of an agency project.</td>
+                    <td>$935M valuation, 2022</td>
+                  </tr>
+                  <tr>
+                    <th>Balint Orosz</th>
+                    <td>Craft</td>
+                    <td>Founded the design agency Distinction before Craft.</td>
+                    <td>$8M Series A, 2021</td>
+                  </tr>
+                  <tr>
+                    <th>Raphael Schaad</th>
+                    <td>Cron/Notion Calendar</td>
+                    <td>MIT Media Lab, designer and engineer at Flipboard. Cron sold to Notion in 2022.</td>
+                    <td>Sold to Notion in 2022</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <p className="kn-subhead">The AI era</p>
+            <div className="kn-table-wrap">
+              <table className="kn-table kn-table--wide">
+                <thead>
+                  <tr>
+                    <th>Who</th>
+                    <th>Built</th>
+                    <th>Design background</th>
+                    <th>By the numbers</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <th>Cristóbal Valenzuela<br />Alejandro Matamala<br />Anastasis Germanidis</th>
+                    <td>Runway</td>
+                    <td>All three from NYU ITP. Runway began as Valenzuela&apos;s thesis in 2018.</td>
+                    <td>$3B valuation, 2025</td>
+                  </tr>
+                  <tr>
+                    <th>Wayne Liang</th>
+                    <td>HeyGen</td>
+                    <td>Carnegie Mellon. Co-founder and chief product officer, has owned the product&apos;s design since day one.</td>
+                    <td>$5B valuation; over $200M ARR</td>
+                  </tr>
+                  <tr>
+                    <th>Jony Ive<br />Evans Hankey<br />Tang Tan</th>
+                    <td>io, LoveFrom</td>
+                    <td>Apple&apos;s industrial design leadership. Ive studied industrial design at Newcastle Polytechnic. OpenAI bought io in 2025.</td>
+                    <td>io sold to OpenAI for $6.5B in 2025</td>
+                  </tr>
+                  <tr>
+                    <th>Imran Chaudhri<br />Bethany Bongiorno</th>
+                    <td>Humane</td>
+                    <td>Chaudhri spent two decades designing Apple interfaces, iPhone included.</td>
+                    <td>Raised $230M; sold to HP for $116M in 2025</td>
+                  </tr>
+                  <tr>
+                    <th>Henri Liriani</th>
+                    <td>Tome</td>
+                    <td>Product designer at Facebook and Instagram.</td>
+                    <td>$300M valuation, 2023</td>
+                  </tr>
+                  <tr>
+                    <th>Julie Zhuo</th>
+                    <td>Sundial</td>
+                    <td>Stanford computer science, Facebook&apos;s VP of product design for over a decade.</td>
+                    <td>Seed funded, 2021</td>
+                  </tr>
+                  <tr>
+                    <th>Joe Hollier</th>
+                    <td>Light Phone</td>
+                    <td>Artist and designer. Met his co-founder in Google&apos;s 30 Weeks, a program for turning designers into founders.</td>
+                    <td>Light Phone II raised $3.5M on Indiegogo in 2018</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <p className="kn-subhead">Out of HCI research</p>
+            <div className="kn-table-wrap">
+              <table className="kn-table kn-table--wide">
+                <thead>
+                  <tr>
+                    <th>Who</th>
+                    <th>Built</th>
+                    <th>Design background</th>
+                    <th>By the numbers</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <th>Luis von Ahn</th>
+                    <td>Duolingo</td>
+                    <td>Carnegie Mellon professor. Human computation, CAPTCHA and reCAPTCHA, is HCI at internet scale.</td>
+                    <td>Public since 2021; $748M revenue in 2024</td>
+                  </tr>
+                  <tr>
+                    <th>Jeff Heer</th>
+                    <td>Trifacta</td>
+                    <td>University of Washington HCI professor. Co-created D3 and Vega.</td>
+                    <td>Sold to Alteryx for $400M in 2022</td>
+                  </tr>
+                  <tr>
+                    <th>Mike Bostock</th>
+                    <td>Observable</td>
+                    <td>Wrote D3 in the Stanford Vis Group during his PhD.</td>
+                    <td>Raised $46M</td>
+                  </tr>
+                  <tr>
+                    <th>Christopher Ahlberg</th>
+                    <td>Spotfire, Recorded Future</td>
+                    <td>Visualization and HCI PhD at Chalmers.</td>
+                    <td>Spotfire sold for $195M in 2007; Recorded Future to Mastercard for $2.65B in 2024</td>
+                  </tr>
+                  <tr>
+                    <th>Pattie Maes</th>
+                    <td>Firefly</td>
+                    <td>MIT Media Lab professor. Firefly shipped collaborative filtering in 1995.</td>
+                    <td>Sold to Microsoft in 1998</td>
+                  </tr>
+                  <tr>
+                    <th>Don Norman<br />Jakob Nielsen</th>
+                    <td>Nielsen Norman Group</td>
+                    <td>Cognitive scientist and usability researcher, founded the firm in 1998.</td>
+                    <td>Independent since 1998</td>
+                  </tr>
+                  <tr>
+                    <th>David Kelley<br />Bill Moggridge</th>
+                    <td>IDEO</td>
+                    <td>Kelley started the Stanford d.school. Moggridge designed the first laptop and coined &quot;interaction design&quot;.</td>
+                    <td>Majority owned by kyu since 2016</td>
+                  </tr>
+                  <tr>
+                    <th>Eric Migicovsky</th>
+                    <td>Pebble</td>
+                    <td>Systems Design Engineering at Waterloo.</td>
+                    <td>$43M across three Kickstarters; sold to Fitbit in 2016</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <p className="kn-subhead">Industrial design and hardware</p>
+            <div className="kn-table-wrap">
+              <table className="kn-table kn-table--wide">
+                <thead>
+                  <tr>
+                    <th>Who</th>
+                    <th>Built</th>
+                    <th>Design background</th>
+                    <th>By the numbers</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <th>James Dyson</th>
+                    <td>Dyson</td>
+                    <td>Royal College of Art, furniture and interior design. 5,127 prototypes before the first vacuum.</td>
+                    <td>£7.1B revenue, 2023</td>
+                  </tr>
+                  <tr>
+                    <th>Yves Béhar</th>
+                    <td>fuseproject, August</td>
+                    <td>Industrial designer, Jawbone and Herman Miller, co-founded the August smart lock.</td>
+                    <td>August sold to Assa Abloy in 2017</td>
+                  </tr>
+                  <tr>
+                    <th>Henrik Fisker</th>
+                    <td>Fisker</td>
+                    <td>Transportation design at Art Center. Designed the BMW Z8 and Aston Martin DB9 first.</td>
+                    <td>$2.9B SPAC in 2020; bankrupt in 2024</td>
+                  </tr>
+                  <tr>
+                    <th>Jesper Kouthoofd</th>
+                    <td>Teenage Engineering</td>
+                    <td>Designer and art director; the company is a design studio that ships.</td>
+                    <td>Private; OP-1 launched at $799 in 2011</td>
+                  </tr>
+                  <tr>
+                    <th>Hartmut Esslinger</th>
+                    <td>frog</td>
+                    <td>Industrial designer, shaped the Apple IIc and the Snow White design language.</td>
+                    <td>Part of Capgemini since 2021</td>
+                  </tr>
+                  <tr>
+                    <th>刘德 Liu De</th>
+                    <td>Xiaomi</td>
+                    <td>Industrial design at Art Center, founded the industrial design department at Beijing University of Science and Technology. Xiaomi co-founder.</td>
+                    <td>Public since 2018; ¥366B revenue in 2024</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <p className="kn-subhead">Disputed</p>
+            <p>
+              No design training, still called designers. I keep them separate because the word
+              gets stretched to fit anyone with taste.
+            </p>
+            <div className="kn-table-wrap">
+              <table className="kn-table kn-table--wide">
+                <thead>
+                  <tr>
+                    <th>Who</th>
+                    <th>Built</th>
+                    <th>Why they get counted</th>
+                    <th>By the numbers</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <th>Steve Jobs</th>
+                    <td>Apple</td>
+                    <td>A calligraphy class at Reed and a lifetime of saying no. Not a designer by training, the most design-led founder there is.</td>
+                    <td>$391B revenue, fiscal 2024</td>
+                  </tr>
+                  <tr>
+                    <th>Jack Dorsey</th>
+                    <td>Twitter, Square</td>
+                    <td>Took fashion design classes, calls himself a designer, never held the job.</td>
+                    <td>Block $24B revenue in 2024</td>
+                  </tr>
+                  <tr>
+                    <th>Kevin Systrom</th>
+                    <td>Instagram</td>
+                    <td>Self-taught. Designed Burbn and the first Instagram himself.</td>
+                    <td>Sold to Facebook for $1B in 2012</td>
+                  </tr>
+                  <tr>
+                    <th>Alexis Ohanian</th>
+                    <td>Reddit</td>
+                    <td>History major who drew the alien and the first site.</td>
+                    <td>Public since 2024; $1.3B revenue in 2024</td>
+                  </tr>
+                  <tr>
+                    <th>Tony Fadell</th>
+                    <td>Nest</td>
+                    <td>Computer engineering. Led the iPod and iPhone as products, not as a designer.</td>
+                    <td>Sold to Google for $3.2B in 2014</td>
+                  </tr>
+                  <tr>
+                    <th>张小龙 Allen Zhang</th>
+                    <td>Foxmail, WeChat</td>
+                    <td>Engineer. China&apos;s model product designer, founder only of Foxmail.</td>
+                    <td>Foxmail sold to Tencent in 2005; WeChat 1.4B monthly users</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+          </>
+        ),
+      },
     ],
   },
   {
@@ -1509,7 +1981,8 @@ const ALL_SECTIONS: Section[] = [
               school. Chad Hurley designed the PayPal logo before he co-founded YouTube. Ivan Zhao
               was a designer before Notion, and Karri Saarinen designed at Airbnb and Coinbase
               before Linear. In May 2025 OpenAI paid $6.5 billion for io, a hardware company that
-              was mostly Jony Ive and a point of view.
+              was mostly Jony Ive and a point of view. The full list lives in the{" "}
+              <NoteJump noteId="designer-founder-library">Designer Founder Library</NoteJump>.
             </p>
             <p>
               What I want to work out is whether the pattern is taste, or something more specific:
@@ -2786,6 +3259,10 @@ export default function KaynoteApp() {
           .kn-body :global(.kn-table tbody th) {
             white-space: normal;
             width: auto;
+          }
+          /* four-column tables (founder library): keep columns readable, scroll inside the wrap */
+          .kn-body :global(.kn-table--wide) {
+            min-width: 640px;
           }
           /* on mobile, dark mode only applies once the trading note is open —
              the list view stays light like the rest of the app */
