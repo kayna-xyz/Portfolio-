@@ -843,9 +843,9 @@ const EDUCATION: XpRow[] = [
     name: "Columbia University",
     role: "Barnard College",
     when: "",
-    detail: "Cognitive Science (AI/ML) & Political Science",
+    detail: "Cognitive Science (AI/ML)",
     card: {
-      sub: "Cognitive Science & Political Science",
+      sub: "Cognitive Science",
       desc: "Selected coursework across computer science, political science, and economics.",
       facts: [
         ["COMS W4701", "Artificial Intelligence"],
@@ -982,13 +982,13 @@ const ALL_SECTIONS: Section[] = [
         snippet: "A generalist designer",
         date: "September 2, 2026 at 10:08 AM",
         searchText:
-          "about me kayna huang generalist design engineer product designer cognitive science AI ML machine learning barnard columbia EEG encoding models visual cognition lab frontier technology consumer products intelligent machines human-centered design experience columbia undergraduate researcher visual cognition lab eeg decoding models michelle greene design at columbia board design club design engineer freelance startups clients opusclip heygen product design intern ai avatar products mobile education political science economics united world college uwc high school ib diploma art facial aesthetics fashion poker zhejiang new york startups entrepreneur reach me email kh3443 on X",
+          "about me kayna huang generalist design engineer product designer cognitive science AI ML machine learning barnard columbia EEG encoding models visual cognition lab frontier technology consumer products intelligent machines human-centered design experience columbia undergraduate researcher visual cognition lab eeg decoding models michelle greene design at columbia board design club design engineer freelance startups clients opusclip heygen product design intern ai avatar products mobile education economics united world college uwc high school ib diploma art facial aesthetics fashion poker zhejiang new york startups entrepreneur reach me email kh3443 on X",
         body: (
           <>
             <IntroWithAvatar>
               <p style={{ marginTop: 0 }}>
                 I&apos;m a generalist design engineer and product designer, currently studying
-                Cognitive Science (with a focus in AI and machine learning) and Political Science
+                Cognitive Science (with a focus in AI and machine learning)
                 at Barnard College, Columbia University, and working on EEG and encoding models at
                 the Visual Cognition Lab at Columbia.
               </p>
